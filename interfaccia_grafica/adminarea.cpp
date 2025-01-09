@@ -60,7 +60,7 @@ AdminArea::AdminArea(QList<Biblioteca*> objects, QStackedWidget* stackWidget, QW
     QPushButton* aggiunta = new QPushButton("Aggiungi nuovo elemento", scrollContent);
     toolBar->addWidget(aggiunta);
     QLineEdit* cercaOggetto = new QLineEdit(scrollContent);
-    cercaOggetto->setPlaceholderText("Cerca per titolo, genere, attore, regista o autore");
+    cercaOggetto->setPlaceholderText("Cerca per titolo, genere, attore, regista, artista o autore");
     toolBar->addWidget(cercaOggetto);
 
     // Crea la barra dei menu
@@ -118,10 +118,9 @@ AdminArea::AdminArea(QList<Biblioteca*> objects, QStackedWidget* stackWidget, QW
     connect(close, &QPushButton::clicked, this, &AdminArea::chiudi);
     connect(user, &QPushButton::clicked, this, &AdminArea::showUser);
     connect(aggiunta, &QPushButton::clicked, this, &AdminArea::aggiungi);
-    connect(cercaOggetto, &QLineEdit::returnPressed, this, [this, cercaOggetto]() {
-        testo = cercaOggetto->text();  // Ottieni il testo scritto nel QLineEdit
-        cercaDigitato(testo);  // Passa il testo alla funzione cerca
-        cercaOggetto->clear();
+    connect(cercaOggetto, &QLineEdit::textChanged, this, [this, cercaOggetto](const QString& textChecked){
+        testo = textChecked;
+        cercaDigitato(testo);
     });
 }
 
@@ -144,6 +143,7 @@ void AdminArea::showUser(){
     QMessageBox::information(this, "Parte utente", "Stai accedendo alla parte utente");
     film = false; riviste = false; cd = false;
     libri = false; manga = false;
+    testo = "";
     QMenu* fileMenu = menuBar()->findChild<QMenu*>("Cerca");
     if (fileMenu)
         for (QAction* action : fileMenu->actions())
@@ -169,6 +169,9 @@ void AdminArea::chiudi(){
 }
 
 void AdminArea::showMain(){
+    film = false; riviste = false; cd = false;
+    libri = false; manga = false;
+    testo = "";
     stack->setCurrentIndex(0);
 }
 

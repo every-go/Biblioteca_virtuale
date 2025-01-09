@@ -1,7 +1,6 @@
 #ifndef VISITORWIDGET_H
 #define VISITORWIDGET_H
 
-#include <QObject>
 #include <QLabel>
 #include <QGridLayout>
 #include "visitor.h"
@@ -12,7 +11,6 @@ class Multimedia;
 
 class VisitorWidget : public Visitor
 {
-    Q_OBJECT
 private:
     QWidget* widget;
     QLabel* artwork;

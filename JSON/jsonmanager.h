@@ -27,6 +27,7 @@ class JsonManager : public QWidget {
 private:
     QList<JsonObserver*> observers;
     QList<Biblioteca*> biblioteca;
+    QString filePath;
 public slots:
     void handleObjectCreation(QString selectedClass);
     void deleteObject(Biblioteca* biblio);
@@ -36,7 +37,7 @@ public slots:
     void saveAscoltato(Cd* cd);
     void saveVisto(Film* film);
 public:
-    JsonManager(QWidget* parent = nullptr);
+    JsonManager(const QString& fileName, QWidget* parent = nullptr);
     void addObserver(JsonObserver* observer);
     void notifyObservers(const QList<Biblioteca*>& newBiblioteca);
     struct BibliotecaBase {

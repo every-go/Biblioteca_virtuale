@@ -12,10 +12,7 @@
 #include "../modello_logico/manga.h"
 #include "../modello_logico/riviste.h"
 
-VisitorWidget::VisitorWidget(){
-    widget = new QWidget(this);
-    artwork = new QLabel(this);
-    layout = new QGridLayout(widget);
+VisitorWidget::VisitorWidget() : widget(new QWidget()), artwork(new QLabel()), layout(new QGridLayout(widget)){
     widget->setLayout(layout);
 }
 

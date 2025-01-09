@@ -1,6 +1,5 @@
 #ifndef VISITOR_H
 #define VISITOR_H
-#include <QWidget>
 
 class Manga;
 class Libri;
@@ -8,7 +7,7 @@ class Riviste;
 class Film;
 class Cd;
 
-class Visitor : public QWidget
+class Visitor
 {
 public:
     virtual void visit(Manga* manga) =0;

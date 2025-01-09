@@ -10,7 +10,7 @@
         "Editore": "Kodansha",
         "Genere": "Shonen",
         "Immagine": ":/images/vinland_saga.png",
-        "Letto": false,
+        "Letto": true,
         "Lingua originale": "Giapponese",
         "Nprestiti": 3,
         "Nvolumi": 28,

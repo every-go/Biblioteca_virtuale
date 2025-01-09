@@ -15,6 +15,7 @@
 #include <QTypeInfo>
 #include <QStackedWidget>
 #include <QMenu>
+#include <QPushButton>
 
 // Ho incluso solo gli header necessari per evitare dipendenze ridondanti,
 // poiché le classi come Cd, Film, Manga e Riviste includono già le dipendenze comuni
@@ -38,6 +39,9 @@ private:
     QMap<QByteArray, bool*> typeFlags;
     //booleano per gestire la funzione cerca
     bool film, libri, manga, riviste, cd, simili;
+    void gestisciConnect(Biblioteca* biblio, QPushButton* prenota,
+                         QPushButton* restituisci, QPushButton* suggerisci, QPushButton* azione);
+    void gestisciAzione(Biblioteca* biblio, QPushButton* azione);
 signals:
     void prenota(Biblioteca* biblio);
     void letto(Cartaceo* carta);
@@ -47,8 +51,6 @@ private slots:
     void tornaIndietro();
     void chiudi();
     void admin();
-protected:
-    bool eventFilter(QObject *watched, QEvent *event) override;
 public:
     UserArea(QList<Biblioteca*> objects, QStackedWidget* stackWidget, QWidget *parent = nullptr);
     ~UserArea();
@@ -59,7 +61,6 @@ public:
     void showAll();
     void showTipi();
     void clearLayout(QLayout* layout);
-    void mostraMenu(Biblioteca* biblio);
     void handlePostAction(Biblioteca* biblio);
     void cercaDigitato(const QString& testo);
     void suggerisciSimili(Biblioteca* biblio);

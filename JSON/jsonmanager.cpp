@@ -27,7 +27,7 @@
 #include "../modello_logico/cd.h"
 #include "../modello_logico/film.h"
 
-JsonManager::JsonManager(QWidget *parent) : QWidget(parent) {}
+JsonManager::JsonManager(const QString& fileName, QWidget *parent) : QWidget(parent), filePath(fileName) {}
 
 void JsonManager::setOggetti(const QList<Biblioteca*>& newBiblioteca){
     biblioteca = newBiblioteca;
@@ -493,7 +493,7 @@ void JsonManager::deleteObject(Biblioteca* biblio){
         if(biblioteca[i]->getTitolo() == biblio->getTitolo())
             occurenceToSkip++;
     }
-    QFile file("dati.json");
+    QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)){
         qWarning() << "File non aperto";
     }
@@ -857,7 +857,7 @@ void JsonManager::updateObject(Biblioteca *biblio){
         qWarning() << "Oggetto non trovato in biblioteca";
         return;
     }
-    QFile file("dati.json");
+    QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)){
         qWarning() << "File non aperto";
         return;
@@ -911,7 +911,7 @@ void JsonManager::savePrenota(Biblioteca *biblio){
         if(biblioteca[i]->getTitolo() == biblio->getTitolo())
             occurenceToSkip++;
     }
-    QFile file("dati.json");
+    QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)){
         qWarning() << "File non aperto";
         return;
@@ -963,7 +963,7 @@ void JsonManager::saveLetto(Cartaceo *carta){
         if(carta->getTitolo() == biblioteca[i]->getTitolo())
             occurenceToSkip++;
     }
-    QFile file("dati.json");
+    QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)){
         qWarning() << "File non aperto";
         return;
@@ -1015,7 +1015,7 @@ void JsonManager::saveVisto(Film *film){
         if(film->getTitolo() == biblioteca[i]->getTitolo())
             occurenceToSkip++;
     }
-    QFile file("dati.json");
+    QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)){
         qWarning() << "File non aperto";
         return;
@@ -1066,7 +1066,7 @@ void JsonManager::saveAscoltato(Cd *cd){
         if(cd->getTitolo() == biblioteca[i]->getTitolo())
             occurenceToSkip++;
     }
-    QFile file("dati.json");
+    QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)){
         qWarning() << "File non aperto";
         return;
@@ -1120,7 +1120,7 @@ void JsonManager::savenewObject(Biblioteca* biblio) {
         newObject = saveFilm(static_cast<Film*>(biblio));
     else if (typeid(*biblio)==typeid(Riviste))
         newObject = saveRiviste(static_cast<Riviste*>(biblio));
-    QFile file("dati.json");
+    QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)) {
         qWarning() << "Non è possibile aprire il file dati.json per la lettura!";
         return;

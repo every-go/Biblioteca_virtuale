@@ -1,12 +1,12 @@
 #include "userarea.h"
 #include "visitorwidget.h"
 #include "../JSON/jsonmanager.h"
-#include <QPushButton>
 #include <QMenuBar>
 #include <QAction>
 #include <QMessageBox>
 #include <QLineEdit>
 #include <QToolBar>
+#include <QHBoxLayout>
 
 UserArea::UserArea(QList<Biblioteca *> objects, QStackedWidget *stackWidget, QWidget *parent) :
     QMainWindow(parent), oggetti(objects), stack(stackWidget),
@@ -46,7 +46,7 @@ UserArea::UserArea(QList<Biblioteca *> objects, QStackedWidget *stackWidget, QWi
     QPushButton* close = new QPushButton("Chiudi", scrollContent);
     toolBar->addWidget(close);
     QLineEdit* cercaOggetto = new QLineEdit(scrollContent);
-    cercaOggetto->setPlaceholderText("Cerca per titolo, genere, attore, regista o autore");
+    cercaOggetto->setPlaceholderText("Cerca per titolo, genere, attore, regista, artista o autore");
     toolBar->addWidget(cercaOggetto);
 
     // Crea la barra dei menu
@@ -103,10 +103,9 @@ UserArea::UserArea(QList<Biblioteca *> objects, QStackedWidget *stackWidget, QWi
     connect(indietro, &QPushButton::clicked, this, &UserArea::tornaIndietro);
     connect(close, &QPushButton::clicked, this, &UserArea::chiudi);
     connect(user, &QPushButton::clicked, this, &UserArea::admin);
-    connect(cercaOggetto, &QLineEdit::returnPressed, this, [this, cercaOggetto]() {
-        testo = cercaOggetto->text();  // Ottieni il testo scritto nel QLineEdit
-        cercaDigitato(testo);  // Passa il testo alla funzione cerca
-        cercaOggetto->clear();
+    connect(cercaOggetto, &QLineEdit::textChanged, this, [this, cercaOggetto](const QString& textChecked){
+        testo = textChecked;
+        cercaDigitato(testo);
     });
 }
 
@@ -163,12 +162,15 @@ void UserArea::admin(){
 }
 
 void UserArea::showMain(){
+    film = false; riviste = false; cd = false; libri = false; manga = false;
+    simili = false; testo = "";
     stack->setCurrentIndex(0);
 }
 
 void UserArea::showAdmin(){
     QMessageBox::information(this, "Parte admin", "Stai accedendo alla parte admin");
     film = false; riviste = false; cd = false; libri = false; manga = false;
+    simili = false; testo = "";
     QMenu* fileMenu = menuBar()->findChild<QMenu*>("Cerca");
     if (fileMenu)
         for (QAction* action : fileMenu->actions())
@@ -176,37 +178,90 @@ void UserArea::showAdmin(){
     stack->setCurrentIndex(2);
 }
 
-//slot della QAction "Tutto"
-void UserArea::showAll(){
+void UserArea::showAll() {
     simili = false;
-    testo="";
+    testo = "";
     libri = false; manga = false; cd = false; riviste = false; film = false;
+
     clearLayout(layout);
-    //cancella tutti i filtri assegnati in precedenza trovando il nome Cerca
+
     QMenu* fileMenu = menuBar()->findChild<QMenu*>("Cerca");
     if (fileMenu) {
-        for (QAction* action : fileMenu->actions()){
-            // Disabilita temporaneamente il segnale
+        for (QAction* action : fileMenu->actions()) {
             action->blockSignals(true);
-            // Modifica lo stato del checkbox
             action->setChecked(false);
-            // Riapri il segnale
             action->blockSignals(false);
         }
     }
-    int i=0, j=0; //variabili per righe e per colonne
-    for(auto cit = oggetti.begin(); cit!= oggetti.end(); cit++){
+    int row = 0, col = 0;
+
+    for (auto cit = oggetti.begin(); cit != oggetti.end(); ++cit) {
         VisitorWidget visitor;
         (*cit)->accept(visitor);
         QWidget* widget = visitor.getWidget();
-        widget->installEventFilter(this);
-        widget->setProperty("Biblioteca", QVariant::fromValue(*cit));
-        layout->addWidget(widget, i, j, 1, 1, Qt::AlignCenter);
-        j++;
-        if(j%3==0){
-            j=0;
-            i++;
+        QHBoxLayout* buttonLayout = new QHBoxLayout();
+
+        // Crea più pulsanti
+        QPushButton* prenota = new QPushButton("Prenota", widget);
+        prenota->setStyleSheet("QPushButton{"
+                               "background-color: white;"
+                               "}"
+                               "QPushButton::hover{"
+                               "background-color:blue;"
+                               "}"
+                               "QPushButton::pressed{"
+                               "background-color:red;"
+                               "}");
+        QPushButton* restituisci = new QPushButton("Restituisci", widget);
+        restituisci->setStyleSheet("QPushButton{"
+                               "background-color: white;"
+                               "}"
+                               "QPushButton::hover{"
+                               "background-color:blue;"
+                               "}"
+                               "QPushButton::pressed{"
+                               "background-color:red;"
+                               "}");
+        QPushButton* suggerisci = new QPushButton("Suggerisci\nSimili", widget);
+        suggerisci->setStyleSheet("QPushButton{"
+                               "background-color: white;"
+                               "}"
+                               "QPushButton::hover{"
+                               "background-color:blue;"
+                               "}"
+                               "QPushButton::pressed{"
+                               "background-color:red;"
+                               "}");
+        QPushButton* azione = new QPushButton(widget);
+        azione->setStyleSheet("QPushButton{"
+                               "background-color: white;"
+                               "}"
+                               "QPushButton::hover{"
+                               "background-color:blue;"
+                               "}"
+                               "QPushButton::pressed{"
+                               "background-color:red;"
+                               "}");
+        gestisciAzione(*cit, azione);
+
+        buttonLayout->addWidget(prenota);
+        buttonLayout->addWidget(restituisci);
+        buttonLayout->addWidget(suggerisci);
+        buttonLayout->addWidget(azione);
+
+        QWidget* containerWidget = new QWidget();
+        QVBoxLayout* containerLayout = new QVBoxLayout();
+
+        containerLayout->addLayout(buttonLayout);
+        containerLayout->addWidget(widget);
+        containerWidget->setLayout(containerLayout);
+        layout->addWidget(containerWidget, row, col, 1, 1, Qt::AlignCenter);
+        col++;
+        if (col % 3 == 0) {
+            col = 0;
+            row++;
         }
+        gestisciConnect(*cit, prenota, restituisci, suggerisci, azione);
     }
 }
 
@@ -218,7 +273,7 @@ void UserArea::showTipi() {
         return;
     }
     clearLayout(layout);
-    int i=0, j=0;
+    int row=0, col=0;
     for (auto cit = oggetti.begin(); cit != oggetti.end(); ++cit) {
         QByteArray typeName = typeid(**cit).name();
         // Verifica se il tipo esiste nella mappa e se il flag è true
@@ -226,35 +281,71 @@ void UserArea::showTipi() {
             VisitorWidget visitor;
             (*cit)->accept(visitor);
             QWidget* widget = visitor.getWidget();
-            widget->installEventFilter(this);
-            //gli dico che il nuovo widget ha la proprietà di essere effettivamente
-            //un Biblioteca*
-            widget->setProperty("Biblioteca", QVariant::fromValue(*cit));
-            layout->addWidget(widget, i, j, 1, 1, Qt::AlignCenter);
-            j++;
-            if(j%3==0){
-                j=0;
-                i++;
-            }
-        }
-    }
-}
+            QHBoxLayout* buttonLayout = new QHBoxLayout();
 
-bool UserArea::eventFilter(QObject *watched, QEvent *event){
-    if(event->type() == QEvent::MouseButtonDblClick){
-        auto* clickedWidget = qobject_cast<QWidget*>(watched);
-        if (clickedWidget) {
-            QVariant prop = clickedWidget->property("Biblioteca");
-            if (prop.isValid()) {
-                Biblioteca* biblioteca = prop.value<Biblioteca*>();
-                if (biblioteca) {
-                    mostraMenu(biblioteca);
-                    return true;
-                }
+            // Crea più pulsanti
+            QPushButton* prenota = new QPushButton("Prenota", widget);
+            prenota->setStyleSheet("QPushButton{"
+                                   "background-color: white;"
+                                   "}"
+                                   "QPushButton::hover{"
+                                   "background-color:blue;"
+                                   "}"
+                                   "QPushButton::pressed{"
+                                   "background-color:red;"
+                                   "}");
+            QPushButton* restituisci = new QPushButton("Restituisci", widget);
+            restituisci->setStyleSheet("QPushButton{"
+                                       "background-color: white;"
+                                       "}"
+                                       "QPushButton::hover{"
+                                       "background-color:blue;"
+                                       "}"
+                                       "QPushButton::pressed{"
+                                       "background-color:red;"
+                                       "}");
+            QPushButton* suggerisci = new QPushButton("Suggerisci\nSimili", widget);
+            suggerisci->setStyleSheet("QPushButton{"
+                                      "background-color: white;"
+                                      "}"
+                                      "QPushButton::hover{"
+                                      "background-color:blue;"
+                                      "}"
+                                      "QPushButton::pressed{"
+                                      "background-color:red;"
+                                      "}");
+            QPushButton* azione = new QPushButton(widget);
+            azione->setStyleSheet("QPushButton{"
+                                  "background-color: white;"
+                                  "}"
+                                  "QPushButton::hover{"
+                                  "background-color:blue;"
+                                  "}"
+                                  "QPushButton::pressed{"
+                                  "background-color:red;"
+                                  "}");
+            gestisciAzione(*cit, azione);
+
+            buttonLayout->addWidget(prenota);
+            buttonLayout->addWidget(restituisci);
+            buttonLayout->addWidget(suggerisci);
+            buttonLayout->addWidget(azione);
+
+            QWidget* containerWidget = new QWidget();
+            QVBoxLayout* containerLayout = new QVBoxLayout();
+
+            containerLayout->addLayout(buttonLayout);
+            containerLayout->addWidget(widget);
+            containerWidget->setLayout(containerLayout);
+            layout->addWidget(containerWidget, row, col, 1, 1, Qt::AlignCenter);
+            col++;
+            if (col % 3 == 0) {
+                col = 0;
+                row++;
             }
+            gestisciConnect(*cit, prenota, restituisci, suggerisci, azione);
         }
     }
-    return QObject::eventFilter(watched, event);
 }
 
 //funzione chiamata da showAll e showTipi per pulire il layout prima di aggiungere i nuovi widget
@@ -266,126 +357,6 @@ void UserArea::clearLayout(QLayout* layout) {
             item->widget()->deleteLater(); //deleteLater serve per non rischiare problemi di accesso alla memoria
 }
 
-void UserArea::mostraMenu(Biblioteca* biblio) {
-    // Crea una finestra di dialogo
-    QDialog* dialog = new QDialog(this);
-    dialog->setWindowTitle(QString::fromStdString(biblio->getTitolo()));
-    dialog->setWindowFlags(dialog->windowFlags() | Qt::WindowStaysOnTopHint);
-    dialog->resize(300, 300);
-
-    // Crea un layout verticale per la finestra di dialogo
-    QVBoxLayout* dialogLayout = new QVBoxLayout(dialog);
-
-    // Crea i pulsanti
-    QPushButton* prenotazione = new QPushButton("Prenota", dialog);
-    QPushButton* restituisci = new QPushButton("Restituisci", dialog);
-    QPushButton* suggerisci = new QPushButton("Suggerisci simili", dialog);
-    QPushButton* annulla = new QPushButton("Annulla", dialog);
-    QPushButton* azione = new QPushButton(dialog);
-
-    // Aggiungi i pulsanti al layout
-    dialogLayout->addWidget(prenotazione);
-    dialogLayout->addWidget(restituisci);
-    dialogLayout->addWidget(suggerisci);
-    dialogLayout->addWidget(azione);
-    dialogLayout->addWidget(annulla);
-
-    if (dynamic_cast<Cartaceo*>(biblio)) {
-        if (static_cast<Cartaceo*>(biblio)->getLetto())
-            azione->setText("Togli lo stato di oggetto letto");
-        else
-            azione->setText("Leggi l'oggetto");
-    }
-    if (dynamic_cast<Film*>(biblio)) {
-        if (static_cast<Film*>(biblio)->getVisto())
-            azione->setText("Togli lo stato di visto all'oggetto");
-        else
-            azione->setText("Guarda l'oggetto");
-    }
-    if (dynamic_cast<Cd*>(biblio)) {
-        if (static_cast<Cd*>(biblio)->getAscoltato())
-            azione->setText("Togli lo stato di ascolto all'oggetto");
-        else
-            azione->setText("Ascolta l'oggetto");
-    }
-
-    // Collegamenti dei pulsanti
-    connect(prenotazione, &QPushButton::clicked, dialog, [this, dialog, biblio]() {
-        if (biblio->prenota()) {
-            if(biblio->getCopie()!=1)
-                QMessageBox::information(dialog, "Successo", "La prenotazione è avvenuta con successo\n"
-                                                        "Rimangono " + QString::number(biblio->getCopie()) + " copie disponibili");
-            else
-                QMessageBox::information(dialog, "Successo", "La prenotazione è avvenuta con successo\n"
-                                                        "Rimane 1 copia disponibile");
-        } else {
-            QMessageBox::warning(dialog, "Fallimento", "La prenotazione non ha avuto successo\n"
-                                                        "Non ci sono copie disponibili");
-        }
-        // Emette il segnale di prenotazione
-        emit prenota(biblio);
-        dialog->accept();
-        handlePostAction(biblio);
-    });
-
-    connect(restituisci, &QPushButton::clicked, dialog, [this, dialog, biblio]() {
-        if (biblio->restituisci()) {
-            QMessageBox::information(dialog, "Successo", "La restituzione è avvenuta con successo");
-        } else {
-            QMessageBox::warning(dialog, "Fallimento", "La restituzione non ha avuto successo\n"
-                                                       "Non ci sono prestiti in atto di quest'oggetto");
-        }
-        // Emette il segnale di restituzione
-        emit prenota(biblio);
-        dialog->accept();
-        handlePostAction(biblio);
-    });
-
-    connect(suggerisci, &QPushButton::clicked, dialog, [this, dialog, biblio]() {
-        dialog->accept();
-        suggerisciSimili(biblio);
-    });
-
-    connect(azione, &QPushButton::clicked, dialog, [this, azione, biblio, dialog]() {
-        if (azione->text() == "Leggi l'oggetto" || azione->text() == "Togli lo stato di oggetto letto") {
-            Cartaceo* carta = static_cast<Cartaceo*>(biblio);
-            carta->segnaLetto();
-            if (carta->getLetto())
-                QMessageBox::information(dialog, "Letto", "Hai appena letto l'oggetto!");
-            else
-                QMessageBox::information(dialog, "Letto", "Hai tolto la lettura dell'oggetto");
-            emit letto(carta);
-        }
-        if (azione->text() == "Guarda l'oggetto" || azione->text() == "Togli lo stato di visto all'oggetto") {
-            Film* film = static_cast<Film*>(biblio);
-            film->segnaVisto();
-            if (film->getVisto())
-                QMessageBox::information(dialog, "Visto", "Hai appena guardato l'oggetto!");
-            else
-                QMessageBox::information(dialog, "Visto", "Hai tolto la visione dell'oggetto");
-            emit visto(film);
-        }
-        if (azione->text() == "Ascolta l'oggetto" || azione->text() == "Togli lo stato di ascolto all'oggetto") {
-            Cd* cd = static_cast<Cd*>(biblio);
-            cd->segnaAscoltato();
-            if (cd->getAscoltato())
-                QMessageBox::information(dialog, "Ascoltato", "Hai appena ascoltato l'oggetto!");    
-            else
-                QMessageBox::information(dialog, "Ascoltato", "Hai tolto l'ascolto dell'oggetto");
-            emit ascoltato(cd);
-        }
-        dialog->accept();
-        handlePostAction(biblio);
-    });
-
-    connect(annulla, &QPushButton::clicked, dialog, [dialog]() {
-        dialog->reject();
-    });
-
-    dialog->exec();
-}
-
-// Funzione per gestire le azioni dopo ogni operazione
 void UserArea::handlePostAction(Biblioteca* biblio) {
     if(testo != "") {
         cercaDigitato(testo);
@@ -419,13 +390,13 @@ void UserArea::cercaDigitato(const QString& testo){
     }
     film = false; cd = false; riviste = false;
     libri = false; manga = false;
-    int i=0, j=0;
+    int row=0, col=0;
     bool match;
     for(auto cit = oggetti.begin(); cit!= oggetti.end(); cit++){
         match = false;
-        if((QString::fromStdString((*cit)->getGenere())).startsWith(testo, Qt::CaseInsensitive))
+        if((QString::fromStdString((*cit)->getTitolo())).startsWith(testo, Qt::CaseInsensitive))
             match = true;
-        if(!match && (QString::fromStdString((*cit)->getTitolo())).startsWith(testo, Qt::CaseInsensitive))
+        if(!match && (QString::fromStdString((*cit)->getGenere())).startsWith(testo, Qt::CaseInsensitive))
             match = true;
         if(!match && dynamic_cast<Cd*>(*cit))
             if((QString::fromStdString(static_cast<Cd*>(*cit)->getArtista())).startsWith(testo, Qt::CaseInsensitive))
@@ -443,14 +414,69 @@ void UserArea::cercaDigitato(const QString& testo){
             VisitorWidget visitor;
             (*cit)->accept(visitor);
             QWidget* widget = visitor.getWidget();
-            widget->installEventFilter(this);
-            widget->setProperty("Biblioteca", QVariant::fromValue(*cit));
-            layout->addWidget(widget, i, j, 1, 1, Qt::AlignCenter);
-            j++;
-            if(j%3==0){
-                j=0;
-                i++;
+            QHBoxLayout* buttonLayout = new QHBoxLayout();
+
+            // Crea più pulsanti
+            QPushButton* prenota = new QPushButton("Prenota", widget);
+            prenota->setStyleSheet("QPushButton{"
+                                   "background-color: white;"
+                                   "}"
+                                   "QPushButton::hover{"
+                                   "background-color:blue;"
+                                   "}"
+                                   "QPushButton::pressed{"
+                                   "background-color:red;"
+                                   "}");
+            QPushButton* restituisci = new QPushButton("Restituisci", widget);
+            restituisci->setStyleSheet("QPushButton{"
+                                       "background-color: white;"
+                                       "}"
+                                       "QPushButton::hover{"
+                                       "background-color:blue;"
+                                       "}"
+                                       "QPushButton::pressed{"
+                                       "background-color:red;"
+                                       "}");
+            QPushButton* suggerisci = new QPushButton("Suggerisci\nSimili", widget);
+            suggerisci->setStyleSheet("QPushButton{"
+                                      "background-color: white;"
+                                      "}"
+                                      "QPushButton::hover{"
+                                      "background-color:blue;"
+                                      "}"
+                                      "QPushButton::pressed{"
+                                      "background-color:red;"
+                                      "}");
+            QPushButton* azione = new QPushButton(widget);
+            azione->setStyleSheet("QPushButton{"
+                                  "background-color: white;"
+                                  "}"
+                                  "QPushButton::hover{"
+                                  "background-color:blue;"
+                                  "}"
+                                  "QPushButton::pressed{"
+                                  "background-color:red;"
+                                  "}");
+            gestisciAzione(*cit, azione);
+
+            buttonLayout->addWidget(prenota);
+            buttonLayout->addWidget(restituisci);
+            buttonLayout->addWidget(suggerisci);
+            buttonLayout->addWidget(azione);
+
+            QWidget* containerWidget = new QWidget();
+            QVBoxLayout* containerLayout = new QVBoxLayout();
+
+            containerLayout->addLayout(buttonLayout);
+            containerLayout->addWidget(widget);
+            containerWidget->setLayout(containerLayout);
+            layout->addWidget(containerWidget, row, col, 1, 1, Qt::AlignCenter);
+            col++;
+            if (col % 3 == 0) {
+                col = 0;
+                row++;
             }
+            gestisciConnect(*cit, prenota, restituisci, suggerisci, azione);
         }
     }
 }
@@ -472,7 +498,7 @@ void UserArea::suggerisciSimili(Biblioteca* biblio){
     if(dynamic_cast<Libri*>(biblio))
         autore = QString::fromStdString
             (static_cast<Libri*>(biblio)->getAutore());
-    int i=0, j=0;
+    int row=0, col=0;
     for (auto cit = oggetti.begin(); cit != oggetti.end(); ++cit) {
         bool match = false;
         if (QString::fromStdString((*cit)->getGenere()) == genere)
@@ -492,14 +518,156 @@ void UserArea::suggerisciSimili(Biblioteca* biblio){
             VisitorWidget visitor;
             (*cit)->accept(visitor);
             QWidget* widget = visitor.getWidget();
-            widget->installEventFilter(this);
-            widget->setProperty("Biblioteca", QVariant::fromValue(*cit));
-            layout->addWidget(widget, i, j, 1, 1, Qt::AlignCenter);
-            j++;
-            if (j % 3 == 0) {
-                j = 0;
-                i++;
+            QHBoxLayout* buttonLayout = new QHBoxLayout();
+
+            // Crea più pulsanti
+            QPushButton* prenota = new QPushButton("Prenota", widget);
+            prenota->setStyleSheet("QPushButton{"
+                                   "background-color: white;"
+                                   "}"
+                                   "QPushButton::hover{"
+                                   "background-color:blue;"
+                                   "}"
+                                   "QPushButton::pressed{"
+                                   "background-color:red;"
+                                   "}");
+            QPushButton* restituisci = new QPushButton("Restituisci", widget);
+            restituisci->setStyleSheet("QPushButton{"
+                                       "background-color: white;"
+                                       "}"
+                                       "QPushButton::hover{"
+                                       "background-color:blue;"
+                                       "}"
+                                       "QPushButton::pressed{"
+                                       "background-color:red;"
+                                       "}");
+            QPushButton* suggerisci = new QPushButton("Suggerisci\nSimili", widget);
+            suggerisci->setStyleSheet("QPushButton{"
+                                      "background-color: white;"
+                                      "}"
+                                      "QPushButton::hover{"
+                                      "background-color:blue;"
+                                      "}"
+                                      "QPushButton::pressed{"
+                                      "background-color:red;"
+                                      "}");
+            QPushButton* azione = new QPushButton(widget);
+            azione->setStyleSheet("QPushButton{"
+                                  "background-color: white;"
+                                  "}"
+                                  "QPushButton::hover{"
+                                  "background-color:blue;"
+                                  "}"
+                                  "QPushButton::pressed{"
+                                  "background-color:red;"
+                                  "}");
+            gestisciAzione(*cit, azione);
+
+            buttonLayout->addWidget(prenota);
+            buttonLayout->addWidget(restituisci);
+            buttonLayout->addWidget(suggerisci);
+            buttonLayout->addWidget(azione);
+
+            QWidget* containerWidget = new QWidget();
+            QVBoxLayout* containerLayout = new QVBoxLayout();
+
+            containerLayout->addLayout(buttonLayout);
+            containerLayout->addWidget(widget);
+            containerWidget->setLayout(containerLayout);
+            layout->addWidget(containerWidget, row, col, 1, 1, Qt::AlignCenter);
+            col++;
+            if (col % 3 == 0) {
+                col = 0;
+                row++;
             }
+            gestisciConnect(*cit, prenota, restituisci, suggerisci, azione);
         }
+    }
+}
+
+void UserArea::gestisciConnect(Biblioteca* biblio, QPushButton* prenotazione,
+                               QPushButton* restituisci, QPushButton* suggerisci, QPushButton* azione)
+{
+    connect(prenotazione, &QPushButton::clicked, this, [this, biblio]() {
+        if (biblio->prenota()) {
+            if(biblio->getCopie()!=1)
+                QMessageBox::information(this, "Successo", "La prenotazione è avvenuta con successo\n"
+                                                           "Rimangono " + QString::number(biblio->getCopie()) + " copie disponibili");
+            else
+                QMessageBox::information(this, "Successo", "La prenotazione è avvenuta con successo\n"
+                                                           "Rimane 1 copia disponibile");
+        } else {
+            QMessageBox::warning(this, "Fallimento", "La prenotazione non ha avuto successo\n"
+                                                     "Non ci sono copie disponibili");
+        }
+        emit prenota(biblio);
+        handlePostAction(biblio);
+    });
+
+    connect(restituisci, &QPushButton::clicked, this, [this, biblio]() {
+        if (biblio->restituisci()) {
+            QMessageBox::information(this, "Successo", "La restituzione è avvenuta con successo");
+        } else {
+            QMessageBox::warning(this, "Fallimento", "La restituzione non ha avuto successo\n"
+                                                     "Non ci sono prestiti in atto di quest'oggetto");
+        }
+        emit prenota(biblio);
+        handlePostAction(biblio);
+    });
+
+    connect(suggerisci, &QPushButton::clicked, this, [this, biblio]() {
+        suggerisciSimili(biblio);
+    });
+
+    connect(azione, &QPushButton::clicked, this, [this, azione, biblio]() {
+        if (azione->text() == "Leggi l'oggetto" || azione->text() == "Togli lo stato di oggetto letto") {
+            Cartaceo* carta = static_cast<Cartaceo*>(biblio);
+            carta->segnaLetto();
+            if (carta->getLetto())
+                QMessageBox::information(this, "Letto", "Hai appena letto l'oggetto!");
+            else
+                QMessageBox::information(this, "Letto", "Hai tolto la lettura dell'oggetto");
+            emit letto(carta);
+        }
+        if (azione->text() == "Guarda l'oggetto" || azione->text() == "Togli lo stato di visto all'oggetto") {
+            Film* film = static_cast<Film*>(biblio);
+            film->segnaVisto();
+            if (film->getVisto())
+                QMessageBox::information(this, "Visto", "Hai appena guardato l'oggetto!");
+            else
+                QMessageBox::information(this, "Visto", "Hai tolto la visione dell'oggetto");
+            emit visto(film);
+        }
+        if (azione->text() == "Ascolta l'oggetto" || azione->text() == "Togli lo stato di ascolto all'oggetto") {
+            Cd* cd = static_cast<Cd*>(biblio);
+            cd->segnaAscoltato();
+            if (cd->getAscoltato())
+                QMessageBox::information(this, "Ascoltato", "Hai appena ascoltato l'oggetto!");
+            else
+                QMessageBox::information(this, "Ascoltato", "Hai tolto l'ascolto dell'oggetto");
+            emit ascoltato(cd);
+        }
+        handlePostAction(biblio);
+    });
+}
+
+void UserArea::gestisciAzione(Biblioteca* biblio, QPushButton* azione){
+    if (dynamic_cast<Cartaceo*>(biblio)) {
+        if (static_cast<Cartaceo*>(biblio)->getLetto())
+            azione->setText("Togli lo stato di oggetto letto");
+        else
+            azione->setText("Leggi l'oggetto");
+    }
+    if (dynamic_cast<Film*>(biblio)) {
+        if (static_cast<Film*>(biblio)->getVisto())
+            azione->setText("Togli lo stato di visto all'oggetto");
+        else
+            azione->setText("Guarda l'oggetto");
+    }
+    if (dynamic_cast<Cd*>(biblio)) {
+        if (static_cast<Cd*>(biblio)->getAscoltato())
+            azione->setText("Togli lo stato di ascolto all'oggetto");
+        else
+            azione->setText("Ascolta l'oggetto");
     }
 }

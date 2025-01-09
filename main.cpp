@@ -20,7 +20,8 @@ int main(int argc, char *argv[])
 
     QStackedWidget stackWidget;
     qRegisterMetaType<Biblioteca*>("Biblioteca");
-    JsonManager* manager = new JsonManager();
+    //QString filePath = QFileDialog::getOpenFileName(nullptr, "Scegli Json", "", "Json (*.json)");
+    JsonManager* manager = new JsonManager("dati.json");
     QList<Biblioteca*> oggetti = manager->loadBibliotecaListFromJson("dati.json");
     MainWindow* mainWindows = new MainWindow(&stackWidget);
     UserArea* userArea = new UserArea(oggetti, &stackWidget);
