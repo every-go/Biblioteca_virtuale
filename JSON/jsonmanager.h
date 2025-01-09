@@ -39,7 +39,7 @@ public slots:
 public:
     JsonManager(const QString& fileName, QWidget* parent = nullptr);
     void addObserver(JsonObserver* observer);
-    void notifyObservers(const QList<Biblioteca*>& newBiblioteca);
+    void notifyObservers(QList<Biblioteca*>& newBiblioteca);
     struct BibliotecaBase {
         QString titolo;
         QString genere;

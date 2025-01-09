@@ -11,6 +11,7 @@
 #include "modello_logico/manga.h"
 #include "modello_logico/riviste.h"
 
+#include <algorithm>
 #include <QApplication>
 #include <QStackedWidget>
 
@@ -23,6 +24,9 @@ int main(int argc, char *argv[])
     //QString filePath = QFileDialog::getOpenFileName(nullptr, "Scegli Json", "", "Json (*.json)");
     JsonManager* manager = new JsonManager("dati.json");
     QList<Biblioteca*> oggetti = manager->loadBibliotecaListFromJson("dati.json");
+    std::sort(oggetti.begin(), oggetti.end(), [](Biblioteca* a, Biblioteca* b) {
+        return a->getTitolo() < b->getTitolo();
+    });
     MainWindow* mainWindows = new MainWindow(&stackWidget);
     UserArea* userArea = new UserArea(oggetti, &stackWidget);
     AdminArea* adminArea = new AdminArea(oggetti, &stackWidget);

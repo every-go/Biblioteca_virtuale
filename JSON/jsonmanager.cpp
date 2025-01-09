@@ -1,6 +1,7 @@
 #include "jsonmanager.h"
 #include "../interfaccia_grafica/adminarea.h"
 #include "../interfaccia_grafica/userarea.h"
+#include <algorithm>
 #include <QStringList>
 #include <QMap>
 #include <QInputDialog>
@@ -31,15 +32,21 @@ JsonManager::JsonManager(const QString& fileName, QWidget *parent) : QWidget(par
 
 void JsonManager::setOggetti(const QList<Biblioteca*>& newBiblioteca){
     biblioteca = newBiblioteca;
+    std::sort(biblioteca.begin(), biblioteca.end(), [](Biblioteca* a, Biblioteca* b) {
+        return a->getTitolo() < b->getTitolo();
+    });
 }
 
 void JsonManager::addObserver(JsonObserver* observer){
     observers.append(observer);
 }
 
-void JsonManager::notifyObservers(const QList<Biblioteca *> &newBiblioteca){
+void JsonManager::notifyObservers(QList<Biblioteca *> &newBiblioteca){
     //dato che so di avere solo due observer admin e user posso
     //chiamare la funzione senza fare i dynamic_cast
+    std::sort(newBiblioteca.begin(), newBiblioteca.end(), [](Biblioteca* a, Biblioteca* b) {
+        return a->getTitolo() < b->getTitolo();
+    });
     for(JsonObserver* observer : observers){
         observer->onBibliotecaUpdated(newBiblioteca);
     }
