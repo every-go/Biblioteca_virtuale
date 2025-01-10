@@ -1,6 +1,7 @@
 #include "interfaccia_grafica/mainwindow.h"
 #include "interfaccia_grafica/userarea.h"
 #include "interfaccia_grafica/adminarea.h"
+#include "interfaccia_grafica/librarymanager.h"
 #include "JSON/jsonmanager.h"
 
 // Ho incluso solo gli header necessari per evitare dipendenze ridondanti,
@@ -14,10 +15,11 @@
 #include <algorithm>
 #include <QApplication>
 #include <QStackedWidget>
+#include <QObject>
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QApplication app(argc, argv);
 
     QStackedWidget stackWidget;
     qRegisterMetaType<Biblioteca*>("Biblioteca");
@@ -30,22 +32,25 @@ int main(int argc, char *argv[])
     MainWindow* mainWindows = new MainWindow(&stackWidget);
     UserArea* userArea = new UserArea(oggetti, &stackWidget);
     AdminArea* adminArea = new AdminArea(oggetti, &stackWidget);
+    LibraryManager* library = new LibraryManager(&stackWidget);
     manager->addObserver(userArea);
     manager->addObserver(adminArea);
     stackWidget.addWidget(mainWindows);
     stackWidget.addWidget(userArea);
     stackWidget.addWidget(adminArea);
-    stackWidget.setCurrentIndex(0);
+    stackWidget.addWidget(library);
+    stackWidget.setCurrentIndex(2);
     stackWidget.show();
 
-    QObject::connect(adminArea, &AdminArea::objectCreationRequested, manager, &JsonManager::handleObjectCreation);
+    QObject::connect(library, &LibraryManager::update, manager, &JsonManager::updateObject);
+    QObject::connect(adminArea, &AdminArea::modifyObject, library, &LibraryManager::modifyObject);
     QObject::connect(adminArea, &AdminArea::removeObject, manager, &JsonManager::deleteObject);
-    QObject::connect(adminArea, &AdminArea::modifyObject, manager, &JsonManager::modifyObject);
+    QObject::connect(adminArea, &AdminArea::createNewObject, library, &LibraryManager::createObject);
     QObject::connect(userArea, &UserArea::prenota, manager, &JsonManager::savePrenota);
     QObject::connect(userArea, &UserArea::ascoltato, manager, &JsonManager::saveAscoltato);
     QObject::connect(userArea, &UserArea::visto, manager, &JsonManager::saveVisto);
     QObject::connect(userArea, &UserArea::letto, manager, &JsonManager::saveLetto);
 
-    return a.exec();
+    return app.exec();
 }
 

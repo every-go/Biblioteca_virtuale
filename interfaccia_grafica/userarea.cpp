@@ -69,7 +69,7 @@ UserArea::UserArea(QList<Biblioteca *> objects, QStackedWidget *stackWidget, QWi
     // Impostazioni layout del contenuto
     layout = new QGridLayout(scrollContent);
     layout->setContentsMargins(1, 1, 1, 1);
-    layout->setSpacing(1);
+    layout->setSpacing(10);
 
     // Imposta il layout e il widget centrale
     scrollContent->setLayout(layout);
@@ -201,7 +201,6 @@ void UserArea::showAll() {
         QWidget* widget = visitor.getWidget();
         QHBoxLayout* buttonLayout = new QHBoxLayout();
 
-        // Crea più pulsanti
         QPushButton* prenota = new QPushButton("Prenota", widget);
         prenota->setStyleSheet("QPushButton{"
                                "background-color: white;"
@@ -214,34 +213,34 @@ void UserArea::showAll() {
                                "}");
         QPushButton* restituisci = new QPushButton("Restituisci", widget);
         restituisci->setStyleSheet("QPushButton{"
-                               "background-color: white;"
-                               "}"
-                               "QPushButton::hover{"
-                               "background-color:blue;"
-                               "}"
-                               "QPushButton::pressed{"
-                               "background-color:red;"
-                               "}");
-        QPushButton* suggerisci = new QPushButton("Suggerisci\nSimili", widget);
+                                   "background-color: white;"
+                                   "}"
+                                   "QPushButton::hover{"
+                                   "background-color:blue;"
+                                   "}"
+                                   "QPushButton::pressed{"
+                                   "background-color:red;"
+                                   "}");
+        QPushButton* suggerisci = new QPushButton("Simili", widget);
         suggerisci->setStyleSheet("QPushButton{"
-                               "background-color: white;"
-                               "}"
-                               "QPushButton::hover{"
-                               "background-color:blue;"
-                               "}"
-                               "QPushButton::pressed{"
-                               "background-color:red;"
-                               "}");
+                                  "background-color: white;"
+                                  "}"
+                                  "QPushButton::hover{"
+                                  "background-color:blue;"
+                                  "}"
+                                  "QPushButton::pressed{"
+                                  "background-color:red;"
+                                  "}");
         QPushButton* azione = new QPushButton(widget);
         azione->setStyleSheet("QPushButton{"
-                               "background-color: white;"
-                               "}"
-                               "QPushButton::hover{"
-                               "background-color:blue;"
-                               "}"
-                               "QPushButton::pressed{"
-                               "background-color:red;"
-                               "}");
+                              "background-color: white;"
+                              "}"
+                              "QPushButton::hover{"
+                              "background-color:blue;"
+                              "}"
+                              "QPushButton::pressed{"
+                              "background-color:red;"
+                              "}");
         gestisciAzione(*cit, azione);
 
         buttonLayout->addWidget(prenota);
@@ -255,13 +254,17 @@ void UserArea::showAll() {
         containerLayout->addLayout(buttonLayout);
         containerLayout->addWidget(widget);
         containerWidget->setLayout(containerLayout);
+        containerWidget->setStyleSheet("QWidget{"
+                                       "background-color: lightgray"
+                                       "}");
+        containerWidget->setFixedSize(450, 450);
         layout->addWidget(containerWidget, row, col, 1, 1, Qt::AlignCenter);
         col++;
         if (col % 3 == 0) {
             col = 0;
             row++;
         }
-        gestisciConnect(*cit, prenota, restituisci, suggerisci, azione);
+        gestisciConnect(*cit, prenota, restituisci, suggerisci);
     }
 }
 
@@ -282,8 +285,6 @@ void UserArea::showTipi() {
             (*cit)->accept(visitor);
             QWidget* widget = visitor.getWidget();
             QHBoxLayout* buttonLayout = new QHBoxLayout();
-
-            // Crea più pulsanti
             QPushButton* prenota = new QPushButton("Prenota", widget);
             prenota->setStyleSheet("QPushButton{"
                                    "background-color: white;"
@@ -304,7 +305,7 @@ void UserArea::showTipi() {
                                        "QPushButton::pressed{"
                                        "background-color:red;"
                                        "}");
-            QPushButton* suggerisci = new QPushButton("Suggerisci\nSimili", widget);
+            QPushButton* suggerisci = new QPushButton("Simili", widget);
             suggerisci->setStyleSheet("QPushButton{"
                                       "background-color: white;"
                                       "}"
@@ -337,13 +338,17 @@ void UserArea::showTipi() {
             containerLayout->addLayout(buttonLayout);
             containerLayout->addWidget(widget);
             containerWidget->setLayout(containerLayout);
+            containerWidget->setStyleSheet("QWidget{"
+                                           "background-color: lightgray"
+                                           "}");
+            containerWidget->setFixedSize(450, 450);
             layout->addWidget(containerWidget, row, col, 1, 1, Qt::AlignCenter);
             col++;
             if (col % 3 == 0) {
                 col = 0;
                 row++;
             }
-            gestisciConnect(*cit, prenota, restituisci, suggerisci, azione);
+            gestisciConnect(*cit, prenota, restituisci, suggerisci);
         }
     }
 }
@@ -415,8 +420,6 @@ void UserArea::cercaDigitato(const QString& testo){
             (*cit)->accept(visitor);
             QWidget* widget = visitor.getWidget();
             QHBoxLayout* buttonLayout = new QHBoxLayout();
-
-            // Crea più pulsanti
             QPushButton* prenota = new QPushButton("Prenota", widget);
             prenota->setStyleSheet("QPushButton{"
                                    "background-color: white;"
@@ -437,7 +440,7 @@ void UserArea::cercaDigitato(const QString& testo){
                                        "QPushButton::pressed{"
                                        "background-color:red;"
                                        "}");
-            QPushButton* suggerisci = new QPushButton("Suggerisci\nSimili", widget);
+            QPushButton* suggerisci = new QPushButton("Simili", widget);
             suggerisci->setStyleSheet("QPushButton{"
                                       "background-color: white;"
                                       "}"
@@ -470,13 +473,17 @@ void UserArea::cercaDigitato(const QString& testo){
             containerLayout->addLayout(buttonLayout);
             containerLayout->addWidget(widget);
             containerWidget->setLayout(containerLayout);
+            containerWidget->setStyleSheet("QWidget{"
+                                           "background-color: lightgray"
+                                           "}");
+            containerWidget->setFixedSize(450, 450);
             layout->addWidget(containerWidget, row, col, 1, 1, Qt::AlignCenter);
             col++;
             if (col % 3 == 0) {
                 col = 0;
                 row++;
             }
-            gestisciConnect(*cit, prenota, restituisci, suggerisci, azione);
+            gestisciConnect(*cit, prenota, restituisci, suggerisci);
         }
     }
 }
@@ -519,8 +526,6 @@ void UserArea::suggerisciSimili(Biblioteca* biblio){
             (*cit)->accept(visitor);
             QWidget* widget = visitor.getWidget();
             QHBoxLayout* buttonLayout = new QHBoxLayout();
-
-            // Crea più pulsanti
             QPushButton* prenota = new QPushButton("Prenota", widget);
             prenota->setStyleSheet("QPushButton{"
                                    "background-color: white;"
@@ -541,7 +546,7 @@ void UserArea::suggerisciSimili(Biblioteca* biblio){
                                        "QPushButton::pressed{"
                                        "background-color:red;"
                                        "}");
-            QPushButton* suggerisci = new QPushButton("Suggerisci\nSimili", widget);
+            QPushButton* suggerisci = new QPushButton("Simili", widget);
             suggerisci->setStyleSheet("QPushButton{"
                                       "background-color: white;"
                                       "}"
@@ -574,19 +579,85 @@ void UserArea::suggerisciSimili(Biblioteca* biblio){
             containerLayout->addLayout(buttonLayout);
             containerLayout->addWidget(widget);
             containerWidget->setLayout(containerLayout);
+            containerWidget->setStyleSheet("QWidget{"
+                                           "background-color: lightgray"
+                                           "}");
+            containerWidget->setFixedSize(450, 450);
             layout->addWidget(containerWidget, row, col, 1, 1, Qt::AlignCenter);
             col++;
             if (col % 3 == 0) {
                 col = 0;
                 row++;
             }
-            gestisciConnect(*cit, prenota, restituisci, suggerisci, azione);
+            gestisciConnect(*cit, prenota, restituisci, suggerisci);
         }
     }
 }
 
+void UserArea::gestisciAzione(Biblioteca* biblio, QPushButton* azione){
+    if (dynamic_cast<Cartaceo*>(biblio)) {
+        if (static_cast<Cartaceo*>(biblio)->getLetto())
+            azione->setText("Non leggere l'oggetto");
+        else
+            azione->setText("Leggi l'oggetto");
+    }
+    if (dynamic_cast<Film*>(biblio)) {
+        if (static_cast<Film*>(biblio)->getVisto())
+            azione->setText("Non guardare l'oggetto");
+        else
+            azione->setText("Guarda l'oggetto");
+    }
+    if (dynamic_cast<Cd*>(biblio)) {
+        if (static_cast<Cd*>(biblio)->getAscoltato())
+            azione->setText("Non ascoltare l'oggetto");
+        else
+            azione->setText("Ascolta l'oggetto");
+    }
+    connect(azione, &QPushButton::clicked, this, [this, biblio](){
+        if(dynamic_cast<Cartaceo*>(biblio)){
+            Cartaceo* carta = static_cast<Cartaceo*>(biblio);
+            carta->segnaLetto();
+            if(carta->getLetto())
+                QMessageBox::information(this, "Letto",
+                                         "Hai appena letto l'oggetto");
+            else
+                QMessageBox::information(this, "Letto",
+                                         "Hai tolto lo stato\n"
+                                         "di letto all'oggetto");
+            emit letto(carta);
+            handlePostAction(biblio);
+        }
+        if(dynamic_cast<Film*>(biblio)){
+            Film* film = static_cast<Film*>(biblio);
+            film->segnaVisto();
+            if(film->getVisto())
+                QMessageBox::information(this, "Visto",
+                                         "Hai appena guardato l'oggetto");
+            else
+                QMessageBox::information(this, "Visto",
+                                         "Hai tolto lo stato\n"
+                                         "di visto all'oggetto");
+            emit visto(film);
+            handlePostAction(biblio);
+        }
+        if(dynamic_cast<Cd*>(biblio)){
+            Cd* cd = static_cast<Cd*>(biblio);
+            cd->segnaAscoltato();
+            if(cd->getAscoltato())
+                QMessageBox::information(this, "Ascoltato",
+                                         "Hai appena ascoltato l'oggetto");
+            else
+                QMessageBox::information(this, "Ascoltato",
+                                         "Hai tolto lo stato\n"
+                                         "di ascoltato all'oggetto");
+            emit ascoltato(cd);
+            handlePostAction(biblio);
+        }
+    });
+}
+
 void UserArea::gestisciConnect(Biblioteca* biblio, QPushButton* prenotazione,
-                               QPushButton* restituisci, QPushButton* suggerisci, QPushButton* azione)
+                               QPushButton* restituisci, QPushButton* suggerisci)
 {
     connect(prenotazione, &QPushButton::clicked, this, [this, biblio]() {
         if (biblio->prenota()) {
@@ -618,56 +689,4 @@ void UserArea::gestisciConnect(Biblioteca* biblio, QPushButton* prenotazione,
     connect(suggerisci, &QPushButton::clicked, this, [this, biblio]() {
         suggerisciSimili(biblio);
     });
-
-    connect(azione, &QPushButton::clicked, this, [this, azione, biblio]() {
-        if (azione->text() == "Leggi l'oggetto" || azione->text() == "Togli lo stato di oggetto letto") {
-            Cartaceo* carta = static_cast<Cartaceo*>(biblio);
-            carta->segnaLetto();
-            if (carta->getLetto())
-                QMessageBox::information(this, "Letto", "Hai appena letto l'oggetto!");
-            else
-                QMessageBox::information(this, "Letto", "Hai tolto la lettura dell'oggetto");
-            emit letto(carta);
-        }
-        if (azione->text() == "Guarda l'oggetto" || azione->text() == "Togli lo stato di visto all'oggetto") {
-            Film* film = static_cast<Film*>(biblio);
-            film->segnaVisto();
-            if (film->getVisto())
-                QMessageBox::information(this, "Visto", "Hai appena guardato l'oggetto!");
-            else
-                QMessageBox::information(this, "Visto", "Hai tolto la visione dell'oggetto");
-            emit visto(film);
-        }
-        if (azione->text() == "Ascolta l'oggetto" || azione->text() == "Togli lo stato di ascolto all'oggetto") {
-            Cd* cd = static_cast<Cd*>(biblio);
-            cd->segnaAscoltato();
-            if (cd->getAscoltato())
-                QMessageBox::information(this, "Ascoltato", "Hai appena ascoltato l'oggetto!");
-            else
-                QMessageBox::information(this, "Ascoltato", "Hai tolto l'ascolto dell'oggetto");
-            emit ascoltato(cd);
-        }
-        handlePostAction(biblio);
-    });
-}
-
-void UserArea::gestisciAzione(Biblioteca* biblio, QPushButton* azione){
-    if (dynamic_cast<Cartaceo*>(biblio)) {
-        if (static_cast<Cartaceo*>(biblio)->getLetto())
-            azione->setText("Togli lo stato di oggetto letto");
-        else
-            azione->setText("Leggi l'oggetto");
-    }
-    if (dynamic_cast<Film*>(biblio)) {
-        if (static_cast<Film*>(biblio)->getVisto())
-            azione->setText("Togli lo stato di visto all'oggetto");
-        else
-            azione->setText("Guarda l'oggetto");
-    }
-    if (dynamic_cast<Cd*>(biblio)) {
-        if (static_cast<Cd*>(biblio)->getAscoltato())
-            azione->setText("Togli lo stato di ascolto all'oggetto");
-        else
-            azione->setText("Ascolta l'oggetto");
-    }
 }

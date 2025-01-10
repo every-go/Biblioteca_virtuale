@@ -37,7 +37,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = biblioteca_virtuale1.0.0
-DISTDIR = /mnt/c/Users/acer/Desktop/Biblioteca_virtuale/.tmp/biblioteca_virtuale1.0.0
+DISTDIR = /mnt/c/Users/acer/Desktop/Uni/PAO/Progetto/biblioteca_virtuale/Biblioteca_virtuale/.tmp/biblioteca_virtuale1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1 -Wl,-rpath-link,/usr/lib/x86_64-linux-gnu
 LIBS          = $(SUBLIBS) /usr/lib/x86_64-linux-gnu/libQt6Widgets.so /usr/lib/x86_64-linux-gnu/libQt6Gui.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libQt6Core.so -lpthread -lGLX -lOpenGL   
@@ -54,6 +54,7 @@ OBJECTS_DIR   = ./
 
 SOURCES       = main.cpp \
 		interfaccia_grafica/adminarea.cpp \
+		interfaccia_grafica/librarymanager.cpp \
 		interfaccia_grafica/visitorwidget.cpp \
 		interfaccia_grafica/mainwindow.cpp \
 		interfaccia_grafica/userarea.cpp \
@@ -67,12 +68,13 @@ SOURCES       = main.cpp \
 		modello_logico/multimedia.cpp \
 		modello_logico/riviste.cpp qrc_resources.cpp \
 		moc_adminarea.cpp \
-		moc_visitorwidget.cpp \
+		moc_librarymanager.cpp \
 		moc_mainwindow.cpp \
 		moc_userarea.cpp \
 		moc_jsonmanager.cpp
 OBJECTS       = main.o \
 		adminarea.o \
+		librarymanager.o \
 		visitorwidget.o \
 		mainwindow.o \
 		userarea.o \
@@ -87,7 +89,7 @@ OBJECTS       = main.o \
 		riviste.o \
 		qrc_resources.o \
 		moc_adminarea.o \
-		moc_visitorwidget.o \
+		moc_librarymanager.o \
 		moc_mainwindow.o \
 		moc_userarea.o \
 		moc_jsonmanager.o
@@ -163,6 +165,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/lex.prf \
 		Biblioteca_virtuale.pro interfaccia_grafica/adminarea.h \
 		JSON/jsonobserver.h \
+		interfaccia_grafica/librarymanager.h \
 		interfaccia_grafica/visitor.h \
 		interfaccia_grafica/visitorwidget.h \
 		interfaccia_grafica/mainwindow.h \
@@ -177,6 +180,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		modello_logico/multimedia.h \
 		modello_logico/riviste.h main.cpp \
 		interfaccia_grafica/adminarea.cpp \
+		interfaccia_grafica/librarymanager.cpp \
 		interfaccia_grafica/visitorwidget.cpp \
 		interfaccia_grafica/mainwindow.cpp \
 		interfaccia_grafica/userarea.cpp \
@@ -367,8 +371,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents IMG/resources.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents interfaccia_grafica/adminarea.h JSON/jsonobserver.h interfaccia_grafica/visitor.h interfaccia_grafica/visitorwidget.h interfaccia_grafica/mainwindow.h interfaccia_grafica/userarea.h JSON/jsonmanager.h modello_logico/biblioteca.h modello_logico/cartaceo.h modello_logico/cd.h modello_logico/film.h modello_logico/libri.h modello_logico/manga.h modello_logico/multimedia.h modello_logico/riviste.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp interfaccia_grafica/adminarea.cpp interfaccia_grafica/visitorwidget.cpp interfaccia_grafica/mainwindow.cpp interfaccia_grafica/userarea.cpp JSON/jsonmanager.cpp modello_logico/biblioteca.cpp modello_logico/cartaceo.cpp modello_logico/cd.cpp modello_logico/film.cpp modello_logico/libri.cpp modello_logico/manga.cpp modello_logico/multimedia.cpp modello_logico/riviste.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents interfaccia_grafica/adminarea.h JSON/jsonobserver.h interfaccia_grafica/librarymanager.h interfaccia_grafica/visitor.h interfaccia_grafica/visitorwidget.h interfaccia_grafica/mainwindow.h interfaccia_grafica/userarea.h JSON/jsonmanager.h modello_logico/biblioteca.h modello_logico/cartaceo.h modello_logico/cd.h modello_logico/film.h modello_logico/libri.h modello_logico/manga.h modello_logico/multimedia.h modello_logico/riviste.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp interfaccia_grafica/adminarea.cpp interfaccia_grafica/librarymanager.cpp interfaccia_grafica/visitorwidget.cpp interfaccia_grafica/mainwindow.cpp interfaccia_grafica/userarea.cpp JSON/jsonmanager.cpp modello_logico/biblioteca.cpp modello_logico/cartaceo.cpp modello_logico/cd.cpp modello_logico/film.cpp modello_logico/libri.cpp modello_logico/manga.cpp modello_logico/multimedia.cpp modello_logico/riviste.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -427,26 +431,25 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_adminarea.cpp moc_visitorwidget.cpp moc_mainwindow.cpp moc_userarea.cpp moc_jsonmanager.cpp
+compiler_moc_header_make_all: moc_adminarea.cpp moc_librarymanager.cpp moc_mainwindow.cpp moc_userarea.cpp moc_jsonmanager.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_adminarea.cpp moc_visitorwidget.cpp moc_mainwindow.cpp moc_userarea.cpp moc_jsonmanager.cpp
+	-$(DEL_FILE) moc_adminarea.cpp moc_librarymanager.cpp moc_mainwindow.cpp moc_userarea.cpp moc_jsonmanager.cpp
 moc_adminarea.cpp: interfaccia_grafica/adminarea.h \
 		interfaccia_grafica/mainwindow.h \
 		JSON/jsonobserver.h \
 		moc_predefs.h \
 		/usr/lib/qt6/libexec/moc
-	/usr/lib/qt6/libexec/moc $(DEFINES) --include /mnt/c/Users/acer/Desktop/Biblioteca_virtuale/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/mnt/c/Users/acer/Desktop/Biblioteca_virtuale -I/mnt/c/Users/acer/Desktop/Biblioteca_virtuale -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include interfaccia_grafica/adminarea.h -o moc_adminarea.cpp
+	/usr/lib/qt6/libexec/moc $(DEFINES) --include /mnt/c/Users/acer/Desktop/Uni/PAO/Progetto/biblioteca_virtuale/Biblioteca_virtuale/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/mnt/c/Users/acer/Desktop/Uni/PAO/Progetto/biblioteca_virtuale/Biblioteca_virtuale -I/mnt/c/Users/acer/Desktop/Uni/PAO/Progetto/biblioteca_virtuale/Biblioteca_virtuale -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include interfaccia_grafica/adminarea.h -o moc_adminarea.cpp
 
-moc_visitorwidget.cpp: interfaccia_grafica/visitorwidget.h \
-		interfaccia_grafica/visitor.h \
+moc_librarymanager.cpp: interfaccia_grafica/librarymanager.h \
 		moc_predefs.h \
 		/usr/lib/qt6/libexec/moc
-	/usr/lib/qt6/libexec/moc $(DEFINES) --include /mnt/c/Users/acer/Desktop/Biblioteca_virtuale/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/mnt/c/Users/acer/Desktop/Biblioteca_virtuale -I/mnt/c/Users/acer/Desktop/Biblioteca_virtuale -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include interfaccia_grafica/visitorwidget.h -o moc_visitorwidget.cpp
+	/usr/lib/qt6/libexec/moc $(DEFINES) --include /mnt/c/Users/acer/Desktop/Uni/PAO/Progetto/biblioteca_virtuale/Biblioteca_virtuale/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/mnt/c/Users/acer/Desktop/Uni/PAO/Progetto/biblioteca_virtuale/Biblioteca_virtuale -I/mnt/c/Users/acer/Desktop/Uni/PAO/Progetto/biblioteca_virtuale/Biblioteca_virtuale -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include interfaccia_grafica/librarymanager.h -o moc_librarymanager.cpp
 
 moc_mainwindow.cpp: interfaccia_grafica/mainwindow.h \
 		moc_predefs.h \
 		/usr/lib/qt6/libexec/moc
-	/usr/lib/qt6/libexec/moc $(DEFINES) --include /mnt/c/Users/acer/Desktop/Biblioteca_virtuale/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/mnt/c/Users/acer/Desktop/Biblioteca_virtuale -I/mnt/c/Users/acer/Desktop/Biblioteca_virtuale -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include interfaccia_grafica/mainwindow.h -o moc_mainwindow.cpp
+	/usr/lib/qt6/libexec/moc $(DEFINES) --include /mnt/c/Users/acer/Desktop/Uni/PAO/Progetto/biblioteca_virtuale/Biblioteca_virtuale/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/mnt/c/Users/acer/Desktop/Uni/PAO/Progetto/biblioteca_virtuale/Biblioteca_virtuale -I/mnt/c/Users/acer/Desktop/Uni/PAO/Progetto/biblioteca_virtuale/Biblioteca_virtuale -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include interfaccia_grafica/mainwindow.h -o moc_mainwindow.cpp
 
 moc_userarea.cpp: interfaccia_grafica/userarea.h \
 		interfaccia_grafica/mainwindow.h \
@@ -463,7 +466,7 @@ moc_userarea.cpp: interfaccia_grafica/userarea.h \
 		modello_logico/riviste.h \
 		moc_predefs.h \
 		/usr/lib/qt6/libexec/moc
-	/usr/lib/qt6/libexec/moc $(DEFINES) --include /mnt/c/Users/acer/Desktop/Biblioteca_virtuale/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/mnt/c/Users/acer/Desktop/Biblioteca_virtuale -I/mnt/c/Users/acer/Desktop/Biblioteca_virtuale -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include interfaccia_grafica/userarea.h -o moc_userarea.cpp
+	/usr/lib/qt6/libexec/moc $(DEFINES) --include /mnt/c/Users/acer/Desktop/Uni/PAO/Progetto/biblioteca_virtuale/Biblioteca_virtuale/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/mnt/c/Users/acer/Desktop/Uni/PAO/Progetto/biblioteca_virtuale/Biblioteca_virtuale -I/mnt/c/Users/acer/Desktop/Uni/PAO/Progetto/biblioteca_virtuale/Biblioteca_virtuale -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include interfaccia_grafica/userarea.h -o moc_userarea.cpp
 
 moc_jsonmanager.cpp: JSON/jsonmanager.h \
 		interfaccia_grafica/adminarea.h \
@@ -482,7 +485,7 @@ moc_jsonmanager.cpp: JSON/jsonmanager.h \
 		modello_logico/riviste.h \
 		moc_predefs.h \
 		/usr/lib/qt6/libexec/moc
-	/usr/lib/qt6/libexec/moc $(DEFINES) --include /mnt/c/Users/acer/Desktop/Biblioteca_virtuale/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/mnt/c/Users/acer/Desktop/Biblioteca_virtuale -I/mnt/c/Users/acer/Desktop/Biblioteca_virtuale -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include JSON/jsonmanager.h -o moc_jsonmanager.cpp
+	/usr/lib/qt6/libexec/moc $(DEFINES) --include /mnt/c/Users/acer/Desktop/Uni/PAO/Progetto/biblioteca_virtuale/Biblioteca_virtuale/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/mnt/c/Users/acer/Desktop/Uni/PAO/Progetto/biblioteca_virtuale/Biblioteca_virtuale -I/mnt/c/Users/acer/Desktop/Uni/PAO/Progetto/biblioteca_virtuale/Biblioteca_virtuale -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include JSON/jsonmanager.h -o moc_jsonmanager.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -514,6 +517,7 @@ main.o: main.cpp interfaccia_grafica/mainwindow.h \
 		modello_logico/cartaceo.h \
 		modello_logico/riviste.h \
 		interfaccia_grafica/adminarea.h \
+		interfaccia_grafica/librarymanager.h \
 		JSON/jsonmanager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
@@ -533,6 +537,19 @@ adminarea.o: interfaccia_grafica/adminarea.cpp interfaccia_grafica/adminarea.h \
 		modello_logico/cartaceo.h \
 		modello_logico/riviste.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o adminarea.o interfaccia_grafica/adminarea.cpp
+
+librarymanager.o: interfaccia_grafica/librarymanager.cpp interfaccia_grafica/librarymanager.h \
+		modello_logico/manga.h \
+		modello_logico/libri.h \
+		modello_logico/cartaceo.h \
+		modello_logico/biblioteca.h \
+		interfaccia_grafica/visitorwidget.h \
+		interfaccia_grafica/visitor.h \
+		modello_logico/riviste.h \
+		modello_logico/cd.h \
+		modello_logico/multimedia.h \
+		modello_logico/film.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o librarymanager.o interfaccia_grafica/librarymanager.cpp
 
 visitorwidget.o: interfaccia_grafica/visitorwidget.cpp interfaccia_grafica/visitorwidget.h \
 		interfaccia_grafica/visitor.h \
@@ -642,8 +659,8 @@ qrc_resources.o: qrc_resources.cpp
 moc_adminarea.o: moc_adminarea.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_adminarea.o moc_adminarea.cpp
 
-moc_visitorwidget.o: moc_visitorwidget.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_visitorwidget.o moc_visitorwidget.cpp
+moc_librarymanager.o: moc_librarymanager.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_librarymanager.o moc_librarymanager.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

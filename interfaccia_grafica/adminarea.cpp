@@ -3,7 +3,6 @@
 #include "../JSON/jsonmanager.h"
 #include <QToolBar>
 #include <QLineEdit>
-#include <QPushButton>
 #include <QMenuBar>
 #include <QMenu>
 #include <QAction>
@@ -83,7 +82,7 @@ AdminArea::AdminArea(QList<Biblioteca*> objects, QStackedWidget* stackWidget, QW
     // Impostazioni layout del contenuto
     layout = new QGridLayout(scrollContent);
     layout->setContentsMargins(1, 1, 1, 1);
-    layout->setSpacing(0);
+    layout->setSpacing(10);
 
     // Imposta il layout e il widget centrale
     scrollContent->setLayout(layout);
@@ -152,16 +151,8 @@ void AdminArea::showUser(){
 }
 
 void AdminArea::aggiungi(){
-    QStringList classes{"Libri", "Riviste", "Manga", "Cd", "Film"};
-    bool ok;
-    QString selectedClass = QInputDialog::getItem(this, "Crea oggetto",
-                                                  "Seleziona il tipo della classe", classes,
-                                                  0, false, &ok);
-    if(!ok || selectedClass.isEmpty()){
-        QMessageBox::warning(this, "", "Operazione annullata");
-        return;
-    }
-    emit objectCreationRequested(selectedClass);
+    stack->setCurrentIndex(3);
+    emit createNewObject();
 }
 
 void AdminArea::chiudi(){
@@ -188,18 +179,35 @@ void AdminArea::showAll(){
             action->blockSignals(false);
         }
     }
-    int i=0, j=0; //variabili per righe e per colonne
-    for(auto cit = oggetti.begin(); cit!= oggetti.end(); cit++){
+    int row=0, col=0; //variabili per righe e per colonne
+    for(auto it = oggetti.begin(); it!= oggetti.end(); it++){
         VisitorWidget visitor;
-        (*cit)->accept(visitor);
+        (*it)->accept(visitor);
         QWidget* widget = visitor.getWidget();
-        widget->installEventFilter(this);
-        widget->setProperty("Biblioteca", QVariant::fromValue(*cit));
-        layout->addWidget(widget, i, j, 1, 1, Qt::AlignCenter);
-        j++;
-        if(j%3==0){
-            j=0;
-            i++;
+        QHBoxLayout* buttonLayout = new QHBoxLayout();
+
+        QPushButton* elimina = new QPushButton("Elimina", widget);
+        QPushButton* modifica = new QPushButton("Modifica", widget);
+        gestisciPulsanti(*it, modifica, elimina);
+
+        buttonLayout->addWidget(modifica);
+        buttonLayout->addWidget(elimina);
+
+        QWidget* containerWidget = new QWidget();
+        QVBoxLayout* containerLayout = new QVBoxLayout();
+
+        containerLayout->addLayout(buttonLayout);
+        containerLayout->addWidget(widget);
+        containerWidget->setLayout(containerLayout);
+        containerWidget->setStyleSheet("QWidget{"
+                                       "background-color: lightgray"
+                                       "}");
+        containerWidget->setFixedSize(450, 450);
+        layout->addWidget(containerWidget, row, col, 1, 1, Qt::AlignCenter);
+        col++;
+        if (col % 3 == 0) {
+            col = 0;
+            row++;
         }
     }
 }
@@ -211,79 +219,41 @@ void AdminArea::showTipi(){
         return;
     }
     clearLayout(layout);
-    int i=0, j=0;
-    for (auto cit = oggetti.begin(); cit != oggetti.end(); ++cit) {
-        QByteArray typeName = typeid(**cit).name();
+    int row=0, col=0;
+    for (auto it = oggetti.begin(); it != oggetti.end(); ++it) {
+        QByteArray typeName = typeid(**it).name();
         // Verifica se il tipo esiste nella mappa e se il flag è true
         if (typeFlags.contains(typeName) && *typeFlags[typeName]) {
             VisitorWidget visitor;
-            (*cit)->accept(visitor);
+            (*it)->accept(visitor);
             QWidget* widget = visitor.getWidget();
-            widget->installEventFilter(this);
-            //gli dico che il nuovo widget ha la proprietà di essere effettivamente
-            //un Biblioteca*
-            widget->setProperty("Biblioteca", QVariant::fromValue(*cit));
-            layout->addWidget(widget, i, j, 1, 1, Qt::AlignCenter);
-            j++;
-            if(j%3==0){
-                j=0;
-                i++;
+            QHBoxLayout* buttonLayout = new QHBoxLayout();
+
+            QPushButton* elimina = new QPushButton("Elimina", widget);
+            QPushButton* modifica = new QPushButton("Modifica", widget);
+            gestisciPulsanti(*it, modifica, elimina);
+
+            buttonLayout->addWidget(modifica);
+            buttonLayout->addWidget(elimina);
+
+            QWidget* containerWidget = new QWidget();
+            QVBoxLayout* containerLayout = new QVBoxLayout();
+
+            containerLayout->addLayout(buttonLayout);
+            containerLayout->addWidget(widget);
+            containerWidget->setLayout(containerLayout);
+            containerWidget->setStyleSheet("QWidget{"
+                                           "background-color: lightgray"
+                                           "}");
+            containerWidget->setFixedSize(450, 450);
+            layout->addWidget(containerWidget, row, col, 1, 1, Qt::AlignCenter);
+            col++;
+            if (col % 3 == 0) {
+                col = 0;
+                row++;
             }
         }
     }
-}
-
-bool AdminArea::eventFilter(QObject *watched, QEvent *event){
-    if(event->type() == QEvent::MouseButtonDblClick){
-        auto* clickedWidget = qobject_cast<QWidget*>(watched);
-        if (clickedWidget) {
-            QVariant prop = clickedWidget->property("Biblioteca");
-            if (prop.isValid()) {
-                Biblioteca* biblioteca = prop.value<Biblioteca*>();
-                if (biblioteca) {
-                    mostraMenu(biblioteca);
-                    return true;
-                }
-            }
-        }
-    }
-    return QObject::eventFilter(watched, event);
-}
-
-void AdminArea::mostraMenu(Biblioteca* biblio) {
-    QDialog* dialog = new QDialog(this);
-    dialog->setWindowTitle(QString::fromStdString(biblio->getTitolo()));
-    dialog->setWindowFlags(dialog->windowFlags() | Qt::WindowStaysOnTopHint);
-    dialog->resize(300, 300);
-
-    QVBoxLayout* dialogLayout = new QVBoxLayout(dialog);
-
-    QPushButton* modifica = new QPushButton("Modifica", dialog);
-    QPushButton* elimina = new QPushButton("Elimina", dialog);
-    QPushButton* annulla = new QPushButton("Annulla", dialog);
-
-    dialogLayout->addWidget(modifica);
-    dialogLayout->addWidget(elimina);
-    dialogLayout->addWidget(annulla);
-
-    connect(modifica, &QPushButton::clicked, this, [this, biblio, dialog](){
-        emit modifyObject(biblio);
-        dialog->reject();
-    });
-    connect(elimina, &QPushButton::clicked, this,[this, biblio, dialog](){
-        QMessageBox messageBox(this);
-        messageBox.setWindowTitle("Conferma eliminazione");
-        messageBox.setText("Sei sicuro di voler eliminare?");
-        messageBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-        messageBox.setDefaultButton(QMessageBox::No);
-        if(messageBox.exec() == QMessageBox::Yes)
-            emit removeObject(biblio);
-        dialog->reject();
-    });
-    connect(annulla, &QPushButton::clicked, dialog, [dialog]() {
-        dialog->reject();
-    });
-    dialog->exec();
 }
 
 //funzione chiamata da showAll e showTipi per pulire il layout prima di aggiungere i nuovi widget
@@ -307,7 +277,7 @@ void AdminArea::cercaDigitato(const QString& testo){
     }
     film = false; cd = false; riviste = false;
     libri = false; manga = false;
-    int i=0, j=0;
+    int row=0, col=0;
     bool match;
     for(auto it = oggetti.begin(); it!= oggetti.end(); it++){
         match = false;
@@ -331,14 +301,60 @@ void AdminArea::cercaDigitato(const QString& testo){
             VisitorWidget visitor;
             (*it)->accept(visitor);
             QWidget* widget = visitor.getWidget();
-            widget->installEventFilter(this);
-            widget->setProperty("Biblioteca", QVariant::fromValue(*it));
-            layout->addWidget(widget, i, j, 1, 1, Qt::AlignCenter);
-            j++;
-            if(j%3==0){
-                j=0;
-                i++;
+            QHBoxLayout* buttonLayout = new QHBoxLayout();
+
+            QPushButton* elimina = new QPushButton("Elimina", widget);
+            QPushButton* modifica = new QPushButton("Modifica", widget);
+            gestisciPulsanti(*it, modifica, elimina);
+
+            buttonLayout->addWidget(modifica);
+            buttonLayout->addWidget(elimina);
+
+            QWidget* containerWidget = new QWidget();
+            QVBoxLayout* containerLayout = new QVBoxLayout();
+
+            containerLayout->addLayout(buttonLayout);
+            containerLayout->addWidget(widget);
+            containerWidget->setLayout(containerLayout);
+            containerWidget->setStyleSheet("QWidget{"
+                                           "background-color: lightgray"
+                                           "}");
+            containerWidget->setFixedSize(450, 450);
+            layout->addWidget(containerWidget, row, col, 1, 1, Qt::AlignCenter);
+            col++;
+            if (col % 3 == 0) {
+                col = 0;
+                row++;
             }
         }
     }
+}
+
+void AdminArea::gestisciPulsanti(Biblioteca* biblio, QPushButton* modifica, QPushButton* elimina)
+{
+    modifica->setStyleSheet("QPushButton{"
+                            "background-color: white;"
+                            "}"
+                            "QPushButton::hover{"
+                            "background-color:blue;"
+                            "}"
+                            "QPushButton::pressed{"
+                            "background-color:red;"
+                            "}");
+    elimina->setStyleSheet("QPushButton{"
+                           "background-color: white;"
+                           "}"
+                           "QPushButton::hover{"
+                           "background-color:blue;"
+                           "}"
+                           "QPushButton::pressed{"
+                           "background-color:red;"
+                           "}");
+    connect(elimina, &QPushButton::clicked, this, [this, biblio](){
+        emit removeObject(biblio);
+    });
+    connect(modifica, &QPushButton::clicked, this, [this, biblio](){
+        stack->setCurrentIndex(3);
+        emit modifyObject(biblio);
+    });
 }

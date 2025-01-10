@@ -12,6 +12,7 @@
 #include <QByteArray>
 #include <QStackedWidget>
 #include <QTypeInfo>
+#include <QPushButton>
 
 class Biblioteca;
 
@@ -27,8 +28,10 @@ private:
     QString testo;
     QMap<QByteArray, bool*> typeFlags;
     bool film, libri, manga, riviste, cd;
+    void gestisciPulsanti(Biblioteca* biblio, QPushButton* modifica,
+                         QPushButton* elimina);
 signals:
-    void objectCreationRequested(QString selectedClass);
+    void createNewObject();
     void removeObject(Biblioteca* biblio);
     void modifyObject(Biblioteca* biblio);
 private slots:
@@ -36,8 +39,6 @@ private slots:
     void showUser();
     void aggiungi();
     void chiudi();
-protected:
-    bool eventFilter(QObject *watched, QEvent *event) override;
 public:
     AdminArea(QList<Biblioteca*>objects, QStackedWidget* stackWidget, QWidget* parent = nullptr);
     ~AdminArea();
@@ -47,7 +48,6 @@ public:
     void showAll();
     void showTipi();
     void clearLayout(QLayout* layout);
-    void mostraMenu(Biblioteca* biblio);
     void cercaDigitato(const QString& testo);
 };
 

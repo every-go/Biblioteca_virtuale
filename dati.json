@@ -8,45 +8,29 @@
         "Costo": 5.2,
         "Disponibile": true,
         "Editore": "Kodansha",
-        "Genere": "Shonen",
+        "Genere": "Seinen",
         "Immagine": ":/images/vinland_saga.png",
         "Letto": true,
         "Lingua originale": "Giapponese",
         "Nprestiti": 3,
         "Nvolumi": 28,
-        "Titolo": "Vinland"
+        "Titolo": "Vinland Saga"
     },
     {
-        "Anno": 2018,
-        "Attore protagonista": "Dwayne Johnson",
-        "Classe": "Film",
-        "Copie disponibili": 0,
-        "Costo": 9.99,
-        "Disponibile": false,
-        "Durata": 102,
-        "Genere": "Avventura",
-        "Immagine": ":/images/skyscraper.png",
-        "Nprestiti": 1,
-        "Regista": "Rawson Marshall Thurber",
-        "Studio": "Legendary Pictures",
-        "Titolo": "Skyscraper",
-        "Visto": false
-    },
-    {
-        "Anno": 1906,
-        "Autore": "Ferenc Molnár",
+        "Anno": 2001,
+        "Autore": "Tite Kubo",
         "Classe": "Libri",
         "Copie disponibili": 3,
-        "Costo": 7.99,
+        "Costo": 5.2,
         "Disponibile": true,
-        "Editore": "Giunti",
-        "Genere": "Romanzo",
-        "Immagine": ":/images/via_pal.png",
-        "Letto": false,
-        "Lingua originale": "Ungherese",
-        "Nprestiti": 5,
-        "Nvolumi": 1,
-        "Titolo": "I ragazzi della via Pal"
+        "Editore": "Shueisha",
+        "Genere": "Shonen",
+        "Immagine": ":/images/bleach.png",
+        "Letto": true,
+        "Lingua originale": "Giapponese",
+        "Nprestiti": 3,
+        "Nvolumi": 74,
+        "Titolo": "Bleach"
     },
     {
         "Anno": 2003,
@@ -143,23 +127,6 @@
         "Titolo": "One Piece"
     },
     {
-        "Anno": 2001,
-        "Autore": "Tite Kubo",
-        "Classe": "Manga",
-        "Concluso": true,
-        "Copie disponibili": 3,
-        "Costo": 5.2,
-        "Disponibile": true,
-        "Editore": "Shueisha",
-        "Genere": "Shonen",
-        "Immagine": ":/images/bleach.png",
-        "Letto": true,
-        "Lingua originale": "Giapponese",
-        "Nprestiti": 3,
-        "Nvolumi": 74,
-        "Titolo": "Bleach"
-    },
-    {
         "Anno": 1994,
         "Attore protagonista": "Jim Carrey",
         "Classe": "Film",
@@ -172,7 +139,8 @@
         "Nprestiti": 1,
         "Regista": "Tom Shadyac",
         "Studio": "Warner Bros",
-        "Titolo": "Ace Ventura"
+        "Titolo": "Ace Ventura",
+        "Visto": false
     },
     {
         "Anno": 2001,
@@ -253,7 +221,7 @@
         "Lingua originale": "Giapponese",
         "Nprestiti": 3,
         "Nvolumi": 28,
-        "Titolo": "Vinland saga"
+        "Titolo": "Vinland Saga"
     },
     {
         "Anno": 2018,

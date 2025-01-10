@@ -39,9 +39,9 @@ private:
     QMap<QByteArray, bool*> typeFlags;
     //booleano per gestire la funzione cerca
     bool film, libri, manga, riviste, cd, simili;
-    void gestisciConnect(Biblioteca* biblio, QPushButton* prenota,
-                         QPushButton* restituisci, QPushButton* suggerisci, QPushButton* azione);
     void gestisciAzione(Biblioteca* biblio, QPushButton* azione);
+    void gestisciConnect(Biblioteca* biblio, QPushButton* prenota,
+                         QPushButton* restituisci, QPushButton* suggerisci);
 signals:
     void prenota(Biblioteca* biblio);
     void letto(Cartaceo* carta);

@@ -17,6 +17,7 @@ QT += widgets core gui
 # Input
 HEADERS += interfaccia_grafica/adminarea.h \
            JSON/jsonobserver.h \
+           interfaccia_grafica/librarymanager.h \
            interfaccia_grafica/visitor.h \
            interfaccia_grafica/visitorwidget.h \
            interfaccia_grafica/mainwindow.h \
@@ -32,6 +33,7 @@ HEADERS += interfaccia_grafica/adminarea.h \
            modello_logico/riviste.h
 SOURCES += main.cpp \
            interfaccia_grafica/adminarea.cpp \
+           interfaccia_grafica/librarymanager.cpp \
            interfaccia_grafica/visitorwidget.cpp \
            interfaccia_grafica/mainwindow.cpp \
            interfaccia_grafica/userarea.cpp \
