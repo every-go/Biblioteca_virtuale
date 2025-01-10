@@ -160,6 +160,22 @@
         "Titolo": "One Piece"
     },
     {
+        "Anno": 1906,
+        "Autore": "Ferenc Molnár",
+        "Classe": "Libri",
+        "Copie disponibili": 5,
+        "Costo": 7.99,
+        "Disponibile": true,
+        "Editore": "Giunti",
+        "Genere": "Romanzo",
+        "Immagine": ":/images/via_pal.png",
+        "Letto": true,
+        "Lingua originale": "Ungherese",
+        "Nprestiti": 5,
+        "Nvolumi": 1,
+        "Titolo": "I ragazzi della via Pal"
+    },
+    {
         "Anno": 2001,
         "Attore protagonista": "Shrek",
         "Classe": "Film",
