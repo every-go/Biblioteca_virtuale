@@ -81,7 +81,7 @@ void MainWindow::showUser(){
 }
 
 void MainWindow::admin() {
-    /*QDialog *loginDialog = new QDialog(this);
+    QDialog *loginDialog = new QDialog(this);
     QVBoxLayout *layout = new QVBoxLayout(loginDialog);
     QLabel *user = new QLabel("Username",loginDialog);
     QLineEdit *log = new QLineEdit(loginDialog);
@@ -109,13 +109,12 @@ void MainWindow::admin() {
             QMessageBox::warning(this, "Attenzione", "Username o password errate");
         }
     });
-    loginDialog->exec();*/
-    showAdmin();
+    loginDialog->exec();
 }
 
 void MainWindow::showAdmin(){
+    QMessageBox::information(this, "Parte admin", "Stai accedendo alla parte admin");
     stack->setCurrentIndex(2);
-    //QMessageBox::information(this, "Parte admin", "Stai accedendo alla parte admin");
 }
 
 void MainWindow::chiudi(){

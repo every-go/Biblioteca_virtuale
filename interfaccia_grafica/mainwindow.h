@@ -15,8 +15,9 @@ public:
 private slots:
     void showUser();
     void admin();
-    void showAdmin();
     void chiudi();
+private:
+    void showAdmin();
 };
 
 #endif // MAINWINDOW_H

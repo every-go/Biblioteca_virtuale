@@ -202,7 +202,7 @@ void AdminArea::showAll(){
         containerWidget->setStyleSheet("QWidget{"
                                        "background-color: lightgray"
                                        "}");
-        containerWidget->setFixedSize(450, 450);
+        containerWidget->setFixedSize(475, 475);
         layout->addWidget(containerWidget, row, col, 1, 1, Qt::AlignCenter);
         col++;
         if (col % 3 == 0) {
@@ -245,7 +245,7 @@ void AdminArea::showTipi(){
             containerWidget->setStyleSheet("QWidget{"
                                            "background-color: lightgray"
                                            "}");
-            containerWidget->setFixedSize(450, 450);
+            containerWidget->setFixedSize(475, 475);
             layout->addWidget(containerWidget, row, col, 1, 1, Qt::AlignCenter);
             col++;
             if (col % 3 == 0) {
@@ -319,7 +319,7 @@ void AdminArea::cercaDigitato(const QString& testo){
             containerWidget->setStyleSheet("QWidget{"
                                            "background-color: lightgray"
                                            "}");
-            containerWidget->setFixedSize(450, 450);
+            containerWidget->setFixedSize(475, 475);
             layout->addWidget(containerWidget, row, col, 1, 1, Qt::AlignCenter);
             col++;
             if (col % 3 == 0) {
@@ -357,4 +357,23 @@ void AdminArea::gestisciPulsanti(Biblioteca* biblio, QPushButton* modifica, QPus
         stack->setCurrentIndex(3);
         emit modifyObject(biblio);
     });
+}
+
+void AdminArea::handlePostAction() {
+    std::sort(oggetti.begin(), oggetti.end(), [](Biblioteca* a, Biblioteca* b) {
+        return a->getTitolo() < b->getTitolo();
+    });
+    if(testo != "") {
+        cercaDigitato(testo);
+        return;
+    }
+    if(!manga && !riviste && !film && !cd && !libri) {
+        showAll();
+        return;
+    }
+    showTipi();
+}
+
+void AdminArea::slotHandle(){
+    handlePostAction();
 }

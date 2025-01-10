@@ -49,6 +49,9 @@ public:
     void showTipi();
     void clearLayout(QLayout* layout);
     void cercaDigitato(const QString& testo);
+    void handlePostAction();
+public slots:
+    void slotHandle();
 };
 
 #endif // ADMINAREA_H

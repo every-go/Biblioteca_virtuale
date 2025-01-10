@@ -2,7 +2,6 @@
 #define JSONMANAGER_H
 
 #include <QObject>
-#include <QWidget>
 #include <QString>
 #include <QJsonObject>
 #include "../interfaccia_grafica/adminarea.h"
@@ -31,6 +30,7 @@ public slots:
     void saveAscoltato(Cd* cd);
     void saveVisto(Film* film);
     void savenewObject(Biblioteca* biblio);
+    void updateObject(Biblioteca* biblio);
 public:
     JsonManager(const QString& fileName);
     void addObserver(JsonObserver* observer);
@@ -64,7 +64,6 @@ public:
     BibliotecaBase loadBiblioteca(const QJsonObject& obj);
     CartaceoBase loadCartaceo(const QJsonObject& obj);
     MultimediaBase loadMultimedia(const QJsonObject& obj);
-    void updateObject(Biblioteca* biblio);
     void saveBiblioteca(Biblioteca* biblio, QJsonObject& obj);
     void saveMultimedia(Multimedia* multi, QJsonObject& obj);
     void saveCartaceo(Cartaceo* carta, QJsonObject& obj);

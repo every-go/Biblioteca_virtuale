@@ -16,15 +16,15 @@
 #include <QApplication>
 #include <QStackedWidget>
 #include <QObject>
+#include <QFileDialog>
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-
     QStackedWidget stackWidget;
     qRegisterMetaType<Biblioteca*>("Biblioteca");
-    //QString filePath = QFileDialog::getOpenFileName(nullptr, "Scegli Json", "", "Json (*.json)");
-    JsonManager* manager = new JsonManager("dati.json");
+    QString filePath = QFileDialog::getOpenFileName(nullptr, "Scegli Json", "", "Json (*.json)");
+    JsonManager* manager = new JsonManager(filePath);
     QList<Biblioteca*> oggetti = manager->loadBibliotecaListFromJson("dati.json");
     std::sort(oggetti.begin(), oggetti.end(), [](Biblioteca* a, Biblioteca* b) {
         return a->getTitolo() < b->getTitolo();
@@ -39,10 +39,12 @@ int main(int argc, char *argv[])
     stackWidget.addWidget(userArea);
     stackWidget.addWidget(adminArea);
     stackWidget.addWidget(library);
-    stackWidget.setCurrentIndex(2);
+    stackWidget.setCurrentIndex(0);
     stackWidget.show();
 
+    QObject::connect(library, &LibraryManager::handle, adminArea, &AdminArea::handlePostAction);
     QObject::connect(library, &LibraryManager::update, manager, &JsonManager::updateObject);
+    QObject::connect(library, &LibraryManager::newObject, manager, &JsonManager::savenewObject);
     QObject::connect(adminArea, &AdminArea::modifyObject, library, &LibraryManager::modifyObject);
     QObject::connect(adminArea, &AdminArea::removeObject, manager, &JsonManager::deleteObject);
     QObject::connect(adminArea, &AdminArea::createNewObject, library, &LibraryManager::createObject);

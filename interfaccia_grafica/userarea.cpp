@@ -257,7 +257,7 @@ void UserArea::showAll() {
         containerWidget->setStyleSheet("QWidget{"
                                        "background-color: lightgray"
                                        "}");
-        containerWidget->setFixedSize(450, 450);
+        containerWidget->setFixedSize(475, 475);
         layout->addWidget(containerWidget, row, col, 1, 1, Qt::AlignCenter);
         col++;
         if (col % 3 == 0) {
@@ -341,7 +341,7 @@ void UserArea::showTipi() {
             containerWidget->setStyleSheet("QWidget{"
                                            "background-color: lightgray"
                                            "}");
-            containerWidget->setFixedSize(450, 450);
+            containerWidget->setFixedSize(475, 475);
             layout->addWidget(containerWidget, row, col, 1, 1, Qt::AlignCenter);
             col++;
             if (col % 3 == 0) {
@@ -363,6 +363,9 @@ void UserArea::clearLayout(QLayout* layout) {
 }
 
 void UserArea::handlePostAction(Biblioteca* biblio) {
+    std::sort(oggetti.begin(), oggetti.end(), [](Biblioteca* a, Biblioteca* b) {
+        return a->getTitolo() < b->getTitolo();
+    });
     if(testo != "") {
         cercaDigitato(testo);
         return;
@@ -476,7 +479,7 @@ void UserArea::cercaDigitato(const QString& testo){
             containerWidget->setStyleSheet("QWidget{"
                                            "background-color: lightgray"
                                            "}");
-            containerWidget->setFixedSize(450, 450);
+            containerWidget->setFixedSize(475, 475);
             layout->addWidget(containerWidget, row, col, 1, 1, Qt::AlignCenter);
             col++;
             if (col % 3 == 0) {
@@ -582,7 +585,7 @@ void UserArea::suggerisciSimili(Biblioteca* biblio){
             containerWidget->setStyleSheet("QWidget{"
                                            "background-color: lightgray"
                                            "}");
-            containerWidget->setFixedSize(450, 450);
+            containerWidget->setFixedSize(475, 475);
             layout->addWidget(containerWidget, row, col, 1, 1, Qt::AlignCenter);
             col++;
             if (col % 3 == 0) {

@@ -10,6 +10,7 @@
 #include <QList>
 #include <QJsonDocument>
 #include <QFileInfo>
+#include <algorithm>
 
 // Ho incluso solo gli header necessari per evitare dipendenze ridondanti,
 // poiché le classi come Cd, Film, Manga e Riviste includono già le dipendenze comuni
@@ -36,9 +37,6 @@ void JsonManager::addObserver(JsonObserver* observer){
 void JsonManager::notifyObservers(QList<Biblioteca *> &newBiblioteca){
     //dato che so di avere solo due observer admin e user posso
     //chiamare la funzione senza fare i dynamic_cast
-    std::sort(newBiblioteca.begin(), newBiblioteca.end(), [](Biblioteca* a, Biblioteca* b) {
-        return a->getTitolo() < b->getTitolo();
-    });
     for(JsonObserver* observer : observers){
         observer->onBibliotecaUpdated(newBiblioteca);
     }
@@ -235,6 +233,10 @@ void JsonManager::deleteObject(Biblioteca* biblio){
 
 //riscrive nel file Json
 void JsonManager::updateObject(Biblioteca *biblio){
+    if(!biblio){
+        qWarning() << "L'oggetto non esiste";
+        return;
+    }
     notifyObservers(biblioteca);
     bool found = false;
     int index = 0;
@@ -260,7 +262,21 @@ void JsonManager::updateObject(Biblioteca *biblio){
         qWarning() << "File non valido";
         return;
     }
+    //trasformo il documento in un array e lo ordino
     QJsonArray array = doc.array();
+
+    QVector<QJsonValue> jsonVector;
+    for (const auto& value : array) {
+        jsonVector.append(value);
+    }
+    std::sort(jsonVector.begin(), jsonVector.end(), [](const QJsonValue& a, const QJsonValue& b) {
+        return a.toObject()["Titolo"].toString() < b.toObject()["Titolo"].toString();
+    });
+    array = QJsonArray();
+    for (const auto& value : jsonVector) {
+        array.append(value);
+    }
+
     QMap<QString, std::function<QJsonObject(Biblioteca*)>>
         saveFunctions = {
                          {"Film", [this](Biblioteca* b) { return saveFilm(static_cast<Film*>(b)); }},
@@ -400,7 +416,6 @@ void JsonManager::saveLetto(Cartaceo *carta){
 }
 
 void JsonManager::saveVisto(Film *film){
-    qDebug() << "Fase 1";
     int occurenceToSkip = 0;
     for(int i = 0; i<biblioteca.size(); i++){
         if(biblioteca[i] == film)
@@ -528,6 +543,19 @@ void JsonManager::savenewObject(Biblioteca* biblio) {
     }
     QJsonArray jsonArray = doc.array();
     jsonArray.append(newObject);
+
+    QVector<QJsonValue> jsonVector;
+    for (const auto& value : jsonArray) {
+        jsonVector.append(value);
+    }
+    std::sort(jsonVector.begin(), jsonVector.end(), [](const QJsonValue& a, const QJsonValue& b) {
+        return a.toObject()["Titolo"].toString() < b.toObject()["Titolo"].toString();
+    });
+    jsonArray = QJsonArray();
+    for (const auto& value : jsonVector) {
+        jsonArray.append(value);
+    }
+
     QJsonDocument updatedDoc(jsonArray);
     // Apri il file in modalità scrittura (sovrascrive tutto)
     if (!file.open(QIODevice::WriteOnly)) {
