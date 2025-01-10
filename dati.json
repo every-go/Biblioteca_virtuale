@@ -1,5 +1,21 @@
 [
     {
+        "Anno": 1994,
+        "Attore protagonista": "Jim Carrey",
+        "Classe": "Film",
+        "Copie disponibili": 1,
+        "Costo": 9.99,
+        "Disponibile": true,
+        "Durata": 72,
+        "Genere": "Commedia",
+        "Immagine": "IMG/ace_ventura.png",
+        "Nprestiti": 1,
+        "Regista": "Tom Shadyac",
+        "Studio": "Warner Bros",
+        "Titolo": "Ace Ventura",
+        "Visto": false
+    },
+    {
         "Anno": 2001,
         "Autore": "Tite Kubo",
         "Classe": "Manga",
@@ -105,7 +121,7 @@
         "Durata": 49,
         "Genere": "Rap",
         "Immagine": ":/images/la_divina_commedia2.png",
-        "Nprestiti": 5,
+        "Nprestiti": 4,
         "Ntracce": 16,
         "Studio": "Sony",
         "Titolo": "La divina commedia"
@@ -120,11 +136,11 @@
         "Disponibile": true,
         "Durata": 49,
         "Genere": "Rap",
-        "Immagine": ":/images/la_divina_commedia.png",
-        "Nprestiti": 5,
+        "Immagine": ":/images/la_divina_commedia2.png",
+        "Nprestiti": 4,
         "Ntracce": 16,
         "Studio": "Sony",
-        "Titolo": "La divina commedia"
+        "Titolo": "La divina commediaììì"
     },
     {
         "Anno": 1999,
@@ -219,22 +235,6 @@
         "Immagine": ":/images/vanity_fair2.png",
         "Nprestiti": 5,
         "Titolo": "Vanity fair"
-    },
-    {
-        "Anno": 1994,
-        "Attore protagonista": "Jim Carrey",
-        "Classe": "Film",
-        "Copie disponibili": 1,
-        "Costo": 9.99,
-        "Disponibile": true,
-        "Durata": 76,
-        "Genere": "Commedia",
-        "Immagine": ":/images/ace_ventura.png",
-        "Nprestiti": 1,
-        "Regista": "Tom Shadyac",
-        "Studio": "Warner Bros",
-        "Titolo": "Ace Ventura",
-        "Visto": false
     },
     {
         "Anno": 2005,

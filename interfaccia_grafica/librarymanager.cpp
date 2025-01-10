@@ -233,8 +233,6 @@ void LibraryManager::modifyObject(Biblioteca* biblio){
             stack->setCurrentIndex(2);
             emit handle();
         }
-        else
-            qDebug() << "Problema";
     });
 }
 
@@ -415,9 +413,12 @@ void LibraryManager::menuBiblio(Biblioteca* biblio){
     connect(menuImmagine, &QPushButton::clicked, this, [this]() {
         QString filePath = QFileDialog::getOpenFileName(this, "Seleziona un'immagine", "", "Immagini (*.png *.jpg *.jpeg *.bmp)");
         QString fileName = QFileInfo(filePath).fileName();
-        QString targetPath = QDir("IMG").filePath(fileName); // Percorso di destinazione nella cartella "IMG"
+        QString targetPath = QDir("IMG").filePath(fileName);
+        QDir().mkpath("IMG");
         image = targetPath;
+        QFile::copy(filePath, targetPath);
     });
+
     //non serve collegare con menuWidgets essendo una stringa
     modifyLayout->addWidget(immagine);
     modifyLayout->addWidget(menuImmagine);
@@ -525,7 +526,6 @@ void LibraryManager::menuRiviste(Riviste* rivista){
     menuWidgets["Diffusione"] = menuDiffusione;
     modifyLayout->addWidget(diffusione);
     modifyLayout->addWidget(menuDiffusione);
-
 }
 
 void LibraryManager::menuLibri(Libri* libro){
@@ -709,7 +709,7 @@ void LibraryManager::save(Multimedia* multi){
 void LibraryManager::save(Riviste* rivista){
     save(static_cast<Cartaceo*>(rivista));
     QString diffusione =
-        (qobject_cast<QLineEdit*>(menuWidgets["Diffusione"]))->text();
+        (qobject_cast<QComboBox*>(menuWidgets["Diffusione"]))->currentText();
     Riviste::Diffusione diff;
     if (diffusione == "Provinciale")
         diff = Riviste::Provinciale;
