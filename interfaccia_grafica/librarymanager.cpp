@@ -66,7 +66,6 @@ void LibraryManager::tornaIndietro(){
 }
 
 void LibraryManager::clearLayout(QLayout* layout){
-    qDebug() << "Clear layout";
     QLayoutItem* item;
     while ((item = layout->takeAt(0)) != nullptr)
         if (item->widget())
@@ -818,7 +817,6 @@ Libri* LibraryManager::createLibri(){
     LibraryManager::CartaceoInfo carta = createCartaceo();
     QString language = (qobject_cast<QLineEdit*>(menuWidgets["Lingua originale"]))->text();
     int nvolumi = (qobject_cast<QSpinBox*>(menuWidgets["Nvolumi"]))->value();
-    qDebug() << "Creazione Libri";
     return new Libri(biblio.titolo.toStdString(), biblio.genere.toStdString(), biblio.anno, biblio.costo,
                      biblio.disponibile, biblio.copie, biblio.nprestiti, image.toStdString(),
                      carta.autore.toStdString(), carta.editore.toStdString(), carta.letto, language.toStdString(), nvolumi);
