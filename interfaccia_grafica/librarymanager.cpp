@@ -66,6 +66,7 @@ void LibraryManager::tornaIndietro(){
 }
 
 void LibraryManager::clearLayout(QLayout* layout){
+    qDebug() << "Clear layout";
     QLayoutItem* item;
     while ((item = layout->takeAt(0)) != nullptr)
         if (item->widget())
@@ -130,14 +131,16 @@ void LibraryManager::createObject(){
     connect(crea, &QPushButton::clicked, this, [this, &biblio, selezione](){
         if(selezione->currentText() == "Riviste")
             biblio = createRiviste();
-        if(selezione->currentText() == "Libri")
+        else if(selezione->currentText() == "Libri")
             biblio = createLibri();
-        if(selezione->currentText() == "Manga")
+        else if(selezione->currentText() == "Manga")
             biblio = createManga();
-        if(selezione->currentText() == "Cd")
+        else if(selezione->currentText() == "Cd")
             biblio = createCd();
-        if(selezione->currentText() == "Film")
+        else if(selezione->currentText() == "Film")
             biblio = createFilm();
+        else
+            return;
         if(biblio){
             emit newObject(biblio);
             stack->setCurrentIndex(2);
@@ -237,6 +240,7 @@ void LibraryManager::modifyObject(Biblioteca* biblio){
 }
 
 void LibraryManager::menuBiblio(Biblioteca* biblio){
+    image = "";
     clearLayout(modifyLayout);
     QLabel* titolo = new QLabel(scrollContent);
     titolo->setText("<div style = 'text-align: center;'>"
