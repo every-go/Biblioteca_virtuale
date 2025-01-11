@@ -10,7 +10,6 @@
 #include <QList>
 #include <QJsonDocument>
 #include <QFileInfo>
-#include <algorithm>
 
 // Ho incluso solo gli header necessari per evitare dipendenze ridondanti,
 // poiché le classi come Cd, Film, Manga e Riviste includono già le dipendenze comuni
@@ -25,9 +24,6 @@ JsonManager::JsonManager(const QString& fileName) : filePath(fileName) {}
 
 void JsonManager::setOggetti(const QList<Biblioteca*>& newBiblioteca){
     biblioteca = newBiblioteca;
-    std::sort(biblioteca.begin(), biblioteca.end(), [](Biblioteca* a, Biblioteca* b) {
-        return a->getTitolo() < b->getTitolo();
-    });
 }
 
 void JsonManager::addObserver(JsonObserver* observer){
@@ -264,17 +260,16 @@ void JsonManager::updateObject(Biblioteca *biblio){
     }
     //trasformo il documento in un array e lo ordino
     QJsonArray array = doc.array();
+    file.close();
 
-    QVector<QJsonValue> jsonVector;
-    for (const auto& value : array) {
-        jsonVector.append(value);
+    if(file.open(QIODevice::WriteOnly)){
+        QJsonDocument updatedDoc(array);
+        file.write(updatedDoc.toJson());
+        file.close();
     }
-    std::sort(jsonVector.begin(), jsonVector.end(), [](const QJsonValue& a, const QJsonValue& b) {
-        return a.toObject()["Titolo"].toString() < b.toObject()["Titolo"].toString();
-    });
-    array = QJsonArray();
-    for (const auto& value : jsonVector) {
-        array.append(value);
+    else{
+        qWarning() << "File non apribile in scrittura";
+        return;
     }
 
     QMap<QString, std::function<QJsonObject(Biblioteca*)>>
@@ -300,6 +295,7 @@ void JsonManager::updateObject(Biblioteca *biblio){
         }
     }
     file.close();
+
     if(file.open(QIODevice::WriteOnly)){
         QJsonDocument updatedDoc(array);
         file.write(updatedDoc.toJson());
@@ -543,18 +539,6 @@ void JsonManager::savenewObject(Biblioteca* biblio) {
     }
     QJsonArray jsonArray = doc.array();
     jsonArray.append(newObject);
-
-    QVector<QJsonValue> jsonVector;
-    for (const auto& value : jsonArray) {
-        jsonVector.append(value);
-    }
-    std::sort(jsonVector.begin(), jsonVector.end(), [](const QJsonValue& a, const QJsonValue& b) {
-        return a.toObject()["Titolo"].toString() < b.toObject()["Titolo"].toString();
-    });
-    jsonArray = QJsonArray();
-    for (const auto& value : jsonVector) {
-        jsonArray.append(value);
-    }
 
     QJsonDocument updatedDoc(jsonArray);
     // Apri il file in modalità scrittura (sovrascrive tutto)
