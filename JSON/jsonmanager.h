@@ -64,14 +64,14 @@ public:
     BibliotecaBase loadBiblioteca(const QJsonObject& obj);
     CartaceoBase loadCartaceo(const QJsonObject& obj);
     MultimediaBase loadMultimedia(const QJsonObject& obj);
-    void saveBiblioteca(Biblioteca* biblio, QJsonObject& obj);
-    void saveMultimedia(Multimedia* multi, QJsonObject& obj);
-    void saveCartaceo(Cartaceo* carta, QJsonObject& obj);
-    QJsonObject saveLibri(Libri* libro);
-    QJsonObject saveManga(Manga* manga);
-    QJsonObject saveCd(Cd* cd);
-    QJsonObject saveFilm(Film* film);
-    QJsonObject saveRiviste(Riviste* rivista);
+    void save(Biblioteca* biblio, QJsonObject& obj);
+    void save(Multimedia* multi, QJsonObject& obj);
+    void save(Cartaceo* carta, QJsonObject& obj);
+    QJsonObject save(Libri* libro);
+    QJsonObject save(Manga* manga);
+    QJsonObject save(Cd* cd);
+    QJsonObject save(Film* film);
+    QJsonObject save(Riviste* rivista);
 };
 
 #endif // JSONVIEWERWIDGET_H

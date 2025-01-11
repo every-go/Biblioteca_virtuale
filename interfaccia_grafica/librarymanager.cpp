@@ -355,6 +355,7 @@ void LibraryManager::menuBiblio(Biblioteca* biblio){
                 menuCopie->setMaximum(0);
             }
         });
+
         menuCopie->setMinimum(1);
         menuCopie->setMaximum(INT_MAX);
         menuWidgets["Copie"] = menuCopie;
@@ -368,6 +369,7 @@ void LibraryManager::menuBiblio(Biblioteca* biblio){
                                 "background-color: lightblue;"
                                 "}");
         QSpinBox* menuPrestiti = new QSpinBox(scrollContent);
+        menuPrestiti->setMinimum(1);
         menuPrestiti->setMaximum(INT_MAX);
         connect(menuCopie, &QSpinBox::valueChanged, this, [this, menuPrestiti](int numero){
             menuPrestiti->setMinimum(numero>=1 ? numero : 1);

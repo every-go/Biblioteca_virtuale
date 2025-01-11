@@ -163,6 +163,10 @@ void AdminArea::showMain(){
     film = false; riviste = false; cd = false;
     libri = false; manga = false;
     testo = "";
+    QMenu* fileMenu = menuBar()->findChild<QMenu*>("Cerca");
+    if (fileMenu)
+        for (QAction* action : fileMenu->actions())
+            action->setChecked(false);
     stack->setCurrentIndex(0);
 }
 

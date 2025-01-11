@@ -22,7 +22,6 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     QStackedWidget stackWidget;
-    qRegisterMetaType<Biblioteca*>("Biblioteca");
     QString filePath = QFileDialog::getOpenFileName(nullptr, "Scegli Json", "", "Json (*.json)");
     JsonManager* manager = new JsonManager(filePath);
     QList<Biblioteca*> oggetti = manager->loadBibliotecaListFromJson("dati.json");

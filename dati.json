@@ -87,6 +87,22 @@
         "Disponibile": true,
         "Editore": "Giunti",
         "Genere": "Romanzo",
+        "Immagine": ":/images/via_pal.png",
+        "Letto": true,
+        "Lingua originale": "Ungherese",
+        "Nprestiti": 5,
+        "Nvolumi": 1,
+        "Titolo": "I ragazzi della via Pal"
+    },
+    {
+        "Anno": 1906,
+        "Autore": "Ferenc Molnár",
+        "Classe": "Libri",
+        "Copie disponibili": 5,
+        "Costo": 7.99,
+        "Disponibile": true,
+        "Editore": "Giunti",
+        "Genere": "Romanzo",
         "Immagine": ":/images/via_pal2.png",
         "Letto": true,
         "Lingua originale": "Ungherese",
@@ -111,6 +127,22 @@
         "Titolo": "L'isola del tesoro"
     },
     {
+        "Anno": 1472,
+        "Autore": "Dante Alighieri",
+        "Classe": "Libri",
+        "Copie disponibili": 1472,
+        "Costo": 9.99,
+        "Disponibile": true,
+        "Editore": "",
+        "Genere": "Poema",
+        "Immagine": ":/images/divina.png",
+        "Letto": false,
+        "Lingua originale": "Volgare fiorentino",
+        "Nprestiti": 1472,
+        "Nvolumi": 1,
+        "Titolo": "La Divina Commedia"
+    },
+    {
         "Anno": 2023,
         "Artista": "Tedua",
         "Ascoltato": true,
@@ -120,11 +152,11 @@
         "Disponibile": true,
         "Durata": 49,
         "Genere": "Rap",
-        "Immagine": ":/images/la_divina_commedia2.png",
+        "Immagine": ":/images/la_divina_commedia.png",
         "Nprestiti": 4,
         "Ntracce": 16,
         "Studio": "Sony",
-        "Titolo": "La divina commedia"
+        "Titolo": "La Divina Commedia"
     },
     {
         "Anno": 2023,
@@ -140,7 +172,7 @@
         "Nprestiti": 4,
         "Ntracce": 16,
         "Studio": "Sony",
-        "Titolo": "La divina commediaììì"
+        "Titolo": "La Divina Commedia"
     },
     {
         "Anno": 1999,
@@ -158,22 +190,6 @@
         "Nprestiti": 3,
         "Nvolumi": 110,
         "Titolo": "One Piece"
-    },
-    {
-        "Anno": 1906,
-        "Autore": "Ferenc Molnár",
-        "Classe": "Libri",
-        "Copie disponibili": 5,
-        "Costo": 7.99,
-        "Disponibile": true,
-        "Editore": "Giunti",
-        "Genere": "Romanzo",
-        "Immagine": ":/images/via_pal.png",
-        "Letto": true,
-        "Lingua originale": "Ungherese",
-        "Nprestiti": 5,
-        "Nvolumi": 1,
-        "Titolo": "I ragazzi della via Pal"
     },
     {
         "Anno": 2001,

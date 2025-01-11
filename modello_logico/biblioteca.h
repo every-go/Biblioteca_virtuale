@@ -41,7 +41,4 @@ public:
     virtual void accept(VisitorWidget& visitor) = 0;
 };
 
-//serve per dichiarare al compilatore di Qt che è un nuovo metatipo
-Q_DECLARE_METATYPE(Biblioteca*)
-
 #endif // BIBLIOTECA_H

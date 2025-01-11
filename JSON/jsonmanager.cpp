@@ -279,11 +279,11 @@ void JsonManager::updateObject(Biblioteca *biblio){
 
     QMap<QString, std::function<QJsonObject(Biblioteca*)>>
         saveFunctions = {
-                         {"Film", [this](Biblioteca* b) { return saveFilm(static_cast<Film*>(b)); }},
-                         {"Cd", [this](Biblioteca* b) { return saveCd(static_cast<Cd*>(b)); }},
-                         {"Riviste", [this](Biblioteca* b) { return saveRiviste(static_cast<Riviste*>(b)); }},
-                         {"Libri", [this](Biblioteca* b) { return saveLibri(static_cast<Libri*>(b)); }},
-                         {"Manga", [this](Biblioteca* b) { return saveManga(static_cast<Manga*>(b)); }},
+                         {"Film", [this](Biblioteca* b) { return save(static_cast<Film*>(b)); }},
+                         {"Cd", [this](Biblioteca* b) { return save(static_cast<Cd*>(b)); }},
+                         {"Riviste", [this](Biblioteca* b) { return save(static_cast<Riviste*>(b)); }},
+                         {"Libri", [this](Biblioteca* b) { return save(static_cast<Libri*>(b)); }},
+                         {"Manga", [this](Biblioteca* b) { return save(static_cast<Manga*>(b)); }},
                          };
     for (int i = 0; i < array.size(); ++i) {
         QJsonObject obj = array[i].toObject();
@@ -521,15 +521,15 @@ void JsonManager::savenewObject(Biblioteca* biblio) {
     notifyObservers(biblioteca);
     QJsonObject newObject;
     if (typeid(*biblio)==typeid(Libri))
-        newObject = saveLibri(static_cast<Libri*>(biblio));
+        newObject = save(static_cast<Libri*>(biblio));
     else if (typeid(*biblio)==typeid(Manga))
-        newObject = saveManga(static_cast<Manga*>(biblio));
+        newObject = save(static_cast<Manga*>(biblio));
     else if (typeid(*biblio)==typeid(Cd))
-        newObject = saveCd(static_cast<Cd*>(biblio));
+        newObject = save(static_cast<Cd*>(biblio));
     else if (typeid(*biblio)==typeid(Film))
-        newObject = saveFilm(static_cast<Film*>(biblio));
+        newObject = save(static_cast<Film*>(biblio));
     else if (typeid(*biblio)==typeid(Riviste))
-        newObject = saveRiviste(static_cast<Riviste*>(biblio));
+        newObject = save(static_cast<Riviste*>(biblio));
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)) {
         qWarning() << "Non è possibile aprire il file dati.json per la lettura!";
@@ -566,7 +566,7 @@ void JsonManager::savenewObject(Biblioteca* biblio) {
     file.close();
 }
 
-void JsonManager::saveBiblioteca(Biblioteca* biblio, QJsonObject& obj){
+void JsonManager::save(Biblioteca* biblio, QJsonObject& obj){
     obj["Titolo"] = QString::fromStdString(biblio->getTitolo());
     obj["Genere"] = QString::fromStdString(biblio->getGenere());
     obj["Anno"] = biblio->getAnno();
@@ -577,65 +577,65 @@ void JsonManager::saveBiblioteca(Biblioteca* biblio, QJsonObject& obj){
     obj["Immagine"] = QString::fromStdString(biblio->getImmagine());
 }
 
-void JsonManager::saveMultimedia(Multimedia *multi, QJsonObject& obj){
+void JsonManager::save(Multimedia *multi, QJsonObject& obj){
     obj["Durata"] = multi->getDurata();
     obj["Studio"] = QString::fromStdString(multi->getStudio());
 }
 
-void JsonManager::saveCartaceo(Cartaceo *carta, QJsonObject& obj){
+void JsonManager::save(Cartaceo *carta, QJsonObject& obj){
     obj["Autore"] = QString::fromStdString(carta->getAutore());
     obj["Editore"] = QString::fromStdString(carta->getEditore());
     obj["Letto"] = carta->getLetto();
 }
 
-QJsonObject JsonManager::saveLibri(Libri* libro){
+QJsonObject JsonManager::save(Libri* libro){
     QJsonObject obj;
     obj["Classe"]="Libri";
-    saveBiblioteca(libro, obj);
-    saveCartaceo(libro, obj);
+    save(static_cast<Biblioteca*>(libro), obj);
+    save(static_cast<Cartaceo*>(libro), obj);
     obj["Lingua originale"] = QString::fromStdString(libro->getLanguage());
     obj["Nvolumi"] = libro->getNvolumi();
     return obj;
 }
 
-QJsonObject JsonManager::saveManga(Manga* manga){
+QJsonObject JsonManager::save(Manga* manga){
     QJsonObject obj;
     obj["Classe"]="Manga";
-    saveBiblioteca(manga, obj);
-    saveCartaceo(manga, obj);
+    save(static_cast<Biblioteca*>(manga), obj);
+    save(static_cast<Cartaceo*>(manga), obj);
     obj["Lingua originale"] = QString::fromStdString(manga->getLanguage());
     obj["Nvolumi"] = manga->getNvolumi();
     obj["Concluso"] = manga->getConcluso();
     return obj;
 }
 
-QJsonObject JsonManager::saveCd(Cd* cd){
+QJsonObject JsonManager::save(Cd* cd){
     QJsonObject obj;
     obj["Classe"]="Cd";
-    saveBiblioteca(cd, obj);
-    saveMultimedia(cd, obj);
+    save(static_cast<Biblioteca*>(cd), obj);
+    save(static_cast<Multimedia*>(cd), obj);
     obj["Artista"] = QString::fromStdString(cd->getArtista());
     obj["Ntracce"] = cd->getTracce();
     obj["Ascoltato"] = cd->getAscoltato();
     return obj;
 }
 
-QJsonObject JsonManager::saveFilm(Film* film){
+QJsonObject JsonManager::save(Film* film){
     QJsonObject obj;
     obj["Classe"]="Film";
-    saveBiblioteca(film, obj);
-    saveMultimedia(film, obj);
+    save(static_cast<Biblioteca*>(film), obj);
+    save(static_cast<Multimedia*>(film), obj);
     obj["Regista"] = QString::fromStdString(film->getRegista());
     obj["Attore protagonista"] = QString::fromStdString(film->getAttore());
     obj["Visto"] = film->getVisto();
     return obj;
 }
 
-QJsonObject JsonManager::saveRiviste(Riviste* rivista){
+QJsonObject JsonManager::save(Riviste* rivista){
     QJsonObject obj;
     obj["Classe"]="Riviste";
-    saveBiblioteca(rivista, obj);
-    saveCartaceo(rivista, obj);
+    save(static_cast<Biblioteca*>(rivista), obj);
+    save(static_cast<Cartaceo*>(rivista), obj);
     obj["Diffusione"] = QString::fromStdString(rivista->diffusionToString());
     return obj;
 }
