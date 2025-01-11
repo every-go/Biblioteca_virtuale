@@ -16,9 +16,9 @@ public:
     virtual ~Film() = default;
     string getAttore() const;
     string getRegista() const;
+    bool getVisto() const;
     void setRegista(const string& newregista);
     void setAttore(const string& newattore);
-    bool getVisto() const;
     //cambia stato visione film
     void segnaVisto();
     void accept(VisitorWidget& visitor) override;

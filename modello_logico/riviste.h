@@ -14,7 +14,6 @@ public:
             bool disponibile, int copies, int prest, string image,
             string author, string editor, bool read, Diffusione diff);
     virtual ~Riviste() = default;
-    void getDiffusione() const;
     string diffusionToString() const;
     void setDiffusione(const Diffusione& newdiffusion);
     void accept(VisitorWidget& visitor) override;
