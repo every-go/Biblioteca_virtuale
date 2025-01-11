@@ -49,10 +49,6 @@ MainWindow::MainWindow(QStackedWidget* stackWidget, QWidget* parent) : QMainWind
     userButton->setStyleSheet("QPushButton{"
                                "background-color: #4CAF40;"
                                "}");
-    QIcon admin("./IMG/admin.svg");
-    adminButton->setIcon(admin);
-    QIcon user("./IMG/user.svg");
-    userButton->setIcon(user);
     adminText->setAlignment(Qt::AlignCenter);
     userText->setAlignment(Qt::AlignCenter);
     adminText->setStyleSheet("QLabel{"
