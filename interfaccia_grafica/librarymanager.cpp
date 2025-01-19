@@ -741,7 +741,7 @@ void LibraryManager::save(Manga* manga){
     save(static_cast<Libri*>(manga));
     QString concluso =
         (qobject_cast<QComboBox*>(menuWidgets["Concluso"]))->currentText();
-    bool conc = (concluso == "Disponibile");
+    bool conc = (concluso == "Concluso");
     manga->setConcluso(conc);
 }
 
@@ -830,7 +830,7 @@ Manga* LibraryManager::createManga(){
     QString language = (qobject_cast<QLineEdit*>(menuWidgets["Lingua originale"]))->text();
     int nvolumi = (qobject_cast<QSpinBox*>(menuWidgets["Nvolumi"]))->value();
     QString conc = (qobject_cast<QComboBox*>(menuWidgets["Concluso"]))->currentText();
-    bool concluso = conc=="Concluso"? true : false;
+    bool concluso = (conc == "Concluso")? true : false;
     return new Manga(biblio.titolo.toStdString(), biblio.genere.toStdString(), biblio.anno, biblio.costo,
                      biblio.disponibile, biblio.copie, biblio.nprestiti, image.toStdString(),
                      carta.autore.toStdString(), carta.editore.toStdString(), carta.letto, language.toStdString(), nvolumi, concluso);

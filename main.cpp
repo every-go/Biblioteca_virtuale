@@ -25,6 +25,9 @@ int main(int argc, char *argv[])
     QString filePath = QFileDialog::getOpenFileName(nullptr, "Scegli Json", "", "Json (*.json)");
     JsonManager* manager = new JsonManager(filePath);
     QList<Biblioteca*> oggetti = manager->loadBibliotecaListFromJson(filePath);
+    std::sort(oggetti.begin(), oggetti.end(), [](Biblioteca* a, Biblioteca* b){
+        return a->getTitolo() < b->getTitolo();
+    });
     MainWindow* mainWindows = new MainWindow(&stackWidget);
     UserArea* userArea = new UserArea(oggetti, &stackWidget);
     AdminArea* adminArea = new AdminArea(oggetti, &stackWidget);

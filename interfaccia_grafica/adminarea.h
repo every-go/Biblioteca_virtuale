@@ -43,7 +43,6 @@ public:
     AdminArea(QList<Biblioteca*>objects, QStackedWidget* stackWidget, QWidget* parent = nullptr);
     ~AdminArea();
     void onBibliotecaUpdated(const QList<Biblioteca*>& newBiblioteca) override;
-    void setOggetti(const QList<Biblioteca*>& newBiblioteca);
     void showMain();
     void showAll();
     void showTipi();

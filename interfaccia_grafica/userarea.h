@@ -55,7 +55,6 @@ public:
     UserArea(QList<Biblioteca*> objects, QStackedWidget* stackWidget, QWidget *parent = nullptr);
     ~UserArea();
     void onBibliotecaUpdated(const QList<Biblioteca*>& newBiblioteca) override;
-    void setOggetti(const QList<Biblioteca*>& newBiblioteca);
     void showMain();
     void showAdmin();
     void showAll();

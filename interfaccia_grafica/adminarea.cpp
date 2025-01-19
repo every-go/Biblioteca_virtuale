@@ -8,6 +8,7 @@
 #include <QAction>
 #include <QMessageBox>
 #include <QInputDialog>
+#include <QFlags>
 
 // Ho incluso solo gli header necessari per evitare dipendenze ridondanti,
 // poiché le classi come Cd, Film, Manga e Riviste includono già le dipendenze comuni
@@ -127,11 +128,10 @@ AdminArea::~AdminArea(){}
 
 void AdminArea::onBibliotecaUpdated(const QList<Biblioteca*>& newBiblioteca){
     oggetti = newBiblioteca;
+    std::sort(oggetti.begin(), oggetti.end(), [](Biblioteca* a, Biblioteca* b){
+        return a->getTitolo() < b->getTitolo();
+    });
     showTipi();
-}
-
-void AdminArea::setOggetti(const QList<Biblioteca*>& newBiblioteca){
-    oggetti = newBiblioteca;
 }
 
 void AdminArea::tornaIndietro(){
@@ -355,7 +355,10 @@ void AdminArea::gestisciPulsanti(Biblioteca* biblio, QPushButton* modifica, QPus
                            "background-color:red;"
                            "}");
     connect(elimina, &QPushButton::clicked, this, [this, biblio](){
-        emit removeObject(biblio);
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this, "Elimina", "Vuoi procedere?", QMessageBox::Yes | QMessageBox::No);
+        if(reply == QMessageBox::Yes)
+            emit removeObject(biblio);
     });
     connect(modifica, &QPushButton::clicked, this, [this, biblio](){
         stack->setCurrentIndex(3);

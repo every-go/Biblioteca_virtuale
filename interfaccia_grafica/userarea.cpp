@@ -113,11 +113,10 @@ UserArea::~UserArea(){}
 
 void UserArea::onBibliotecaUpdated(const QList<Biblioteca *> &newBiblioteca){
     oggetti = newBiblioteca;
+    std::sort(oggetti.begin(), oggetti.end(), [](Biblioteca* a, Biblioteca* b){
+        return a->getTitolo() < b->getTitolo();
+    });
     showTipi();
-}
-
-void UserArea::setOggetti(const QList<Biblioteca *> &newBiblioteca){
-    oggetti = newBiblioteca;
 }
 
 //segnali
