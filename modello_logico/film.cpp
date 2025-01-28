@@ -33,6 +33,6 @@ void Film::segnaVisto(){
     visto = !visto;
 }
 
-void Film::accept(VisitorWidget& visitor){
-    visitor.visit(this);
+void Film::accept(Visitor* visitor){
+    visitor->visit(this);
 }

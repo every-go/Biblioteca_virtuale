@@ -27,6 +27,6 @@ bool Libri::setNvolumi(const int& newnVolumi){
     return false;
 }
 
-void Libri::accept(VisitorWidget& visitor){
-    visitor.visit(this);
+void Libri::accept(Visitor* visitor){
+    visitor->visit(this);
 }

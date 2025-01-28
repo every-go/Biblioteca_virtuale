@@ -38,7 +38,7 @@ public:
     bool setNprestiti(const int& newnprest);
     bool prenota();
     bool restituisci();
-    virtual void accept(VisitorWidget& visitor) = 0;
+    virtual void accept(Visitor* visitor) = 0;
 };
 
 #endif // BIBLIOTECA_H

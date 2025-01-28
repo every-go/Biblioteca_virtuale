@@ -185,9 +185,9 @@ void AdminArea::showAll(){
     }
     int row=0, col=0; //variabili per righe e per colonne
     for(auto it = oggetti.begin(); it!= oggetti.end(); it++){
-        VisitorWidget visitor;
+        Visitor* visitor = new VisitorWidget();
         (*it)->accept(visitor);
-        QWidget* widget = visitor.getWidget();
+        QWidget* widget = (static_cast<VisitorWidget*>(visitor))->getWidget();
         QHBoxLayout* buttonLayout = new QHBoxLayout();
 
         QPushButton* elimina = new QPushButton("Elimina", widget);
@@ -213,6 +213,7 @@ void AdminArea::showAll(){
             col = 0;
             row++;
         }
+        delete visitor;
     }
 }
 
@@ -228,9 +229,9 @@ void AdminArea::showTipi(){
         QByteArray typeName = typeid(**it).name();
         // Verifica se il tipo esiste nella mappa e se il flag è true
         if (typeFlags.contains(typeName) && *typeFlags[typeName]) {
-            VisitorWidget visitor;
+            Visitor* visitor = new VisitorWidget();
             (*it)->accept(visitor);
-            QWidget* widget = visitor.getWidget();
+            QWidget* widget = (static_cast<VisitorWidget*>(visitor))->getWidget();
             QHBoxLayout* buttonLayout = new QHBoxLayout();
 
             QPushButton* elimina = new QPushButton("Elimina", widget);
@@ -256,6 +257,7 @@ void AdminArea::showTipi(){
                 col = 0;
                 row++;
             }
+            delete visitor;
         }
     }
 }
@@ -302,9 +304,9 @@ void AdminArea::cercaDigitato(const QString& testo){
             if((QString::fromStdString(static_cast<Cartaceo*>(*it)->getAutore())).startsWith(testo, Qt::CaseInsensitive))
                 match = true;
         if(match){
-            VisitorWidget visitor;
+            Visitor* visitor = new VisitorWidget();
             (*it)->accept(visitor);
-            QWidget* widget = visitor.getWidget();
+            QWidget* widget = (static_cast<VisitorWidget*>(visitor))->getWidget();
             QHBoxLayout* buttonLayout = new QHBoxLayout();
 
             QPushButton* elimina = new QPushButton("Elimina", widget);
@@ -330,6 +332,7 @@ void AdminArea::cercaDigitato(const QString& testo){
                 col = 0;
                 row++;
             }
+            delete visitor;
         }
     }
 }

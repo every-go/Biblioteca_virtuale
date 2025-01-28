@@ -18,6 +18,6 @@ void Manga::statoConcluso(){
     concluso = !concluso;
 }
 
-void Manga::accept(VisitorWidget& visitor){
-    visitor.visit(this);
+void Manga::accept(Visitor* visitor){
+    visitor->visit(this);
 }

@@ -20,7 +20,7 @@ public:
     void segnaAscoltato();
     void setArtista(const string& newartista);
     void setTracce(const int& newntracce);
-    void accept(VisitorWidget& visitor) override;
+    void accept(Visitor* visitor) override;
 };
 
 #endif // CD_DVD_H

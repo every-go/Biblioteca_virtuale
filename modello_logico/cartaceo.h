@@ -18,7 +18,7 @@ public:
     void setEditore(const string& neweditore);
     bool getLetto() const;
     void segnaLetto();
-    virtual void accept(VisitorWidget& visitor) override = 0;
+    virtual void accept(Visitor* visitor) override = 0;
 };
 
 #endif // CARTACEO_H

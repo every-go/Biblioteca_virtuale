@@ -18,7 +18,7 @@ public:
     int getNvolumi() const;
     void setLanguage(const string& newlanguage);
     bool setNvolumi(const int& newnVolumi);
-    void accept(VisitorWidget& visitor) override;
+    void accept(Visitor* visitor) override;
 };
 
 #endif // LIBRI_H

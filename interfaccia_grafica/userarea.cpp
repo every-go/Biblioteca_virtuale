@@ -195,9 +195,9 @@ void UserArea::showAll() {
     int row = 0, col = 0;
 
     for (auto cit = oggetti.begin(); cit != oggetti.end(); ++cit) {
-        VisitorWidget visitor;
+        Visitor* visitor = new VisitorWidget();
         (*cit)->accept(visitor);
-        QWidget* widget = visitor.getWidget();
+        QWidget* widget = (static_cast<VisitorWidget*>(visitor))->getWidget();
         QHBoxLayout* buttonLayout = new QHBoxLayout();
 
         QPushButton* prenota = new QPushButton("Prenota", widget);
@@ -264,6 +264,7 @@ void UserArea::showAll() {
             row++;
         }
         gestisciConnect(*cit, prenota, restituisci, suggerisci);
+        delete visitor;
     }
 }
 
@@ -280,9 +281,9 @@ void UserArea::showTipi() {
         QByteArray typeName = typeid(**cit).name();
         // Verifica se il tipo esiste nella mappa e se il flag è true
         if (typeFlags.contains(typeName) && *typeFlags[typeName]) {
-            VisitorWidget visitor;
+            Visitor* visitor = new VisitorWidget();
             (*cit)->accept(visitor);
-            QWidget* widget = visitor.getWidget();
+            QWidget* widget = (static_cast<VisitorWidget*>(visitor))->getWidget();
             QHBoxLayout* buttonLayout = new QHBoxLayout();
             QPushButton* prenota = new QPushButton("Prenota", widget);
             prenota->setStyleSheet("QPushButton{"
@@ -348,6 +349,7 @@ void UserArea::showTipi() {
                 row++;
             }
             gestisciConnect(*cit, prenota, restituisci, suggerisci);
+            delete visitor;
         }
     }
 }
@@ -418,9 +420,9 @@ void UserArea::cercaDigitato(const QString& testo){
             if((QString::fromStdString(static_cast<Cartaceo*>(*cit)->getAutore())).startsWith(testo, Qt::CaseInsensitive))
                 match = true;
         if(match){
-            VisitorWidget visitor;
+            Visitor* visitor = new VisitorWidget();
             (*cit)->accept(visitor);
-            QWidget* widget = visitor.getWidget();
+            QWidget* widget = (static_cast<VisitorWidget*>(visitor))->getWidget();
             QHBoxLayout* buttonLayout = new QHBoxLayout();
             QPushButton* prenota = new QPushButton("Prenota", widget);
             prenota->setStyleSheet("QPushButton{"
@@ -486,6 +488,7 @@ void UserArea::cercaDigitato(const QString& testo){
                 row++;
             }
             gestisciConnect(*cit, prenota, restituisci, suggerisci);
+            delete visitor;
         }
     }
 }
@@ -524,9 +527,9 @@ void UserArea::suggerisciSimili(Biblioteca* biblio){
                 match = true;
         // Se almeno una condizione è soddisfatta, continua con la creazione del widget
         if (match) {
-            VisitorWidget visitor;
+            Visitor* visitor = new VisitorWidget();
             (*cit)->accept(visitor);
-            QWidget* widget = visitor.getWidget();
+            QWidget* widget = (static_cast<VisitorWidget*>(visitor))->getWidget();
             QHBoxLayout* buttonLayout = new QHBoxLayout();
             QPushButton* prenota = new QPushButton("Prenota", widget);
             prenota->setStyleSheet("QPushButton{"
@@ -592,6 +595,7 @@ void UserArea::suggerisciSimili(Biblioteca* biblio){
                 row++;
             }
             gestisciConnect(*cit, prenota, restituisci, suggerisci);
+            delete visitor;
         }
     }
 }

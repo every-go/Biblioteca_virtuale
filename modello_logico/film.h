@@ -21,7 +21,7 @@ public:
     void setAttore(const string& newattore);
     //cambia stato visione film
     void segnaVisto();
-    void accept(VisitorWidget& visitor) override;
+    void accept(Visitor* visitor) override;
 };
 
 #endif // FILM_H

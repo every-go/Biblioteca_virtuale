@@ -21,6 +21,6 @@ string Riviste::diffusionToString() const {
     }
 }
 
-void Riviste::accept(VisitorWidget& visitor){
-    visitor.visit(this);
+void Riviste::accept(Visitor* visitor){
+    visitor->visit(this);
 }

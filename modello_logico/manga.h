@@ -15,7 +15,7 @@ public:
     bool getConcluso() const;
     void setConcluso(const bool& newconcluso);
     void statoConcluso();
-    void accept(VisitorWidget& visitor) override;
+    void accept(Visitor* visitor) override;
 };
 
 #endif // MANGA_H

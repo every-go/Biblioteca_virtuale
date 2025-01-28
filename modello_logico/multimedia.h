@@ -20,7 +20,7 @@ public:
     string getStudio() const;
     void setDurata(const int& newdurata);
     void setStudio(const string& newstudio);
-    virtual void accept(VisitorWidget& visitor) override = 0;
+    virtual void accept(Visitor* visitor) override = 0;
 };
 
 #endif // MULTIMEDIA_H

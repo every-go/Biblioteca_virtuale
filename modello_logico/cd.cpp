@@ -30,6 +30,6 @@ void Cd::setTracce(const int &newntracce){
     ntracce=newntracce;
 }
 
-void Cd::accept(VisitorWidget& visitor){
-    visitor.visit(this);
+void Cd::accept(Visitor* visitor){
+    visitor->visit(this);
 }
