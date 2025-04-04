@@ -1,0 +1,24 @@
+# File di compilazione
+*.o
+*.obj
+*.so
+*.dll
+*.a
+*.lib
+*.exe
+
+# File generati da Qt
+moc_*
+ui_*
+qrc_*
+
+# File di build
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+*.pro.user
+
+# Cartelle generate
+.vscode/
+build/
