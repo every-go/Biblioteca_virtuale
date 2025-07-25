@@ -1,14 +1,7 @@
 #include "adminarea.h"
 #include "visitorwidget.h"
 #include "../JSON/jsonmanager.h"
-#include <QToolBar>
-#include <QLineEdit>
-#include <QMenuBar>
-#include <QMenu>
-#include <QAction>
-#include <QMessageBox>
-#include <QInputDialog>
-#include <QFlags>
+#include "dependencies.h"
 
 // Ho incluso solo gli header necessari per evitare dipendenze ridondanti,
 // poiché le classi come Cd, Film, Manga e Riviste includono già le dipendenze comuni

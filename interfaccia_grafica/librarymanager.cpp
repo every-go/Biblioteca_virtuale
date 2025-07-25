@@ -1,19 +1,4 @@
 #include "librarymanager.h"
-#include <QComboBox>
-#include <QToolBar>
-#include <QPushButton>
-#include <QLineEdit>
-#include <QTextEdit>
-#include <QLabel>
-#include <QFileDialog>
-#include <QFileInfo>
-#include <QSpacerItem>
-#include <QSpinBox>
-#include <QDoubleSpinBox>
-#include <QCheckBox>
-#include <typeindex>
-#include <climits>
-#include <cfloat>
 
 // Ho incluso solo gli header necessari per evitare dipendenze ridondanti,
 // poiché le classi come Cd, Film, Manga e Riviste includono già le dipendenze comuni

@@ -1,13 +1,5 @@
 #include "mainwindow.h"
-#include <QSplitter>
-#include <QPushButton>
-#include <QLabel>
-#include <QVBoxLayout>
-#include <QLineEdit>
-#include <QMessageBox>
-#include <QDialog>
-#include <QToolBar>
-#include <QIcon>
+
 
 MainWindow::MainWindow(QStackedWidget* stackWidget, QWidget* parent) : QMainWindow(parent), stack(stackWidget) {
     setWindowTitle("Biblioteca");

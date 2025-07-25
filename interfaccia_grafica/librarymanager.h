@@ -1,15 +1,7 @@
 #ifndef LIBRARYMANAGER_H
 #define LIBRARYMANAGER_H
 
-#include <QMainWindow>
-#include <QObject>
-#include <QStackedWidget>
-#include <QWidget>
-#include <QVBoxLayout>
-#include <QString>
-#include <QScrollArea>
-#include <QMap>
-#include <QLayout>
+#include "dependencies.h"
 
 class Biblioteca;
 class Cartaceo;

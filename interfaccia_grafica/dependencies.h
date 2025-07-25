@@ -1,0 +1,42 @@
+#ifndef DEPENDENCIES_H
+#define DEPENDENCIES_H
+
+#include <QToolBar>
+#include <QLineEdit>
+#include <QMenuBar>
+#include <QMenu>
+#include <QAction>
+#include <QMessageBox>
+#include <QInputDialog>
+#include <QFlags>
+#include <QComboBox>
+#include <QPushButton>
+#include <QTextEdit>
+#include <QLabel>
+#include <QFileDialog>
+#include <QFileInfo>
+#include <QSpacerItem>
+#include <QSpinBox>
+#include <QDoubleSpinBox>
+#include <QCheckBox>
+#include <typeindex>
+#include <climits>
+#include <cfloat>
+#include <QSplitter>
+#include <QVBoxLayout>
+#include <QDialog>
+#include <QIcon>
+#include <QMainWindow>
+#include <QObject>
+#include <QStackedWidget>
+#include <QWidget>
+#include <QString>
+#include <QScrollArea>
+#include <QMap>
+#include <QLayout>
+#include <QGridLayout>
+#include <QHBoxLayout>
+#include <QPixmap>
+#include <QDebug>
+
+#endif // ADMINAREA_H

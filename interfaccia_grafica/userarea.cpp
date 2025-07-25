@@ -1,12 +1,7 @@
+#include "dependencies.h"
+
 #include "userarea.h"
-#include "visitorwidget.h"
-#include "../JSON/jsonmanager.h"
-#include <QMenuBar>
-#include <QAction>
-#include <QMessageBox>
-#include <QLineEdit>
-#include <QToolBar>
-#include <QHBoxLayout>
+
 
 UserArea::UserArea(QList<Biblioteca *> objects, QStackedWidget *stackWidget, QWidget *parent) :
     QMainWindow(parent), oggetti(objects), stack(stackWidget),

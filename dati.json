@@ -1,12 +1,12 @@
 [
     {
-        "Anno": 1999,
+        "Anno": 1991,
         "Attore protagonista": "Jim Carrey",
         "Classe": "Film",
         "Copie disponibili": 1,
         "Costo": 10.04,
         "Disponibile": true,
-        "Durata": 72,
+        "Durata": 59,
         "Genere": "Commedia",
         "Immagine": "IMG/ace_ventura.png",
         "Nprestiti": 1,
@@ -300,7 +300,7 @@
         "Lingua originale": "Giapponese",
         "Nprestiti": 3,
         "Nvolumi": 28,
-        "Titolo": "Vinland Peak"
+        "Titolo": "Vinland Saga"
     },
     {
         "Anno": 2024,

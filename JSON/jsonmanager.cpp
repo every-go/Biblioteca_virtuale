@@ -1,24 +1,4 @@
 #include "jsonmanager.h"
-#include "../interfaccia_grafica/adminarea.h"
-#include "../interfaccia_grafica/userarea.h"
-#include <algorithm>
-#include <QStringList>
-#include <QMap>
-#include <QFile>
-#include <QJsonArray>
-#include <QByteArray>
-#include <QList>
-#include <QJsonDocument>
-#include <QFileInfo>
-
-// Ho incluso solo gli header necessari per evitare dipendenze ridondanti,
-// poiché le classi come Cd, Film, Manga e Riviste includono già le dipendenze comuni
-// come Multimedia, Biblioteca e Libri.
-
-#include "../modello_logico/manga.h"
-#include "../modello_logico/riviste.h"
-#include "../modello_logico/cd.h"
-#include "../modello_logico/film.h"
 
 JsonManager::JsonManager(const QString& fileName) : filePath(fileName) {}
 

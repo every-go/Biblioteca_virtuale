@@ -22,3 +22,15 @@ cmake_install.cmake
 # Cartelle generate
 .vscode/
 build/
+
+# Altri file
+*~
+.*.swp
+.DS_Store
+venv/
+__pycache__/
+*.log
+*.pid
+*.seed
+*.sqlite
+
