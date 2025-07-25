@@ -1,8 +1,6 @@
 #ifndef ADMINAREA_H
 #define ADMINAREA_H
 
-#include "dependencies.h"
-
 #include "mainwindow.h"
 #include "../JSON/jsonobserver.h"
 #include <QObject>

@@ -1,8 +1,8 @@
 #ifndef VISITORWIDGET_H
 #define VISITORWIDGET_H
 
-#include "dependencies.h"
-
+#include <QLabel>
+#include <QGridLayout>
 #include "visitor.h"
 
 class Biblioteca;

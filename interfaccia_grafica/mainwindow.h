@@ -1,7 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "dependencies.h"
+#include <QMainWindow>
+#include <QObject>
+#include <QStackedWidget>
 
 class MainWindow : public QMainWindow
 {

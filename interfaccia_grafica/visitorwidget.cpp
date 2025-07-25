@@ -1,4 +1,7 @@
 #include "visitorwidget.h"
+#include <QMessageBox>
+#include <QPixmap>
+#include <QDebug>
 
 // Ho incluso solo gli header necessari per evitare dipendenze ridondanti,
 // poiché le classi come Cd, Film, Manga e Riviste includono già le dipendenze comuni
@@ -144,7 +147,7 @@ void VisitorWidget::visit(Manga* manga){
     visit(static_cast<Libri*>(manga));
     QLabel* concluso = new QLabel(widget);
     concluso->setText(
-        QString(manga->getConcluso()? "Il manga è concluso" : "Il manga non è concluso")
+        QString(manga->getConcluso()? "Il manga è conluso" : "Il manga non è concluso")
         );
     layout->addWidget(concluso, 5, 0, 1, 3, Qt::AlignCenter);
 }

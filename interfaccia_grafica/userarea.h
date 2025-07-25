@@ -1,8 +1,6 @@
 #ifndef USERAREA_H
 #define USERAREA_H
 
-#include "dependencies.h"
-
 #include "mainwindow.h"
 #include "../JSON/jsonobserver.h"
 #include <QWidget>

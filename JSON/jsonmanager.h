@@ -1,7 +1,11 @@
 #ifndef JSONMANAGER_H
 #define JSONMANAGER_H
 
-#include "dependencies.h"
+#include <QObject>
+#include <QString>
+#include <QJsonObject>
+#include "../interfaccia_grafica/adminarea.h"
+#include "../interfaccia_grafica/userarea.h"
 
 class Biblioteca;
 class Multimedia;

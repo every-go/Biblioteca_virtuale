@@ -462,43 +462,18 @@ compiler_moc_header_make_all: moc_adminarea.cpp moc_librarymanager.cpp moc_mainw
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_adminarea.cpp moc_librarymanager.cpp moc_mainwindow.cpp moc_userarea.cpp moc_jsonmanager.cpp
 moc_adminarea.cpp: interfaccia_grafica/adminarea.h \
-		interfaccia_grafica/dependencies.h \
-		interfaccia_grafica/visitorwidget.h \
-		interfaccia_grafica/visitor.h \
-		JSON/jsonmanager.h \
-		interfaccia_grafica/adminarea.h \
 		interfaccia_grafica/mainwindow.h \
 		JSON/jsonobserver.h \
-		interfaccia_grafica/userarea.h \
-		modello_logico/cd.h \
-		modello_logico/multimedia.h \
-		modello_logico/biblioteca.h \
-		modello_logico/film.h \
-		modello_logico/manga.h \
-		modello_logico/libri.h \
-		modello_logico/cartaceo.h \
-		modello_logico/riviste.h \
 		moc_predefs.h \
 		/usr/lib/qt6/libexec/moc
 	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/matteo-mazzaretto/Desktop/Uni/Corsi_passati/PAO/Biblioteca_virtuale/Biblioteca_virtuale/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/matteo-mazzaretto/Desktop/Uni/Corsi_passati/PAO/Biblioteca_virtuale/Biblioteca_virtuale -I/home/matteo-mazzaretto/Desktop/Uni/Corsi_passati/PAO/Biblioteca_virtuale/Biblioteca_virtuale -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I/usr/include/c++/14 -I/usr/include/x86_64-linux-gnu/c++/14 -I/usr/include/c++/14/backward -I/usr/lib/gcc/x86_64-linux-gnu/14/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include interfaccia_grafica/adminarea.h -o moc_adminarea.cpp
 
 moc_librarymanager.cpp: interfaccia_grafica/librarymanager.h \
-		interfaccia_grafica/dependencies.h \
+		modello_logico/riviste.h \
+		modello_logico/cartaceo.h \
+		modello_logico/biblioteca.h \
 		interfaccia_grafica/visitorwidget.h \
 		interfaccia_grafica/visitor.h \
-		JSON/jsonmanager.h \
-		interfaccia_grafica/adminarea.h \
-		interfaccia_grafica/mainwindow.h \
-		JSON/jsonobserver.h \
-		interfaccia_grafica/userarea.h \
-		modello_logico/cd.h \
-		modello_logico/multimedia.h \
-		modello_logico/biblioteca.h \
-		modello_logico/film.h \
-		modello_logico/manga.h \
-		modello_logico/libri.h \
-		modello_logico/cartaceo.h \
-		modello_logico/riviste.h \
 		moc_predefs.h \
 		/usr/lib/qt6/libexec/moc
 	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/matteo-mazzaretto/Desktop/Uni/Corsi_passati/PAO/Biblioteca_virtuale/Biblioteca_virtuale/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/matteo-mazzaretto/Desktop/Uni/Corsi_passati/PAO/Biblioteca_virtuale/Biblioteca_virtuale -I/home/matteo-mazzaretto/Desktop/Uni/Corsi_passati/PAO/Biblioteca_virtuale/Biblioteca_virtuale -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I/usr/include/c++/14 -I/usr/include/x86_64-linux-gnu/c++/14 -I/usr/include/c++/14/backward -I/usr/lib/gcc/x86_64-linux-gnu/14/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include interfaccia_grafica/librarymanager.h -o moc_librarymanager.cpp
@@ -527,16 +502,14 @@ moc_userarea.cpp: interfaccia_grafica/userarea.h \
 
 moc_jsonmanager.cpp: JSON/jsonmanager.h \
 		interfaccia_grafica/adminarea.h \
-		interfaccia_grafica/dependencies.h \
-		interfaccia_grafica/visitorwidget.h \
-		interfaccia_grafica/visitor.h \
-		JSON/jsonmanager.h \
-		interfaccia_grafica/userarea.h \
 		interfaccia_grafica/mainwindow.h \
 		JSON/jsonobserver.h \
+		interfaccia_grafica/userarea.h \
 		modello_logico/cd.h \
 		modello_logico/multimedia.h \
 		modello_logico/biblioteca.h \
+		interfaccia_grafica/visitorwidget.h \
+		interfaccia_grafica/visitor.h \
 		modello_logico/film.h \
 		modello_logico/manga.h \
 		modello_logico/libri.h \
@@ -576,19 +549,17 @@ main.o: main.cpp interfaccia_grafica/mainwindow.h \
 		modello_logico/cartaceo.h \
 		modello_logico/riviste.h \
 		interfaccia_grafica/adminarea.h \
-		interfaccia_grafica/dependencies.h \
-		JSON/jsonmanager.h \
-		interfaccia_grafica/librarymanager.h
+		interfaccia_grafica/librarymanager.h \
+		JSON/jsonmanager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 adminarea.o: interfaccia_grafica/adminarea.cpp interfaccia_grafica/adminarea.h \
-		interfaccia_grafica/dependencies.h \
+		interfaccia_grafica/mainwindow.h \
+		JSON/jsonobserver.h \
 		interfaccia_grafica/visitorwidget.h \
 		interfaccia_grafica/visitor.h \
 		JSON/jsonmanager.h \
 		interfaccia_grafica/userarea.h \
-		interfaccia_grafica/mainwindow.h \
-		JSON/jsonobserver.h \
 		modello_logico/cd.h \
 		modello_logico/multimedia.h \
 		modello_logico/biblioteca.h \
@@ -600,22 +571,16 @@ adminarea.o: interfaccia_grafica/adminarea.cpp interfaccia_grafica/adminarea.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o adminarea.o interfaccia_grafica/adminarea.cpp
 
 librarymanager.o: interfaccia_grafica/librarymanager.cpp interfaccia_grafica/librarymanager.h \
-		interfaccia_grafica/dependencies.h \
+		modello_logico/riviste.h \
+		modello_logico/cartaceo.h \
+		modello_logico/biblioteca.h \
 		interfaccia_grafica/visitorwidget.h \
 		interfaccia_grafica/visitor.h \
-		JSON/jsonmanager.h \
-		interfaccia_grafica/adminarea.h \
-		interfaccia_grafica/mainwindow.h \
-		JSON/jsonobserver.h \
-		interfaccia_grafica/userarea.h \
-		modello_logico/cd.h \
-		modello_logico/multimedia.h \
-		modello_logico/biblioteca.h \
-		modello_logico/film.h \
 		modello_logico/manga.h \
 		modello_logico/libri.h \
-		modello_logico/cartaceo.h \
-		modello_logico/riviste.h
+		modello_logico/cd.h \
+		modello_logico/multimedia.h \
+		modello_logico/film.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o librarymanager.o interfaccia_grafica/librarymanager.cpp
 
 visitorwidget.o: interfaccia_grafica/visitorwidget.cpp interfaccia_grafica/visitorwidget.h \
@@ -647,21 +612,19 @@ userarea.o: interfaccia_grafica/userarea.cpp interfaccia_grafica/userarea.h \
 		modello_logico/cartaceo.h \
 		modello_logico/riviste.h \
 		JSON/jsonmanager.h \
-		interfaccia_grafica/adminarea.h \
-		interfaccia_grafica/dependencies.h
+		interfaccia_grafica/adminarea.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o userarea.o interfaccia_grafica/userarea.cpp
 
 jsonmanager.o: JSON/jsonmanager.cpp JSON/jsonmanager.h \
 		interfaccia_grafica/adminarea.h \
-		interfaccia_grafica/dependencies.h \
-		interfaccia_grafica/visitorwidget.h \
-		interfaccia_grafica/visitor.h \
 		interfaccia_grafica/mainwindow.h \
 		JSON/jsonobserver.h \
 		interfaccia_grafica/userarea.h \
 		modello_logico/cd.h \
 		modello_logico/multimedia.h \
 		modello_logico/biblioteca.h \
+		interfaccia_grafica/visitorwidget.h \
+		interfaccia_grafica/visitor.h \
 		modello_logico/film.h \
 		modello_logico/manga.h \
 		modello_logico/libri.h \
