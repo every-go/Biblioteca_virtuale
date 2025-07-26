@@ -10,7 +10,7 @@ private:
     string attore_protagonista;
     bool visto;
 public:
-    Film(string title, string genre, int year, double price, bool disponibile,
+    Film(int id_db, string title, string genre, int year, double price, bool disponibile,
          int copies, int prest, string image, int time, string studios,
          string director, string actor, bool view);
     virtual ~Film() = default;

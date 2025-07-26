@@ -1,10 +1,10 @@
 #include "manga.h"
 using std::string;
 
-Manga::Manga(string title, string genre, int year, double price, bool disponibile,
+Manga::Manga(int id_db, string title, string genre, int year, double price, bool disponibile,
              int copies, int prest, string image, string author, string editor, bool read,
              string language, int number, bool finish)
-    : Libri(title, genre, year, price, disponibile, copies, prest, image, author, editor, read, language, number), concluso(finish){}
+    : Libri(id_db, title, genre, year, price, disponibile, copies, prest, image, author, editor, read, language, number), concluso(finish){}
 
 bool Manga::getConcluso() const{
     return concluso;

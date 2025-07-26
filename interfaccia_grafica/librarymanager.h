@@ -34,6 +34,7 @@ private:
     void clearLayout(QLayout* layout);
     QString image;
     struct BibliotecaInfo {
+        int id_db;
         QString titolo;
         QString genere;
         int anno;

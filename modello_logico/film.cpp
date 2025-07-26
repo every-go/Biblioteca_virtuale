@@ -1,11 +1,11 @@
 #include "film.h"
 using std::string;
 
-Film::Film(string title, string genre, int year, double price,
+Film::Film(int id_db, string title, string genre, int year, double price,
            bool disponibile, int copies, int prest,
            string image, int time, string studios,
            string director, string actor, bool view) :
-           Multimedia(title, genre, year, price, disponibile, copies,
+           Multimedia(id_db, title, genre, year, price, disponibile, copies,
                     prest, image, time, studios),
            regista(director), attore_protagonista(actor), visto(view) {}
 

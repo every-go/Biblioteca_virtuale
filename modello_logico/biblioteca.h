@@ -7,6 +7,7 @@ using std::string;
 
 class Biblioteca{
 private:
+    int id; //identificativo univoco dell'oggetto
     string titolo;
     string genere;
     int anno;
@@ -18,9 +19,10 @@ private:
     string immagine;
     void aggiornaDisponibilita();
 public:
-    Biblioteca(string title, string genre, int year, double price,
+    Biblioteca(int id, string title, string genre, int year, double price,
                bool disponibile, int copies, int prest, string image);
     virtual ~Biblioteca() =default;
+    int getId() const;
     string getTitolo() const;
     string getGenere() const;
     int getAnno() const;

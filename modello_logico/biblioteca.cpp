@@ -1,9 +1,9 @@
 #include "biblioteca.h"
 using std::string;
 
-Biblioteca::Biblioteca(string title, string genre, int year,
+Biblioteca::Biblioteca(int id_db, string title, string genre, int year,
                        double price, bool disp, int copies, int prest, string image)
-    : titolo(title), genere(genre), anno(year), costo(price), disponibile(disp),
+    : id(id_db), titolo(title), genere(genre), anno(year), costo(price), disponibile(disp),
     copie_disponibili(copies>=0 ? copies : 0), immagine(image){
     if(prest>copies)
         nprestiti=prest;
@@ -13,6 +13,10 @@ Biblioteca::Biblioteca(string title, string genre, int year,
 
 void Biblioteca::aggiornaDisponibilita(){
     disponibile = (copie_disponibili>0);
+}
+
+int Biblioteca::getId() const{
+    return id;
 }
 
 string Biblioteca::getTitolo() const{

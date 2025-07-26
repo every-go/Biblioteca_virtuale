@@ -1,9 +1,9 @@
 #include "cd.h"
 using std::string;
 
-Cd::Cd(string title, string genre, int year, double price, bool disponibile, int copies,
+Cd::Cd(int id_db, string title, string genre, int year, double price, bool disponibile, int copies,
        int prest, string image, int time, string studios, string artist, int ntracks, bool listened)
-        :Multimedia(title, genre, year, price, disponibile, copies, prest, image, time, studios),
+        :Multimedia(id_db, title, genre, year, price, disponibile, copies, prest, image, time, studios),
         artista(artist), ntracce(ntracks>1 ? ntracks : 1), ascoltato(listened) {}
 
 string Cd::getArtista() const{

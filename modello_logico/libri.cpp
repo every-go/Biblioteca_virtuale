@@ -1,10 +1,10 @@
 #include "libri.h"
 using std::string;
 
-Libri::Libri(string title, string genre, int year, double price, bool disponibile,
+Libri::Libri(int id_db, string title, string genre, int year, double price, bool disponibile,
              int copies, int prest, string image, string author, string editor, bool read,
             string language, int number):
-    Cartaceo(title, genre, year, price, disponibile, copies, prest, image, author, editor, read),
+    Cartaceo(id_db, title, genre, year, price, disponibile, copies, prest, image, author, editor, read),
     lingua_originale(language), nvolumi(number>1 ? number : 1){}
 
 string Libri::getLanguage() const{

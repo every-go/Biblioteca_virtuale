@@ -9,7 +9,7 @@ private:
     string editore;
     bool letto;
 public:
-    Cartaceo(string title, string genre, int year, double price, bool disponibile,
+    Cartaceo(int id_db, string title, string genre, int year, double price, bool disponibile,
             int copies, int prest, string image, string author, string editor, bool read);
     virtual ~Cartaceo() = default;
     string getAutore() const;

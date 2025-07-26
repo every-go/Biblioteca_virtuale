@@ -1,9 +1,9 @@
 #include "multimedia.h"
 using std::string;
 
-Multimedia::Multimedia(string title, string genre, int year, double price, bool disponibile,
+Multimedia::Multimedia(int id_db, string title, string genre, int year, double price, bool disponibile,
                      int copies, int prest, string image, int time, string studios) :
-    Biblioteca(title, genre, year, price, disponibile, copies, prest, image), durata(time>0 ? time : 1), studio(studios){}
+    Biblioteca(id_db, title, genre, year, price, disponibile, copies, prest, image), durata(time>0 ? time : 1), studio(studios){}
 
 int Multimedia::getDurata() const{
     return durata;

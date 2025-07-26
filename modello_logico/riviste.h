@@ -10,7 +10,7 @@ public:
 private:
     Diffusione diffusion;
 public:
-    Riviste(string title, string genre, int year, double price,
+    Riviste(int id_db, string title, string genre, int year, double price,
             bool disponibile, int copies, int prest, string image,
             string author, string editor, bool read, Diffusione diff);
     virtual ~Riviste() = default;

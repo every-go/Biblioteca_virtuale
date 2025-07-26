@@ -5,7 +5,7 @@
 TEMPLATE = app
 TARGET = biblioteca_virtuale
 INCLUDEPATH += .
-QT += widgets core gui
+QT += widgets core gui sql
 
 # You can make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.

@@ -10,7 +10,7 @@ private:
     int nvolumi;        //indica se si tratta di una saga: Harry Potter per i libri
                         //oppure come tutti i manga
 public:
-    Libri(string title, string genre, int year, double price, bool disponibile,
+    Libri(int id_db, string title, string genre, int year, double price, bool disponibile,
         int copies, int prest, string image, string author, string editor,
         bool read, string language, int number);
     virtual ~Libri() = default;

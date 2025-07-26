@@ -9,7 +9,7 @@ private:
     int ntracce;
     bool ascoltato;
 public:
-    Cd(string title, string genre, int year, double price, bool disponibile,
+    Cd(int id_db, string title, string genre, int year, double price, bool disponibile,
        int copies, int prest, string image, int time, string studios,
        string artist, int ntracks, bool listened);
     virtual ~Cd() = default;

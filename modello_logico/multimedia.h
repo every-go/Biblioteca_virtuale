@@ -13,7 +13,7 @@ private:
     int durata;
     string studio;
 public:
-    Multimedia(string title, string genre, int year, double price, bool disponibile,
+    Multimedia(int id_db, string title, string genre, int year, double price, bool disponibile,
                int copies, int prest, string image, int time, string studios);
     virtual ~Multimedia() =default;
     int getDurata() const;
