@@ -3,6 +3,9 @@
 #include "interfaccia_grafica/adminarea.h"
 #include "interfaccia_grafica/librarymanager.h"
 #include "DB/dbmanager.h"
+#include "DB/dbdelete.h"
+#include "DB/dbupdate.h"
+#include "DB/dbcreate.h"
 
 // Ho incluso solo gli header necessari per evitare dipendenze ridondanti,
 // poiché le classi come Cd, Film, Manga e Riviste includono già le dipendenze comuni
@@ -31,6 +34,9 @@ int main(int argc, char *argv[])
     }
     else
         qDebug() << "Connessione al database fallita!";
+    DbDelete* dbDelete = new DbDelete(oggetti);
+    DbUpdate* dbUpdate = new DbUpdate();
+    DbCreate* dbCreate = new DbCreate();
     std::sort(oggetti.begin(), oggetti.end(), [](Biblioteca* a, Biblioteca* b){
         return a->getTitolo() < b->getTitolo();
     });
@@ -38,8 +44,12 @@ int main(int argc, char *argv[])
     UserArea* userArea = new UserArea(oggetti, &stackWidget);
     AdminArea* adminArea = new AdminArea(oggetti, &stackWidget);
     LibraryManager* library = new LibraryManager(&stackWidget);
-    dbManager->addObserver(userArea);
-    dbManager->addObserver(adminArea);
+    dbDelete->addObserver(userArea);
+    dbDelete->addObserver(adminArea);
+    dbUpdate->addObserver(userArea);
+    dbUpdate->addObserver(adminArea);
+    dbCreate->addObserver(userArea);
+    dbCreate->addObserver(adminArea);
     stackWidget.addWidget(mainWindows);
     stackWidget.addWidget(userArea);
     stackWidget.addWidget(adminArea);
@@ -48,12 +58,13 @@ int main(int argc, char *argv[])
     stackWidget.show();
 
     QObject::connect(library, &LibraryManager::handle, adminArea, &AdminArea::handlePostAction);
-    QObject::connect(library, &LibraryManager::update, dbManager, &DbManager::updateObject);
-    QObject::connect(library, &LibraryManager::newObject, dbManager, &DbManager::savenewObject);
+    QObject::connect(library, &LibraryManager::update, dbUpdate, &DbUpdate::updateObject);
+    QObject::connect(library, &LibraryManager::newObject, dbCreate, &DbCreate::createnewObject);
     QObject::connect(adminArea, &AdminArea::modifyObject, library, &LibraryManager::modifyObject);
-    QObject::connect(adminArea, &AdminArea::removeObject, dbManager, &DbManager::deleteObject);
+    QObject::connect(adminArea, &AdminArea::removeObject, dbDelete, &DbDelete::deleteObject);
     QObject::connect(adminArea, &AdminArea::createNewObject, library, &LibraryManager::createObject);
     QObject::connect(userArea, &UserArea::prenota, dbManager, &DbManager::savePrenota);
+    QObject::connect(userArea, &UserArea::restituisci, dbManager, &DbManager::saveRestituisci);
     QObject::connect(userArea, &UserArea::ascoltato, dbManager, &DbManager::saveAscoltato);
     QObject::connect(userArea, &UserArea::visto, dbManager, &DbManager::saveVisto);
     QObject::connect(userArea, &UserArea::letto, dbManager, &DbManager::saveLetto);

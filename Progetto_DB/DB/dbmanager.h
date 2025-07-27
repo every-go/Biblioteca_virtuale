@@ -47,17 +47,13 @@ class DbManager : public QObject {
       Biblioteca* loadFilm(int id, const QSqlQuery& query);
       Biblioteca* loadManga(int id, const QSqlQuery& query);
    public slots:
-      void deleteObject(int id);
       void savePrenota(int id);
+      void saveRestituisci(int id);
       void saveLetto(int id, Cartaceo* carta);
       void saveAscoltato(int id, Cd* cd);
       void saveVisto(int id, Film* film);
-      void savenewObject(Biblioteca* biblio);
-      void updateObject(int id, Biblioteca* biblio);
    public:
       DbManager() = default;
-      void addObserver(DbObserver* observer);
-      void notifyObservers(QList<Biblioteca*>& newBiblioteca);
       bool connettiAlDatabase();
       QList<Biblioteca*> loadBibliotecaFromDb();
    };

@@ -363,6 +363,7 @@ void UserArea::clearLayout(QLayout* layout) {
 }
 
 void UserArea::handlePostAction(Biblioteca* biblio) {
+    qDebug() << "Funzione handlePostAction chiamata";
     std::sort(oggetti.begin(), oggetti.end(), [](Biblioteca* a, Biblioteca* b) {
         return a->getTitolo() < b->getTitolo();
     });
@@ -662,7 +663,7 @@ void UserArea::gestisciAzione(Biblioteca* biblio, QPushButton* azione){
 }
 
 void UserArea::gestisciConnect(Biblioteca* biblio, QPushButton* prenotazione,
-                               QPushButton* restituisci, QPushButton* suggerisci)
+                               QPushButton* restituzione, QPushButton* suggerisci)
 {
     connect(prenotazione, &QPushButton::clicked, this, [this, biblio]() {
         if (biblio->prenota()) {
@@ -672,23 +673,26 @@ void UserArea::gestisciConnect(Biblioteca* biblio, QPushButton* prenotazione,
             else
                 QMessageBox::information(this, "Successo", "La prenotazione è avvenuta con successo\n"
                                                            "Rimane 1 copia disponibile");
-        } else {
+            emit prenota(biblio->getId());
+            handlePostAction(biblio);
+                                                        }
+        else {
             QMessageBox::warning(this, "Fallimento", "La prenotazione non ha avuto successo\n"
                                                      "Non ci sono copie disponibili");
         }
-        emit prenota(biblio->getId());
-        handlePostAction(biblio);
     });
 
-    connect(restituisci, &QPushButton::clicked, this, [this, biblio]() {
+    connect(restituzione, &QPushButton::clicked, this, [this, biblio]() {
         if (biblio->restituisci()) {
             QMessageBox::information(this, "Successo", "La restituzione è avvenuta con successo");
-        } else {
+            emit restituisci(biblio->getId());
+            handlePostAction(biblio);
+        }
+        else {
             QMessageBox::warning(this, "Fallimento", "La restituzione non ha avuto successo\n"
                                                      "Non ci sono prestiti in atto di quest'oggetto");
         }
-        emit prenota(biblio->getId());
-        handlePostAction(biblio);
+        
     });
 
     connect(suggerisci, &QPushButton::clicked, this, [this, biblio]() {

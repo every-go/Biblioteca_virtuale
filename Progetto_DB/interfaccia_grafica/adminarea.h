@@ -32,7 +32,7 @@ private:
                          QPushButton* elimina);
 signals:
     void createNewObject();
-    void removeObject(int id);
+    void removeObject(int id, Biblioteca* biblio);
     void modifyObject(Biblioteca* biblio);
 private slots:
     void tornaIndietro();
@@ -49,8 +49,6 @@ public:
     void clearLayout(QLayout* layout);
     void cercaDigitato(const QString& testo);
     void handlePostAction();
-public slots:
-    void slotHandle();
 };
 
 #endif // ADMINAREA_H

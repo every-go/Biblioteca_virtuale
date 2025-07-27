@@ -33,10 +33,6 @@ bool DbManager::connettiAlDatabase() {
    return true;
 }
 
-void DbManager::addObserver(DbObserver* observer){
-    observers.append(observer);
-}
-
 QList<Biblioteca*> DbManager::loadBibliotecaFromDb() {
    QList<Biblioteca*> oggetti;
    QSqlQuery query;
@@ -247,15 +243,6 @@ Biblioteca* DbManager::loadManga(int id, const QSqlQuery& query) {
                    cartbase.letto, language.toStdString(), number, concluso);
 }
 
-void DbManager::deleteObject(int id){
-   QSqlQuery query;
-   query.prepare("DELETE FROM Biblioteca WHERE id = :id");
-   query.bindValue(":id", id);
-   qDebug() << "Elimina dal database ma non dalla memoria";
-   if (!query.exec())
-      qDebug() << "Errore DELETE:" << query.lastError().text();
-}
-
 void DbManager::savePrenota(int id){
    QSqlQuery query;
    query.prepare("UPDATE Biblioteca SET copie_disponibili = copie_disponibili - 1 WHERE id = :id");
@@ -264,6 +251,41 @@ void DbManager::savePrenota(int id){
       qDebug() << "Errore nell'aggiornamento del prestito:" << query.lastError().text();
       return;
    }
+   QSqlQuery checkQuery;
+   checkQuery.prepare("SELECT copie_disponibili FROM Biblioteca WHERE id = :id");
+   checkQuery.bindValue(":id", id);
+   if (!checkQuery.exec()) {
+      qDebug() << "Errore nella query di controllo:" << checkQuery.lastError().text();
+      return;
+   }
+   if (!checkQuery.next()) {
+      qDebug() << "Nessun record trovato per l'ID:" << id;
+      return;
+   }
+   if(checkQuery.value("copie_disponibili").toInt() == 0) {
+      qDebug() << "Nessuna copia disponibile, aggiornamento della disponibilità a FALSE";
+      QSqlQuery updateQuery;
+      updateQuery.prepare("UPDATE Biblioteca SET disponibile = FALSE WHERE id = :id");
+      updateQuery.bindValue(":id", id);
+      if (!updateQuery.exec())
+         qDebug() << "Errore nell'aggiornamento della disponibilità:" << updateQuery.lastError().text();
+   }
+}
+
+void DbManager::saveRestituisci(int id){
+   QSqlQuery query;
+   query.prepare("UPDATE Biblioteca SET copie_disponibili = copie_disponibili + 1 WHERE id = :id");
+   query.bindValue(":id", id);
+   if (!query.exec()) {
+      qDebug() << "Errore nell'aggiornamento del prestito:" << query.lastError().text();
+      return;
+   }
+   qDebug() << "Copie disponibili, aggiornamento della disponibilità a TRUE";
+   QSqlQuery updateQuery;
+   updateQuery.prepare("UPDATE Biblioteca SET disponibile = TRUE WHERE id = :id");
+   updateQuery.bindValue(":id", id);
+   if (!updateQuery.exec())
+      qDebug() << "Errore nell'aggiornamento della disponibilità:" << updateQuery.lastError().text();
 }
 
 void DbManager::saveLetto(int id, Cartaceo* carta){
@@ -298,6 +320,3 @@ void DbManager::saveVisto(int id, Film* film){
       return;
    }
 }
-void DbManager::savenewObject(Biblioteca* biblio){}
-
-void DbManager::updateObject(int id, Biblioteca* biblio){}

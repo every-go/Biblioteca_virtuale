@@ -130,7 +130,7 @@ void AdminArea::onBibliotecaUpdated(const QList<Biblioteca*>& newBiblioteca){
     std::sort(oggetti.begin(), oggetti.end(), [](Biblioteca* a, Biblioteca* b){
         return a->getTitolo() < b->getTitolo();
     });
-    showTipi();
+    handlePostAction();
 }
 
 void AdminArea::tornaIndietro(){
@@ -360,7 +360,7 @@ void AdminArea::gestisciPulsanti(Biblioteca* biblio, QPushButton* modifica, QPus
         QMessageBox::StandardButton reply;
         reply = QMessageBox::question(this, "Elimina", "Vuoi procedere?", QMessageBox::Yes | QMessageBox::No);
         if(reply == QMessageBox::Yes)
-            emit removeObject(biblio->getId());
+            emit removeObject(biblio->getId(), biblio);
     });
     connect(modifica, &QPushButton::clicked, this, [this, biblio](){
         stack->setCurrentIndex(3);
@@ -369,6 +369,7 @@ void AdminArea::gestisciPulsanti(Biblioteca* biblio, QPushButton* modifica, QPus
 }
 
 void AdminArea::handlePostAction() {
+    qDebug() << "Funziona handlePostAction_admin chiamata";
     std::sort(oggetti.begin(), oggetti.end(), [](Biblioteca* a, Biblioteca* b) {
         return a->getTitolo() < b->getTitolo();
     });
@@ -381,8 +382,4 @@ void AdminArea::handlePostAction() {
         return;
     }
     showTipi();
-}
-
-void AdminArea::slotHandle(){
-    handlePostAction();
 }

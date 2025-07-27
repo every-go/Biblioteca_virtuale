@@ -44,6 +44,7 @@ private:
                          QPushButton* restituisci, QPushButton* suggerisci);
 signals:
     void prenota(int id);
+    void restituisci(int id);
     void letto(int id, Cartaceo* carta);
     void ascoltato(int id, Cd* cd);
     void visto(int id, Film* film);
