@@ -1,6 +1,8 @@
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QDebug>
+#include <QSqlQuery>
+#include <QSqlRecord>
 #include "dbmanager.h"
 
 // Ho incluso solo gli header necessari per evitare dipendenze ridondanti,
@@ -39,20 +41,23 @@ QList<Biblioteca*> DbManager::loadBibliotecaFromDb() {
    QList<Biblioteca*> oggetti;
    QSqlQuery query;
    query.prepare("SELECT * FROM BIBLIOTECA");
-   query.exec();
+   if (!query.exec()) {
+      qDebug() << "Errore nella query:" << query.lastError().text();
+      return oggetti;
+   }
    while (query.next()) {
       Biblioteca* biblio = nullptr;
-      QString type = query.value("classe").toString();
+      QString type = query.value("classe").toString().toLower();
       int id = query.value("id").toInt();
-      if(type == "Cd")
+      if(type == "cd")
          biblio = loadCd(id, query);
-      else if(type == "Film")
+      else if(type == "film")
          biblio = loadFilm(id, query);
-      else if(type == "Manga")
+      else if(type == "manga")
          biblio = loadManga(id, query);
-      else if(type == "Rivista")
+      else if(type == "riviste")
          biblio = loadRiviste(id, query);
-      else if(type == "Libro")
+      else if(type == "libri")
          biblio = loadLibri(id, query);
       else
          // Gestione di tipo sconosciuto
@@ -85,6 +90,10 @@ DbManager::CartaceoInfo DbManager::loadCartaceo(int id) {
    query.prepare("SELECT * FROM CARTACEO WHERE id = :id");
    query.bindValue(":id", id);
    query.exec();
+   if (!query.next()) {
+      qWarning() << "Nessun record trovato per l'ID:" << id;
+      return info; // o gestisci l'errore come preferisci
+   }
    info.autore = query.value("autore").toString();
    info.editore = query.value("editore").toString();
    info.letto = query.value("letto").toBool();
@@ -97,6 +106,10 @@ DbManager::MultimediaInfo DbManager::loadMultimedia(int id) {
    query.prepare("SELECT * FROM MULTIMEDIA WHERE id = :id");
    query.bindValue(":id", id);
    query.exec();
+   if (!query.next()) {
+      qWarning() << "Nessun record trovato per l'ID:" << id;
+      return info; // o gestisci l'errore come preferisci
+   }
    info.durata = query.value("durata").toInt();
    info.studio = query.value("studio").toString();
    return info;
@@ -109,9 +122,18 @@ Biblioteca* DbManager::loadFilm(int id, const QSqlQuery& query) {
    query2.prepare("SELECT * FROM FILM WHERE id = :id");
    query2.bindValue(":id", id);
    query2.exec();
-   QString regista = query.value("regista").toString();
-   QString protagonista = query.value("attore_protagonista").toString();
-   bool visto = query.value("visto").toBool();
+   QString regista;
+   QString protagonista;
+   bool visto;
+   if(query2.next()){
+      regista = query2.value("regista").toString();
+      protagonista = query2.value("attore_protagonista").toString();
+      visto = query2.value("visto").toBool();
+   }
+   else {
+      qWarning() << "Nessun film trovato con id:" << id;
+      return nullptr; // Gestione dell'errore se il film non esiste
+   }
    return new Film(base.id_db, base.titolo.toStdString(), base.genere.toStdString(), base.anno,
                    base.costo, base.disponibile, base.copie, base.nprestiti,
                    base.immagine.toStdString(), multibase.durata, multibase.studio.toStdString(),
@@ -125,9 +147,18 @@ Biblioteca* DbManager::loadCd(int id, const QSqlQuery& query) {
    query2.prepare("SELECT * FROM CD WHERE id = :id");
    query2.bindValue(":id", id);
    query2.exec();
-   QString artista = query.value("artista").toString();
-   bool ascoltato = query.value("ascoltato").toBool();
-   int ntracce = query.value("ntracce").toInt();
+   QString artista;
+   bool ascoltato;
+   int ntracce;
+   if(query2.next()){
+      artista = query2.value("artista").toString();
+      ascoltato = query2.value("ascoltato").toBool();
+      ntracce = query2.value("ntracce").toInt();
+   }
+   else {
+      qWarning() << "Nessun CD trovato con id:" << id;
+      return nullptr; // Gestione dell'errore se il CD non esiste
+   }
    return new Cd(base.id_db, base.titolo.toStdString(), base.genere.toStdString(), base.anno,
                    base.costo, base.disponibile, base.copie, base.nprestiti,
                    base.immagine.toStdString(), multibase.durata, multibase.studio.toStdString(),
@@ -138,23 +169,29 @@ Biblioteca* DbManager::loadRiviste(int id, const QSqlQuery& query) {
    DbManager::BibliotecaInfo base = loadBiblioteca(query);
    DbManager::CartaceoInfo cartbase = loadCartaceo(base.id_db);
    QSqlQuery query2;
-   query2.prepare("SELECT * FROM RIVISTA WHERE id = :id");
+   query2.prepare("SELECT * FROM RIVISTE WHERE id = :id");
    query2.bindValue(":id", id);
    query2.exec();
-   QString diffusione = query.value("diffusion").toString();
    Riviste::Diffusione diff;
-   if (diffusione == "Provinciale")
-      diff = Riviste::Provinciale;
-   else if (diffusione == "Regionale")
-      diff = Riviste::Regionale;
-   else if (diffusione == "Nazionale")
-      diff = Riviste::Nazionale;
-   else if (diffusione == "Internazionale")
-      diff = Riviste::Internazionale;
+   if(query2.next()){
+      QString diffusione = query2.value("diffusion").toString();
+      if (diffusione == "Provinciale")
+         diff = Riviste::Provinciale;
+      else if (diffusione == "Regionale")
+         diff = Riviste::Regionale;
+      else if (diffusione == "Nazionale")
+         diff = Riviste::Nazionale;
+      else if (diffusione == "Internazionale")
+         diff = Riviste::Internazionale;
+      else{
+         //valore default
+         diff= Riviste::Provinciale;
+         qWarning() << "Nessun tipo di diffusione presente";
+      }
+   }
    else{
-      //valore default
-      diff= Riviste::Provinciale;
-      qWarning() << "Nessun tipo di diffusione presente";
+      qWarning() << "Nessun record trovato per l'ID:" << id;
+      return nullptr; // o gestisci l'errore come preferisci
    }
    return new Riviste(base.id_db, base.titolo.toStdString(), base.genere.toStdString(), base.anno,
                    base.costo, base.disponibile, base.copie, base.nprestiti,
@@ -166,11 +203,19 @@ Biblioteca* DbManager::loadLibri(int id, const QSqlQuery& query) {
    DbManager::BibliotecaInfo base = loadBiblioteca(query);
    DbManager::CartaceoInfo cartbase = loadCartaceo(base.id_db);
    QSqlQuery query2;
-   query2.prepare("SELECT * FROM LIBRO WHERE id = :id");
+   query2.prepare("SELECT * FROM LIBRI WHERE id = :id");
    query2.bindValue(":id", id);
    query2.exec();
-   QString language = query.value("lingua_originale").toString();
-   int number = query.value("nvolume").toInt();
+   QString language;
+   int number;
+   if(query2.next()){
+      language = query2.value("linguaoriginale").toString();
+      number = query2.value("nvolumi").toInt();
+   }
+   else {
+      qWarning() << "Nessun libro trovato con id:" << id;
+      return nullptr; // Gestione dell'errore se il libro non esiste
+   }
    return new Libri(base.id_db, base.titolo.toStdString(), base.genere.toStdString(), base.anno,
                    base.costo, base.disponibile, base.copie, base.nprestiti,
                    base.immagine.toStdString(), cartbase.autore.toStdString(), cartbase.editore.toStdString(),
@@ -181,12 +226,21 @@ Biblioteca* DbManager::loadManga(int id, const QSqlQuery& query) {
    DbManager::BibliotecaInfo base = loadBiblioteca(query);
    DbManager::CartaceoInfo cartbase = loadCartaceo(base.id_db);
    QSqlQuery query2;
-   query2.prepare("SELECT * FROM MANGA WHERE id = :id");
+   query2.prepare("SELECT * FROM MANGA M JOIN LIBRI L ON L.id = M.id WHERE M.id = :id");
    query2.bindValue(":id", id);
    query2.exec();
-   QString language = query.value("lingua_originale").toString();
-   int number = query.value("nvolume").toInt();
-   bool concluso = query.value("concluso").toBool();
+   QString language;
+   int number;
+   bool concluso;
+   if(query2.next()){
+      language = query2.value("linguaoriginale").toString();
+      number = query2.value("nvolumi").toInt();
+      concluso = query2.value("concluso").toBool();
+   }
+   else {
+      qWarning() << "Nessun manga trovato con id:" << id;
+      return nullptr; // Gestione dell'errore se il manga non esiste
+   }
    return new Manga(base.id_db, base.titolo.toStdString(), base.genere.toStdString(), base.anno,
                    base.costo, base.disponibile, base.copie, base.nprestiti,
                    base.immagine.toStdString(), cartbase.autore.toStdString(), cartbase.editore.toStdString(),
@@ -197,6 +251,7 @@ void DbManager::deleteObject(int id){
    QSqlQuery query;
    query.prepare("DELETE FROM Biblioteca WHERE id = :id");
    query.bindValue(":id", id);
+   qDebug() << "Elimina dal database ma non dalla memoria";
    if (!query.exec())
       qDebug() << "Errore DELETE:" << query.lastError().text();
 }
@@ -210,6 +265,7 @@ void DbManager::savePrenota(int id){
       return;
    }
 }
+
 void DbManager::saveLetto(int id, Cartaceo* carta){
    QSqlQuery query;
    query.prepare("UPDATE Cartaceo SET letto = :letto WHERE id = :id");
@@ -220,6 +276,7 @@ void DbManager::saveLetto(int id, Cartaceo* carta){
       return;
    }
 }
+
 void DbManager::saveAscoltato(int id, Cd* cd){
    QSqlQuery query;
    query.prepare("UPDATE Cd SET ascoltato = :ascoltato WHERE id = :id");
@@ -230,6 +287,7 @@ void DbManager::saveAscoltato(int id, Cd* cd){
       return;
    }
 }
+
 void DbManager::saveVisto(int id, Film* film){
    QSqlQuery query;
    query.prepare("UPDATE Film SET visto = :visto WHERE id = :id");
@@ -241,4 +299,5 @@ void DbManager::saveVisto(int id, Film* film){
    }
 }
 void DbManager::savenewObject(Biblioteca* biblio){}
+
 void DbManager::updateObject(int id, Biblioteca* biblio){}

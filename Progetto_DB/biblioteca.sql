@@ -65,10 +65,10 @@ CREATE TABLE Riviste(
 
 CREATE TABLE Libri(
    id INTEGER PRIMARY KEY,
-   lingua_originale TEXT,
-   nvolume INTEGER NOT NULL,
+   linguaoriginale TEXT,
+   nvolumi INTEGER NOT NULL,
    FOREIGN KEY (id) REFERENCES Cartaceo(id) ON DELETE CASCADE ON UPDATE CASCADE,
-   CHECK (nvolume > 0)
+   CHECK (nvolumi > 0)
 );
 
 CREATE TABLE Manga(
@@ -122,7 +122,7 @@ INSERT INTO Biblioteca(id, classe, titolo, genere, anno, costo, disponibile, cop
 VALUES (2,  'Manga', 'Bleach', 'Shonen', 2001, 5.20, TRUE, 3, 3, ':/images/bleach.png');
 INSERT INTO Cartaceo(id, autore, editore, letto)
 VALUES (2, 'Tite Kubo', 'Shueisha', TRUE);
-INSERT INTO Libri(id, lingua_originale, nvolume)
+INSERT INTO Libri(id, linguaoriginale, nvolumi)
 VALUES (2, 'Giapponese', 69);
 INSERT INTO Manga(id, concluso)
 VALUES (2, TRUE);
@@ -148,7 +148,7 @@ INSERT INTO Biblioteca(id, classe, titolo, genere, anno, costo, disponibile, cop
 VALUES (5, 'Libri', 'Harry Potter', 'Romanzo', 1997, 7.99, TRUE, 5, 5, ':/images/harry_potter.png');
 INSERT INTO Cartaceo(id, autore, editore, letto)
 VALUES (5, 'J. K. Rowling', 'Bloomsbury Publishing', FALSE);
-INSERT INTO Libri(id, lingua_originale, nvolume)
+INSERT INTO Libri(id, linguaoriginale, nvolumi)
 VALUES (5, 'Inglese', 7);
 
 -- ID 6: Libri
@@ -156,7 +156,7 @@ INSERT INTO Biblioteca(id, classe, titolo, genere, anno, costo, disponibile, cop
 VALUES (6, 'Libri', 'I ragazzi della via Pal', 'Romanzo', 1906, 7.99, TRUE, 5, 5, ':/images/via_pal.png');
 INSERT INTO Cartaceo(id, autore, editore, letto)
 VALUES (6, 'Ferenc Molnár', 'Giunti', TRUE);
-INSERT INTO Libri(id, lingua_originale, nvolume)
+INSERT INTO Libri(id, linguaoriginale, nvolumi)
 VALUES (6, 'Ungherese', 1);
 
 -- ID 7: Libri (duplicato titolo ma differente immagine)
@@ -164,7 +164,7 @@ INSERT INTO Biblioteca(id, classe, titolo, genere, anno, costo, disponibile, cop
 VALUES (7, 'Libri', 'I ragazzi della via Pal', 'Romanzo', 1906, 7.99, TRUE, 5, 5, ':/images/via_pal2.png');
 INSERT INTO Cartaceo(id, autore, editore, letto)
 VALUES (7, 'Ferenc Molnár', 'Giunti', TRUE);
-INSERT INTO Libri(id, lingua_originale, nvolume)
+INSERT INTO Libri(id, linguaoriginale, nvolumi)
 VALUES (7, 'Ungherese', 1);
 
 -- ID 8: Libri
@@ -172,7 +172,7 @@ INSERT INTO Biblioteca(id, classe, titolo, genere, anno, costo, disponibile, cop
 VALUES (8, 'Libri', 'L''isola del tesoro', 'Romanzo', 1883, 7.99, TRUE, 3, 3, ':/images/isola_tesoro.png');
 INSERT INTO Cartaceo(id, autore, editore, letto)
 VALUES (8, 'Robert Louis Stevenson', 'Giunti', TRUE);
-INSERT INTO Libri(id, lingua_originale, nvolume)
+INSERT INTO Libri(id, linguaoriginale, nvolumi)
 VALUES (8, 'Inglese', 1);
 
 -- ID 9: CD
@@ -196,7 +196,7 @@ INSERT INTO Biblioteca(id, classe, titolo, genere, anno, costo, disponibile, cop
 VALUES (11, 'Libri', 'La Divina Commedia', 'Poema', 1472, 9.99, TRUE, 1472, 1472, ':/images/divina.png');
 INSERT INTO Cartaceo(id, autore, editore, letto)
 VALUES (11, 'Dante Alighieri', '', FALSE);
-INSERT INTO Libri(id, lingua_originale, nvolume)
+INSERT INTO Libri(id, linguaoriginale, nvolumi)
 VALUES (11, 'Volgare fiorentino', 1);
 
 -- ID 12: Manga
@@ -204,7 +204,7 @@ INSERT INTO Biblioteca(id, classe, titolo, genere, anno, costo, disponibile, cop
 VALUES (12, 'Manga', 'One Piece', 'Shonen', 1999, 5.20, TRUE, 3, 3, ':/images/onepiece.png');
 INSERT INTO Cartaceo(id, autore, editore, letto)
 VALUES (12, 'Eiichiro Oda', 'Shueisha', TRUE);
-INSERT INTO Libri(id, lingua_originale, nvolume)
+INSERT INTO Libri(id, linguaoriginale, nvolumi)
 VALUES (12, 'Giapponese', 110);
 INSERT INTO Manga(id, concluso)
 VALUES (12, FALSE);
@@ -254,7 +254,7 @@ INSERT INTO Biblioteca(id, classe, titolo, genere, anno, costo, disponibile, cop
 VALUES (18, 'Manga', 'Vinland Saga', 'Seinen', 2005, 5.20, TRUE, 3, 3, ':/images/vinland_saga2.png');
 INSERT INTO Cartaceo(id, autore, editore, letto)
 VALUES (18, 'Makoto Yukimura', 'Kodansha', TRUE);
-INSERT INTO Libri(id, lingua_originale, nvolume)
+INSERT INTO Libri(id, linguaoriginale, nvolumi)
 VALUES (18, 'Giapponese', 28);
 INSERT INTO Manga(id, concluso)
 VALUES (18, FALSE);
@@ -264,7 +264,7 @@ INSERT INTO Biblioteca(id, classe, titolo, genere, anno, costo, disponibile, cop
 VALUES (19, 'Manga', 'Vinland Saga', 'Seinen', 2006, 5.20, TRUE, 3, 3, ':/images/vinland_saga.png');
 INSERT INTO Cartaceo(id, autore, editore, letto)
 VALUES (19, 'Makoto Yukimura', 'Kodansha', TRUE);
-INSERT INTO Libri(id, lingua_originale, nvolume)
+INSERT INTO Libri(id, linguaoriginale, nvolumi)
 VALUES (19, 'Giapponese', 28);
 INSERT INTO Manga(id, concluso)
 VALUES (19, FALSE);
