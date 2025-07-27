@@ -202,7 +202,7 @@ void UserArea::showAll() {
 
         QPushButton* prenota = new QPushButton("Prenota", widget);
         prenota->setStyleSheet("QPushButton{"
-                               "background-color: white;"
+                               "background-color: green;"
                                "}"
                                "QPushButton::hover{"
                                "background-color:blue;"
@@ -212,7 +212,7 @@ void UserArea::showAll() {
                                "}");
         QPushButton* restituisci = new QPushButton("Restituisci", widget);
         restituisci->setStyleSheet("QPushButton{"
-                                   "background-color: white;"
+                                   "background-color: green;"
                                    "}"
                                    "QPushButton::hover{"
                                    "background-color:blue;"
@@ -222,7 +222,7 @@ void UserArea::showAll() {
                                    "}");
         QPushButton* suggerisci = new QPushButton("Simili", widget);
         suggerisci->setStyleSheet("QPushButton{"
-                                  "background-color: white;"
+                                  "background-color: green;"
                                   "}"
                                   "QPushButton::hover{"
                                   "background-color:blue;"
@@ -232,7 +232,7 @@ void UserArea::showAll() {
                                   "}");
         QPushButton* azione = new QPushButton(widget);
         azione->setStyleSheet("QPushButton{"
-                              "background-color: white;"
+                              "background-color: green;"
                               "}"
                               "QPushButton::hover{"
                               "background-color:blue;"
@@ -287,7 +287,7 @@ void UserArea::showTipi() {
             QHBoxLayout* buttonLayout = new QHBoxLayout();
             QPushButton* prenota = new QPushButton("Prenota", widget);
             prenota->setStyleSheet("QPushButton{"
-                                   "background-color: white;"
+                                   "background-color: green;"
                                    "}"
                                    "QPushButton::hover{"
                                    "background-color:blue;"
@@ -297,7 +297,7 @@ void UserArea::showTipi() {
                                    "}");
             QPushButton* restituisci = new QPushButton("Restituisci", widget);
             restituisci->setStyleSheet("QPushButton{"
-                                       "background-color: white;"
+                                       "background-color: green;"
                                        "}"
                                        "QPushButton::hover{"
                                        "background-color:blue;"
@@ -307,7 +307,7 @@ void UserArea::showTipi() {
                                        "}");
             QPushButton* suggerisci = new QPushButton("Simili", widget);
             suggerisci->setStyleSheet("QPushButton{"
-                                      "background-color: white;"
+                                      "background-color: green;"
                                       "}"
                                       "QPushButton::hover{"
                                       "background-color:blue;"
@@ -317,7 +317,7 @@ void UserArea::showTipi() {
                                       "}");
             QPushButton* azione = new QPushButton(widget);
             azione->setStyleSheet("QPushButton{"
-                                  "background-color: white;"
+                                  "background-color: green;"
                                   "}"
                                   "QPushButton::hover{"
                                   "background-color:blue;"
@@ -426,7 +426,7 @@ void UserArea::cercaDigitato(const QString& testo){
             QHBoxLayout* buttonLayout = new QHBoxLayout();
             QPushButton* prenota = new QPushButton("Prenota", widget);
             prenota->setStyleSheet("QPushButton{"
-                                   "background-color: white;"
+                                   "background-color: green;"
                                    "}"
                                    "QPushButton::hover{"
                                    "background-color:blue;"
@@ -436,7 +436,7 @@ void UserArea::cercaDigitato(const QString& testo){
                                    "}");
             QPushButton* restituisci = new QPushButton("Restituisci", widget);
             restituisci->setStyleSheet("QPushButton{"
-                                       "background-color: white;"
+                                       "background-color: green;"
                                        "}"
                                        "QPushButton::hover{"
                                        "background-color:blue;"
@@ -446,7 +446,7 @@ void UserArea::cercaDigitato(const QString& testo){
                                        "}");
             QPushButton* suggerisci = new QPushButton("Simili", widget);
             suggerisci->setStyleSheet("QPushButton{"
-                                      "background-color: white;"
+                                      "background-color: green;"
                                       "}"
                                       "QPushButton::hover{"
                                       "background-color:blue;"
@@ -456,7 +456,7 @@ void UserArea::cercaDigitato(const QString& testo){
                                       "}");
             QPushButton* azione = new QPushButton(widget);
             azione->setStyleSheet("QPushButton{"
-                                  "background-color: white;"
+                                  "background-color: green;"
                                   "}"
                                   "QPushButton::hover{"
                                   "background-color:blue;"
@@ -533,7 +533,7 @@ void UserArea::suggerisciSimili(Biblioteca* biblio){
             QHBoxLayout* buttonLayout = new QHBoxLayout();
             QPushButton* prenota = new QPushButton("Prenota", widget);
             prenota->setStyleSheet("QPushButton{"
-                                   "background-color: white;"
+                                   "background-color: green;"
                                    "}"
                                    "QPushButton::hover{"
                                    "background-color:blue;"
@@ -543,7 +543,7 @@ void UserArea::suggerisciSimili(Biblioteca* biblio){
                                    "}");
             QPushButton* restituisci = new QPushButton("Restituisci", widget);
             restituisci->setStyleSheet("QPushButton{"
-                                       "background-color: white;"
+                                       "background-color: green;"
                                        "}"
                                        "QPushButton::hover{"
                                        "background-color:blue;"
@@ -553,7 +553,7 @@ void UserArea::suggerisciSimili(Biblioteca* biblio){
                                        "}");
             QPushButton* suggerisci = new QPushButton("Simili", widget);
             suggerisci->setStyleSheet("QPushButton{"
-                                      "background-color: white;"
+                                      "background-color: green;"
                                       "}"
                                       "QPushButton::hover{"
                                       "background-color:blue;"
@@ -563,7 +563,7 @@ void UserArea::suggerisciSimili(Biblioteca* biblio){
                                       "}");
             QPushButton* azione = new QPushButton(widget);
             azione->setStyleSheet("QPushButton{"
-                                  "background-color: white;"
+                                  "background-color: green;"
                                   "}"
                                   "QPushButton::hover{"
                                   "background-color:blue;"

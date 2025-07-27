@@ -339,7 +339,7 @@ void AdminArea::cercaDigitato(const QString& testo){
 void AdminArea::gestisciPulsanti(Biblioteca* biblio, QPushButton* modifica, QPushButton* elimina)
 {
     modifica->setStyleSheet("QPushButton{"
-                            "background-color: white;"
+                            "background-color: green;"
                             "}"
                             "QPushButton::hover{"
                             "background-color:blue;"
@@ -348,7 +348,7 @@ void AdminArea::gestisciPulsanti(Biblioteca* biblio, QPushButton* modifica, QPus
                             "background-color:red;"
                             "}");
     elimina->setStyleSheet("QPushButton{"
-                           "background-color: white;"
+                           "background-color: red;"
                            "}"
                            "QPushButton::hover{"
                            "background-color:blue;"
