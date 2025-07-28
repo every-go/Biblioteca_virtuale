@@ -88,16 +88,17 @@ void LibraryManager::createObject(){
     selezione->addItems(classNames);
     selezione->setCurrentText("Seleziona un'opzione");
     selezione->setStyleSheet("QComboBox{"
-                             "background-color:white;"
+                             "background-color: green;"
+                             "color: black;"
                              "}"
                              "QComboBox QAbstractItemView {"
-                             "background-color: white;"
+                             "background-color: green;"
                              "color: black;"
                              "selection-background-color: lightblue;"
-                             "selection-color: black;"
+                             "selection-color: white;"
                              "}"
                              "QComboBox::item:hover {"
-                             "background-color: lightblue;"
+                             "background-color: green;"
                              "color: black;"
                              "}"
                             );
@@ -152,7 +153,7 @@ void LibraryManager::modifyObject(Biblioteca* biblio){
     clearLayout(layout);
     QPushButton* salva = new QPushButton("Salva", scrollContent);
     salva->setStyleSheet("QPushButton{"
-                        "background-color: white;"
+                        "background-color: green;"
                         "}"
                          "QPushButton::pressed{"
                          "background-color: red;"
@@ -246,11 +247,13 @@ void LibraryManager::menuBiblio(Biblioteca* biblio){
                     "<b>Titolo</b></div>");
     titolo->setStyleSheet("QLabel{"
                           "background-color: lightblue;"
+                          "color: black;"
                           "}");
     QLineEdit* menuTitolo = new QLineEdit(scrollContent);
     menuTitolo->setAlignment(Qt::AlignCenter);
     menuTitolo->setStyleSheet("QLineEdit{"
                               "background-color: lightgray;"
+                              "color: black;"
                               "}");
     menuTitolo->setText(biblio?
                         QString::fromStdString(biblio->getTitolo()) : "");
@@ -263,11 +266,13 @@ void LibraryManager::menuBiblio(Biblioteca* biblio){
                     "<b>Genere</b></div>");
     genere->setStyleSheet("QLabel{"
                           "background-color: lightblue;"
+                          "color: black;"
                           "}");
     QLineEdit* menuGenere = new QLineEdit(scrollContent);
     menuGenere->setAlignment(Qt::AlignCenter);
     menuGenere->setStyleSheet("QLineEdit{"
                               "background-color: lightgray;"
+                              "color: black;"
                               "}");
     menuGenere->setText(biblio?
                         QString::fromStdString(biblio->getGenere()) : "");
@@ -280,6 +285,7 @@ void LibraryManager::menuBiblio(Biblioteca* biblio){
                     "<b>Anno</b></div>");
     anno->setStyleSheet("QLabel{"
                           "background-color: lightblue;"
+                          "color: black;"
                           "}");
     QSpinBox* menuAnno = new QSpinBox(scrollContent);
     menuAnno->setMaximum(INT_MAX);
@@ -287,6 +293,7 @@ void LibraryManager::menuBiblio(Biblioteca* biblio){
     menuAnno->setAlignment(Qt::AlignCenter);
     menuAnno->setStyleSheet("QSpinBox{"
                              "background-color: lightgray;"
+                             "color: black;"
                              "}");
     menuAnno->setValue(biblio?
                        biblio->getAnno() : 0);
@@ -299,6 +306,7 @@ void LibraryManager::menuBiblio(Biblioteca* biblio){
                   "<b>Costo</b></div>");
     costo->setStyleSheet("QLabel{"
                           "background-color: lightblue;"
+                          "color: black;"
                           "}");
     QDoubleSpinBox* menuCosto = new QDoubleSpinBox(scrollContent);
     menuCosto->setMaximum(DBL_MAX);
@@ -309,6 +317,7 @@ void LibraryManager::menuBiblio(Biblioteca* biblio){
     menuCosto->setSingleStep(0.01);
     menuCosto->setStyleSheet("QDoubleSpinBox{"
                              "background-color: lightgray;"
+                             "color: black;"
                              "}");
     menuWidgets["Costo"] = menuCosto;
     modifyLayout->addWidget(costo);
@@ -321,6 +330,7 @@ void LibraryManager::menuBiblio(Biblioteca* biblio){
                              "<b>Vuoi impostarlo disponibile?</b></div>");
         disponibile->setStyleSheet("QLabel{"
                                    "background-color: lightblue; "
+                                   "color: black;"
                                    "}");
         QComboBox* menuDisponibile = new QComboBox(scrollContent);
         menuDisponibile->setEditable(true);
@@ -328,6 +338,7 @@ void LibraryManager::menuBiblio(Biblioteca* biblio){
         menuDisponibile->addItems({"Disponibile","Non disponibile"});
         menuDisponibile->setStyleSheet("QComboBox{"
                                        "background-color: lightgray; "
+                                       "color: black;"
                                        "}");
         menuDisponibile->setCurrentText("Disponibile");
         menuWidgets["Disponibile"] = menuDisponibile;
@@ -340,10 +351,12 @@ void LibraryManager::menuBiblio(Biblioteca* biblio){
                        "<b>Numero copie</b></div>");
         copie->setStyleSheet("QLabel{"
                              "background-color: lightblue; "
+                             "color: black;"
                              "}");
         QSpinBox* menuCopie = new QSpinBox(scrollContent);
         menuCopie->setStyleSheet("QSpinBox{"
                                  "background-color: lightgray; "
+                                 "color: black;"
                                  "}");
         menuCopie->setAlignment(Qt::AlignCenter);
         connect(menuDisponibile, &QComboBox::currentTextChanged, this, [this, menuCopie](const QString& isDisponibile) {
@@ -367,6 +380,7 @@ void LibraryManager::menuBiblio(Biblioteca* biblio){
                           "<b>Numero prestiti</b></div>");
         prestiti->setStyleSheet("QLabel{"
                                 "background-color: lightblue;"
+                                "color: black;"
                                 "}");
         QSpinBox* menuPrestiti = new QSpinBox(scrollContent);
         menuPrestiti->setMinimum(1);
@@ -376,6 +390,7 @@ void LibraryManager::menuBiblio(Biblioteca* biblio){
         });
         menuPrestiti->setStyleSheet("QSpinBox{"
                                     "background-color: lightgray;"
+                                    "color: black;"
                                     "}");
         menuPrestiti->setAlignment(Qt::AlignCenter);
         menuWidgets["Prestiti"] = menuPrestiti;
@@ -388,12 +403,14 @@ void LibraryManager::menuBiblio(Biblioteca* biblio){
                           "<b>Numero prestiti</b></div>");
         prestiti->setStyleSheet("QLabel{"
                                 "background-color: lightblue;"
+                                "color: black;"
                                 "}");
         QSpinBox* menuPrestiti = new QSpinBox(scrollContent);
         menuPrestiti->setMaximum(INT_MAX);
         menuPrestiti->setMinimum(biblio->getCopie());
         menuPrestiti->setStyleSheet("QSpinBox{"
                                     "background-color: lightgray;"
+                                    "color: black;"
                                     "}");
         menuPrestiti->setAlignment(Qt::AlignCenter);
         menuWidgets["Prestiti"] = menuPrestiti;
@@ -405,11 +422,13 @@ void LibraryManager::menuBiblio(Biblioteca* biblio){
                       "<b>Inserisci l'immagine</b></div>");
     immagine->setStyleSheet("QLabel{"
                             "background-color: lightblue;"
+                            "color: black;"
                             "}");
     QPushButton* menuImmagine = new QPushButton(scrollContent);
     menuImmagine->setText(biblio? "Modifica immagine" : "Scegli immagine");
     menuImmagine->setStyleSheet("QPushButton{"
                                 "background-color: lightgray;"
+                                "color: black;"
                                 "}"
                                 "QPushButton::hover{"
                                 "background-color: green"
@@ -436,11 +455,13 @@ void LibraryManager::menuCarta(Cartaceo* carta){
                     "<b>Autore</b></div>");
     autore->setStyleSheet("QLabel{"
                           "background-color: lightblue; "
+                          "color: black;"
                           "}");
     QLineEdit* menuAutore = new QLineEdit(scrollContent);
     menuAutore->setAlignment(Qt::AlignCenter);
     menuAutore->setStyleSheet("QLineEdit{"
                               "background-color: lightgray; "
+                              "color: black;"
                               "}");
     menuAutore->setText(carta ?
                             QString::fromStdString(carta->getAutore()) : "");
@@ -453,11 +474,13 @@ void LibraryManager::menuCarta(Cartaceo* carta){
                      "<b>Editore</b></div>");
     editore->setStyleSheet("QLabel{"
                            "background-color: lightblue; "
+                           "color: black;"
                            "}");
     QLineEdit* menuEditore = new QLineEdit(scrollContent);
     menuEditore->setAlignment(Qt::AlignCenter);
     menuEditore->setStyleSheet("QLineEdit{"
                                "background-color: lightgray; "
+                               "color: black;"
                                "}");
     menuEditore->setText(carta ?
                              QString::fromStdString(carta->getEditore()) : "");
@@ -473,6 +496,7 @@ void LibraryManager::menuMulti(Multimedia* multi){
                     "<b>Durata</b></div>");
     durata->setStyleSheet("QLabel{"
                           "background-color: lightblue; "
+                          "color: black;"
                           "}");
     QSpinBox* menuDurata = new QSpinBox(scrollContent);
     menuDurata->setMaximum(INT_MAX);
@@ -480,6 +504,7 @@ void LibraryManager::menuMulti(Multimedia* multi){
     menuDurata->setAlignment(Qt::AlignCenter);
     menuDurata->setStyleSheet("QSpinBox{"
                               "background-color: lightgray;"
+                              "color: black;"
                               "}");
     menuDurata->setValue(multi ? multi->getDurata() : 60);
     menuWidgets["Durata"] = menuDurata;
@@ -491,11 +516,13 @@ void LibraryManager::menuMulti(Multimedia* multi){
                     "<b>Studio</b></div>");
     studio->setStyleSheet("QLabel{"
                           "background-color: lightblue; "
+                          "color: black;"
                           "}");
     QLineEdit* menuStudio = new QLineEdit(scrollContent);
     menuStudio->setAlignment(Qt::AlignCenter);
     menuStudio->setStyleSheet("QLineEdit{"
                               "background-color: lightgray; "
+                              "color: black;"
                               "}");
     menuStudio->setText(multi ?
                             QString::fromStdString(multi->getStudio()) : "");
@@ -515,6 +542,7 @@ void LibraryManager::menuRiviste(Riviste* rivista){
                             "<b>Modifica la diffusione</b></div>");
     diffusione->setStyleSheet("QLabel{"
                             "background-color: lightblue; "
+                            "color: black;"
                             "}");
     QComboBox* menuDiffusione = new QComboBox(scrollContent);
     menuDiffusione->setEditable(true);
@@ -522,6 +550,7 @@ void LibraryManager::menuRiviste(Riviste* rivista){
     menuDiffusione->addItems({"Provinciale","Regionale","Nazionale","Internazionale"});
     menuDiffusione->setStyleSheet("QComboBox{"
                                 "background-color: lightgray; "
+                                "color: black;"
                                 "}");
     if(rivista)
         menuDiffusione->setCurrentText(
@@ -540,11 +569,13 @@ void LibraryManager::menuLibri(Libri* libro){
                              "<b>Lingua originale</b></div>");
     linguaOriginale->setStyleSheet("QLabel{"
                                    "background-color: lightblue; "
+                                   "color: black;"
                                    "}");
     QLineEdit* menuLinguaOriginale = new QLineEdit(scrollContent);
     menuLinguaOriginale->setAlignment(Qt::AlignCenter);
     menuLinguaOriginale->setStyleSheet("QLineEdit{"
                                        "background-color: lightgray; "
+                                       "color: black;"
                                        "}");
     menuLinguaOriginale->setText(libro ?
                                      QString::fromStdString(libro->getLanguage()) : "");
@@ -557,6 +588,7 @@ void LibraryManager::menuLibri(Libri* libro){
                      "<b>Numero volumi</b></div>");
     nvolumi->setStyleSheet("QLabel{"
                            "background-color: lightblue;"
+                           "color: black;"
                            "}");
     QSpinBox* menuNvolumi = new QSpinBox(scrollContent);
     menuNvolumi->setMaximum(INT_MAX);
@@ -564,6 +596,7 @@ void LibraryManager::menuLibri(Libri* libro){
     menuNvolumi->setAlignment(Qt::AlignCenter);
     menuNvolumi->setStyleSheet("QSpinBox{"
                                "background-color: lightgray;"
+                               "color: black;"
                                "}");
     menuNvolumi->setValue(libro ? libro->getNvolumi() : 1);
     menuWidgets["Nvolumi"] = menuNvolumi;
@@ -579,6 +612,7 @@ void LibraryManager::menuManga(Manga* manga){
                       "<b>Concluso?</b></div>");
     concluso->setStyleSheet("QLabel{"
                             "background-color: lightblue; "
+                            "color: black;"
                             "}");
     QComboBox* menuConcluso = new QComboBox(scrollContent);
     menuConcluso->setEditable(true);
@@ -586,6 +620,7 @@ void LibraryManager::menuManga(Manga* manga){
     menuConcluso->addItems({"Concluso", "Non concluso"});
     menuConcluso->setStyleSheet("QComboBox{"
                                 "background-color: lightgray; "
+                                "color: black;"
                                 "}");
     if(manga)
         menuConcluso->setCurrentText(manga->getConcluso() ? "Concluso" : "Non concluso");
@@ -603,11 +638,13 @@ void LibraryManager::menuFilm(Film* film){
                      "<b>Regista</b></div>");
     regista->setStyleSheet("QLabel{"
                            "background-color: lightblue; "
+                           "color: black;"
                            "}");
     QLineEdit* menuRegista = new QLineEdit(scrollContent);
     menuRegista->setAlignment(Qt::AlignCenter);
     menuRegista->setStyleSheet("QLineEdit{"
                                "background-color: lightgray; "
+                               "color: black;"
                                "}");
     menuRegista->setText(film ?
                              QString::fromStdString(film->getRegista()) : "");
@@ -620,11 +657,13 @@ void LibraryManager::menuFilm(Film* film){
                                 "<b>Attore protagonista</b></div>");
     attoreProtagonista->setStyleSheet("QLabel{"
                                       "background-color: lightblue; "
+                                      "color: black;"
                                       "}");
     QLineEdit* menuAttoreProtagonista = new QLineEdit(scrollContent);
     menuAttoreProtagonista->setAlignment(Qt::AlignCenter);
     menuAttoreProtagonista->setStyleSheet("QLineEdit{"
                                           "background-color: lightgray; "
+                                          "color: black;"
                                           "}");
     menuAttoreProtagonista->setText(film ?
                                         QString::fromStdString(film->getAttore()) : "");
@@ -640,11 +679,13 @@ void LibraryManager::menuCd(Cd* cd){
                      "<b>Artista</b></div>");
     artista->setStyleSheet("QLabel{"
                            "background-color: lightblue; "
+                           "color: black;"
                            "}");
     QLineEdit* menuArtista = new QLineEdit(scrollContent);
     menuArtista->setAlignment(Qt::AlignCenter);
     menuArtista->setStyleSheet("QLineEdit{"
                                "background-color: lightgray; "
+                               "color: black;"
                                "}");
     menuArtista->setText(cd ?
                              QString::fromStdString(cd->getArtista()) : "");
@@ -657,6 +698,7 @@ void LibraryManager::menuCd(Cd* cd){
                      "<b>Numero tracce</b></div>");
     ntracce->setStyleSheet("QLabel{"
                            "background-color: lightblue;"
+                           "color: black;"
                            "}");
     QSpinBox* menuNtracce = new QSpinBox(scrollContent);
     menuNtracce->setMaximum(INT_MAX);
@@ -664,6 +706,7 @@ void LibraryManager::menuCd(Cd* cd){
     menuNtracce->setAlignment(Qt::AlignCenter);
     menuNtracce->setStyleSheet("QSpinBox{"
                                "background-color: lightgray;"
+                               "color: black;"
                                "}");
     menuNtracce->setValue(cd ? cd->getTracce() : 10);
     menuWidgets["Ntracce"] = menuNtracce;

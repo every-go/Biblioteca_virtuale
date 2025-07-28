@@ -6,7 +6,9 @@ Comprensivo di .gitignore funzionante
 
 Se trovate bug/problemi non fate problemi ad aprire una issue, grazie
 
+# Doppio progetto
 
+Ho deciso di fare un doppio progetto, quello 'ProgettoJSON' è quello richiesto per il corso 'Programmazione ad Oggetti' nell'A.A 2024/2025, invece il 'ProgettoDB' è stato completato dopo aver seguito il corso 'Base di Dati' e, invece di usare un file JSON, usa un DB con PostgreSQL (non testato con MySQL, SQLite ecc). Ovviamente è compreso il file .sql per creare il server necessario, modificare le macro (gli #DEFINE) presenti in _dbmanager.cpp_ con le proprie credenziali per far funzionare tutto correttamente. L'interfaccia grafica non subisce modifiche rispetto al progettoJSON, tutto ciò che c'è di diverso è nella parte back-end piuttosto che nella front-end.
 
 ## 🐳 Avviare l'app con Docker (supporto X11) (solo su Progetto_JSON)
 
