@@ -5,42 +5,32 @@
 #include <QObject>
 #include "dbobserver.h"
 
+class Biblioteca;
+class Cartaceo;
+class Multimedia;
+class Libri;
+class Manga;
+class Cd;
+class Film;
+class Riviste;
+
 class DbCreate : public QObject {
    Q_OBJECT
    private:
       QList<DbObserver*> observers;
-      struct BibliotecaInfo {
-         int id_db;
-         QString titolo;
-         QString genere;
-         int anno;
-         double costo;
-         bool disponibile;
-         int copie;
-         int nprestiti;
-         QString immagine;
-      };
-      struct CartaceoInfo {
-         QString autore;
-         QString editore;
-         bool letto;
-      };
-      struct MultimediaInfo {
-         int durata;
-         QString studio;
-      };
-      BibliotecaInfo createBiblioteca();
-      CartaceoInfo createCartaceo();
-      MultimediaInfo createMultimedia();
-      Biblioteca* createRiviste();
-      Biblioteca* createLibri();
-      Biblioteca* createManga();
-      Biblioteca* createFilm();
-      Biblioteca* createCd();
+      QList<Biblioteca*> biblioteca;
+      void createBiblioteca(Biblioteca* biblio);
+      void createCartaceo(Cartaceo* carta);
+      void createMultimedia(Multimedia* multi);
+      void createRiviste(Riviste* rivista);
+      void createLibri(Libri* libro);
+      void createManga(Manga* manga);
+      void createFilm(Film* film);
+      void createCd(Cd* cd);
    public slots:
       void createnewObject(Biblioteca* biblio);
    public:
-      DbCreate() = default;
+      DbCreate(QList<Biblioteca*>& newbiblioteca);
       void addObserver(DbObserver* observer);
       void notifyObservers(QList<Biblioteca*>& newBiblioteca);
 };

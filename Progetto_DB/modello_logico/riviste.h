@@ -16,6 +16,7 @@ public:
     virtual ~Riviste() = default;
     string diffusionToString() const;
     void setDiffusione(const Diffusione& newdiffusion);
+    Diffusione getDiffusione() const;
     void accept(Visitor* visitor) override;
 };
 

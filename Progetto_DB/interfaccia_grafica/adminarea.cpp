@@ -369,7 +369,7 @@ void AdminArea::gestisciPulsanti(Biblioteca* biblio, QPushButton* modifica, QPus
 }
 
 void AdminArea::handlePostAction() {
-    qDebug() << "Funziona handlePostAction_admin chiamata";
+    qDebug() << "Funzione handlePostAction_admin chiamata";
     std::sort(oggetti.begin(), oggetti.end(), [](Biblioteca* a, Biblioteca* b) {
         return a->getTitolo() < b->getTitolo();
     });

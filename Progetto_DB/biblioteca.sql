@@ -41,7 +41,7 @@ CREATE TABLE Cartaceo(
 CREATE TABLE Film(
    id INTEGER PRIMARY KEY,
    regista TEXT,
-   attore_protagonista TEXT,
+   attoreprotagonista TEXT,
    visto BOOLEAN NOT NULL,
    FOREIGN KEY (id) REFERENCES Multimedia(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -114,7 +114,7 @@ INSERT INTO Biblioteca(id, classe, titolo, genere, anno, costo, disponibile, cop
 VALUES (1, 'Film', 'Ace Ventura', 'Commedia', 1994, 9.99, TRUE, 1, 1, 'IMG/ace_ventura.png');
 INSERT INTO Multimedia(id, durata, studio)
 VALUES (1, 86, 'Warner Bros');
-INSERT INTO Film(id, regista, attore_protagonista, visto)
+INSERT INTO Film(id, regista, attoreprotagonista, visto)
 VALUES (1, 'Tom Shadyac', 'Jim Carrey', FALSE);
 
 -- ID 2: Manga
@@ -214,7 +214,7 @@ INSERT INTO Biblioteca(id, classe, titolo, genere, anno, costo, disponibile, cop
 VALUES (13, 'Film', 'Shrek', 'Animazione', 2001, 9.99, TRUE, 1, 1, ':/images/shrek.png');
 INSERT INTO Multimedia(id, durata, studio)
 VALUES (13, 90, 'DreamWorks Animation');
-INSERT INTO Film(id, regista, attore_protagonista, visto)
+INSERT INTO Film(id, regista, attoreprotagonista, visto)
 VALUES (13, 'Andrew Adamson', 'Shrek', FALSE);
 
 -- ID 14: Film
@@ -222,7 +222,7 @@ INSERT INTO Biblioteca(id, classe, titolo, genere, anno, costo, disponibile, cop
 VALUES (14, 'Film', 'Skyscraper', 'Avventura', 2018, 9.99, TRUE, 1, 1, ':/images/skyscraper.png');
 INSERT INTO Multimedia(id, durata, studio)
 VALUES (14, 102, 'Legendary Pictures');
-INSERT INTO Film(id, regista, attore_protagonista, visto)
+INSERT INTO Film(id, regista, attoreprotagonista, visto)
 VALUES (14, 'Rawson Marshall Thurber', 'Dwayne Johnson', TRUE);
 
 -- ID 15: CD
@@ -257,7 +257,7 @@ VALUES (18, 'Makoto Yukimura', 'Kodansha', TRUE);
 INSERT INTO Libri(id, linguaoriginale, nvolumi)
 VALUES (18, 'Giapponese', 28);
 INSERT INTO Manga(id, concluso)
-VALUES (18, FALSE);
+VALUES (18, TRUE);
 
 -- ID 19: Manga 
 INSERT INTO Biblioteca(id, classe, titolo, genere, anno, costo, disponibile, copie_disponibili, nprestiti, immagine)
@@ -267,7 +267,7 @@ VALUES (19, 'Makoto Yukimura', 'Kodansha', TRUE);
 INSERT INTO Libri(id, linguaoriginale, nvolumi)
 VALUES (19, 'Giapponese', 28);
 INSERT INTO Manga(id, concluso)
-VALUES (19, FALSE);
+VALUES (19, TRUE);
 
 -- ID 20: CD
 INSERT INTO Biblioteca(id, classe, titolo, genere, anno, costo, disponibile, copie_disponibili, nprestiti, immagine)

@@ -7,7 +7,7 @@ class Film : public Multimedia
 {
 private:
     string regista;
-    string attore_protagonista;
+    string attoreprotagonista;
     bool visto;
 public:
     Film(int id_db, string title, string genre, int year, double price, bool disponibile,

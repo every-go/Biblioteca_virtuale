@@ -14,7 +14,7 @@ class DbDelete : public QObject {
    public slots:
       void deleteObject(int id, Biblioteca* biblio);
    public:
-      DbDelete(QList<Biblioteca*> newbiblioteca);
+      DbDelete(QList<Biblioteca*>& newbiblioteca);
       void addObserver(DbObserver* observer);
       void notifyObservers(QList<Biblioteca*>& newBiblioteca);
 };

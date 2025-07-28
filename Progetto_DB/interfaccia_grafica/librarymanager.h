@@ -56,7 +56,6 @@ private:
 signals:
     void update(int id, Biblioteca* biblio);
     void newObject(Biblioteca* biblio);
-    void handle();
 private slots:
     void tornaIndietro();
     void close();

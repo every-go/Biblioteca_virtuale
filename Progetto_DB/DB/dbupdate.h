@@ -5,43 +5,27 @@
 #include "dbobserver.h"
 
 class Biblioteca;
+class Libri;
+class Manga;
+class Riviste;
+class Cd;
+class Film;
 
 class DbUpdate : public QObject {
    Q_OBJECT
    private:
       QList<DbObserver*> observers;
-      struct BibliotecaInfo {
-         int id_db;
-         QString titolo;
-         QString genere;
-         int anno;
-         double costo;
-         bool disponibile;
-         int copie;
-         int nprestiti;
-         QString immagine;
-      };
-      struct CartaceoInfo {
-         QString autore;
-         QString editore;
-         bool letto;
-      };
-      struct MultimediaInfo {
-         int durata;
-         QString studio;
-      };
-      BibliotecaInfo updateBiblioteca();
-      CartaceoInfo updateCartaceo();
-      MultimediaInfo updateMultimedia();
-      Biblioteca* updateRiviste();
-      Biblioteca* updateLibri();
-      Biblioteca* updateManga();
-      Biblioteca* updateFilm();
-      Biblioteca* updateCd();
+      QList<Biblioteca*> biblioteca;
+
+      void updateRiviste(Riviste* rivista);
+      void updateLibri(Libri* libro);
+      void updateManga(Manga* manga);
+      void updateFilm(Film* film);
+      void updateCd(Cd* cd);
    public slots:
       void updateObject(int id, Biblioteca* biblio);
    public:
-      DbUpdate() = default;
+      DbUpdate(QList<Biblioteca*>& newbiblioteca);
       void addObserver(DbObserver* observer);
       void notifyObservers(QList<Biblioteca*>& newBiblioteca);
 };

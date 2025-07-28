@@ -143,7 +143,6 @@ void LibraryManager::createObject(){
         if(biblio){
             emit newObject(biblio);
             stack->setCurrentIndex(2);
-            emit handle();
         }
     });
 }
@@ -233,7 +232,6 @@ void LibraryManager::modifyObject(Biblioteca* biblio){
         if(biblio){
             emit update(biblio->getId(), biblio);
             stack->setCurrentIndex(2);
-            emit handle();
         }
     });
 }

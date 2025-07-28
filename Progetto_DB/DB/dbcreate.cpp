@@ -1,4 +1,7 @@
 #include "dbcreate.h"
+#include <QSqlQuery>
+#include <QDebug>
+#include <QSqlError>
 
 // Ho incluso solo gli header necessari per evitare dipendenze ridondanti,
 // poiché le classi come Cd, Film, Manga e Riviste includono già le dipendenze comuni
@@ -9,11 +12,13 @@
 #include "../modello_logico/cd.h"
 #include "../modello_logico/film.h"
 
+DbCreate::DbCreate(QList<Biblioteca*>& newbiblioteca) : biblioteca(newbiblioteca) {}
+
 void DbCreate::addObserver(DbObserver* observer){
     observers.append(observer);
 }
 
-void DbCreate::notifyObservers(QList<Biblioteca *> &newBiblioteca){
+void DbCreate::notifyObservers(QList<Biblioteca *>& newBiblioteca){
     //dato che so di avere solo due observer admin e user posso
     //chiamare la funzione senza fare i dynamic_cast
     for(DbObserver* observer : observers){
@@ -22,21 +27,54 @@ void DbCreate::notifyObservers(QList<Biblioteca *> &newBiblioteca){
 }
 
 void DbCreate::createnewObject(Biblioteca* biblio){
-
+    if(biblio){
+        if(auto manga = dynamic_cast<Manga*>(biblio)){
+            createManga(manga);
+        }
+        else if(auto libro = dynamic_cast<Libri*>(biblio)){
+            createLibri(libro);
+        }
+        else if(auto rivista = dynamic_cast<Riviste*>(biblio)){
+            createRiviste(rivista);
+        }
+        else if(auto cd = dynamic_cast<Cd*>(biblio)){
+            createCd(cd);
+        }
+        else if(auto film = dynamic_cast<Film*>(biblio)){
+            createFilm(film);
+        }
+    }
+    notifyObservers(biblioteca);
 }
 
-DbCreate::BibliotecaInfo DbCreate::createBiblioteca(){}
+void DbCreate::createBiblioteca(Biblioteca* biblio){}
 
-DbCreate::MultimediaInfo DbCreate::createMultimedia(){}
+void DbCreate::createMultimedia(Multimedia* multi){}
 
-DbCreate::CartaceoInfo DbCreate::createCartaceo(){}
+void DbCreate::createCartaceo(Cartaceo* carta){}
 
-Biblioteca* DbCreate::createRiviste(){}
+void DbCreate::createRiviste(Riviste* rivista){
+    createBiblioteca(rivista);
+    createCartaceo(rivista);
+}
 
-Biblioteca* DbCreate::createLibri(){}
+void DbCreate::createLibri(Libri* libro){
+    createBiblioteca(libro);
+    createCartaceo(libro);
+}
 
-Biblioteca* DbCreate::createManga(){}
+void DbCreate::createManga(Manga* manga){
+    createBiblioteca(manga);
+    createCartaceo(manga);
+    createLibri(manga);
+}
 
-Biblioteca* DbCreate::createFilm(){}
+void DbCreate::createFilm(Film* film){
+    createBiblioteca(film);
+    createMultimedia(film);
+}
 
-Biblioteca* DbCreate::createCd(){}
+void DbCreate::createCd(Cd* cd){
+    createBiblioteca(cd);
+    createMultimedia(cd);
+}

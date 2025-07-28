@@ -5,9 +5,7 @@
 
 #include "../modello_logico/biblioteca.h"
 
-DbDelete::DbDelete(QList<Biblioteca*> newbiblioteca){
-    biblioteca = newbiblioteca;
-}
+DbDelete::DbDelete(QList<Biblioteca*>& newbiblioteca) : biblioteca(newbiblioteca) {}
 
 void DbDelete::addObserver(DbObserver* observer){
     observers.append(observer);
@@ -30,7 +28,7 @@ void DbDelete::deleteObject(int id, Biblioteca* biblio){
 
     // Rimuovi dalla lista e libera la memoria
     for (int i = 0; i < biblioteca.size(); ++i) {
-        if (biblioteca[i] == biblio) {
+        if (biblioteca[i]->getId() == biblio->getId()) {
             delete biblioteca[i];
             biblioteca.removeAt(i);
             break;

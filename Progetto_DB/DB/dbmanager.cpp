@@ -123,7 +123,7 @@ Biblioteca* DbManager::loadFilm(int id, const QSqlQuery& query) {
    bool visto;
    if(query2.next()){
       regista = query2.value("regista").toString();
-      protagonista = query2.value("attore_protagonista").toString();
+      protagonista = query2.value("attoreprotagonista").toString();
       visto = query2.value("visto").toBool();
    }
    else {

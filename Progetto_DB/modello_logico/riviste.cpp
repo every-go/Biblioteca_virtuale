@@ -11,6 +11,10 @@ void Riviste::setDiffusione(const Riviste::Diffusione& newdiffusion){
     diffusion = newdiffusion;
 }
 
+Riviste::Diffusione Riviste::getDiffusione() const {
+    return diffusion;
+}
+
 string Riviste::diffusionToString() const {
     switch (diffusion) {
     case Provinciale: return "Provinciale";

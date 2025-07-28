@@ -35,8 +35,8 @@ int main(int argc, char *argv[])
     else
         qDebug() << "Connessione al database fallita!";
     DbDelete* dbDelete = new DbDelete(oggetti);
-    DbUpdate* dbUpdate = new DbUpdate();
-    DbCreate* dbCreate = new DbCreate();
+    DbUpdate* dbUpdate = new DbUpdate(oggetti);
+    DbCreate* dbCreate = new DbCreate(oggetti);
     std::sort(oggetti.begin(), oggetti.end(), [](Biblioteca* a, Biblioteca* b){
         return a->getTitolo() < b->getTitolo();
     });
@@ -56,8 +56,7 @@ int main(int argc, char *argv[])
     stackWidget.addWidget(library);
     stackWidget.setCurrentIndex(0);
     stackWidget.show();
-
-    QObject::connect(library, &LibraryManager::handle, adminArea, &AdminArea::handlePostAction);
+    
     QObject::connect(library, &LibraryManager::update, dbUpdate, &DbUpdate::updateObject);
     QObject::connect(library, &LibraryManager::newObject, dbCreate, &DbCreate::createnewObject);
     QObject::connect(adminArea, &AdminArea::modifyObject, library, &LibraryManager::modifyObject);
