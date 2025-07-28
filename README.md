@@ -6,7 +6,9 @@ Comprensivo di .gitignore funzionante
 
 Se trovate bug/problemi non fate problemi ad aprire una issue, grazie
 
-## 🐳 Avviare l'app con Docker (supporto X11)
+
+
+## 🐳 Avviare l'app con Docker (supporto X11) (solo su Progetto_JSON)
 
 Questa applicazione richiede l'accesso al server X11 per mostrare un'interfaccia grafica.
 

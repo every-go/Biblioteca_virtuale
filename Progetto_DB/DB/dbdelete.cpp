@@ -19,6 +19,10 @@ void DbDelete::notifyObservers(QList<Biblioteca *> &newBiblioteca){
     }
 }
 
+void DbDelete::onBibliotecaUpdated(const QList<Biblioteca*>& newBiblioteca){
+    biblioteca = newBiblioteca;
+}
+
 void DbDelete::deleteObject(int id, Biblioteca* biblio){
     QSqlQuery query;
     query.prepare("DELETE FROM Biblioteca WHERE id = :id");

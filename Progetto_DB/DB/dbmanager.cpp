@@ -34,12 +34,12 @@ bool DbManager::connettiAlDatabase() {
 }
 
 QList<Biblioteca*> DbManager::loadBibliotecaFromDb() {
-   QList<Biblioteca*> oggetti;
+   QList<Biblioteca*> biblioteca;
    QSqlQuery query;
    query.prepare("SELECT * FROM BIBLIOTECA");
    if (!query.exec()) {
       qDebug() << "Errore nella query:" << query.lastError().text();
-      return oggetti;
+      return biblioteca;
    }
    while (query.next()) {
       Biblioteca* biblio = nullptr;
@@ -59,11 +59,11 @@ QList<Biblioteca*> DbManager::loadBibliotecaFromDb() {
          // Gestione di tipo sconosciuto
          qDebug() << "Tipo sconosciuto:" << type;
       if (biblio)
-         oggetti.append(biblio);
+         biblioteca.append(biblio);
       else
          qDebug() << "Errore nel caricamento dell'oggetto dalla query:" << query.lastError().text();
    }
-   return oggetti;
+   return biblioteca;
 }
 
 DbManager::BibliotecaInfo DbManager::loadBiblioteca(const QSqlQuery& query) {

@@ -6,7 +6,7 @@
 
 class Biblioteca;
 
-class DbDelete : public QObject {
+class DbDelete : public QObject, public DbObserver {
    Q_OBJECT
    private:
       QList<DbObserver*> observers;
@@ -17,6 +17,7 @@ class DbDelete : public QObject {
       DbDelete(QList<Biblioteca*>& newbiblioteca);
       void addObserver(DbObserver* observer);
       void notifyObservers(QList<Biblioteca*>& newBiblioteca);
+      virtual void onBibliotecaUpdated(const QList<Biblioteca*>& newBiblioteca) override;
 };
 
 #endif // DBDELETE_H

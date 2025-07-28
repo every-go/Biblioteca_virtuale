@@ -52,10 +52,10 @@ MainWindow::MainWindow(QStackedWidget* stackWidget, QWidget* parent) : QMainWind
     adminText->setAlignment(Qt::AlignCenter);
     userText->setAlignment(Qt::AlignCenter);
     adminText->setStyleSheet("QLabel{"
-                             "color: red"
+                             "color: blue;"
                              "}");
     userText->setStyleSheet("QLabel{"
-                             "color: red"
+                             "color: blue"
                              "}");
 
     adminLayout->setAlignment(Qt::AlignCenter);

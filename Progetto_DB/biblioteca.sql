@@ -16,9 +16,9 @@ CREATE TABLE Biblioteca (
    genere TEXT,
    anno INTEGER,
    costo DECIMAL(10,2),
-   disponibile BOOLEAN NOT NULL,
-   copie_disponibili INTEGER NOT NULL,
-   nprestiti INTEGER NOT NULL,
+   disponibile BOOLEAN,
+   copie_disponibili INTEGER,
+   nprestiti INTEGER,
    immagine TEXT,
    CHECK(costo >= 0 AND copie_disponibili >= 0 AND nprestiti >= 0 AND nprestiti >= copie_disponibili)
 );
@@ -111,7 +111,7 @@ EXECUTE FUNCTION controlla_prestiti_copie();
 
 -- ID 1: Film
 INSERT INTO Biblioteca(id, classe, titolo, genere, anno, costo, disponibile, copie_disponibili, nprestiti, immagine)
-VALUES (1, 'Film', 'Ace Ventura', 'Commedia', 1994, 9.99, TRUE, 1, 1, 'IMG/ace_ventura.png');
+VALUES (1, 'Film', 'Ace Ventura', 'Commedia', 1994, 9.99, TRUE, 1, 1, ':/images/ace_ventura.png');
 INSERT INTO Multimedia(id, durata, studio)
 VALUES (1, 86, 'Warner Bros');
 INSERT INTO Film(id, regista, attoreprotagonista, visto)
@@ -129,7 +129,7 @@ VALUES (2, TRUE);
 
 -- ID 3: Riviste
 INSERT INTO Biblioteca(id, classe, titolo, genere, anno, costo, disponibile, copie_disponibili, nprestiti, immagine)
-VALUES (3, 'Riviste', 'Cook_inc', 'Culinario', 2011, 3.99, TRUE, 3, 3, 'IMG/cook_inc.png');
+VALUES (3, 'Riviste', 'Cook_inc', 'Culinario', 2011, 3.99, TRUE, 3, 3, ':/images/cook_inc.png');
 INSERT INTO Cartaceo(id, autore, editore, letto)
 VALUES (3, 'Luigi Nardi', 'Vandenberg Edizioni', FALSE);
 INSERT INTO Riviste(id, diffusion)
@@ -277,3 +277,4 @@ VALUES (20, 46, 'Island');
 INSERT INTO CD(id, artista, ascoltato, ntracce)
 VALUES (20, 'Marracash', TRUE, 13);
 
+SELECT setval('biblioteca_id_seq', (SELECT MAX(id) FROM biblioteca));

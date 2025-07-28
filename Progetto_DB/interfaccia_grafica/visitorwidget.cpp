@@ -27,8 +27,16 @@ void VisitorWidget::visit(Biblioteca* biblio){
     QString imagePath = QString::fromStdString(biblio->getImmagine());
     QPixmap pixmap(imagePath);
 
-    // Ridimensiona l'immagine al massimo di 180x260, mantenendo le proporzioni
+    if (!pixmap.load(imagePath)) {
+        qDebug() << "Immagine non trovata:" << imagePath;
+        // Immagine di fallback
+        imagePath = ":/images/error.jpg";
+        pixmap.load(imagePath);
+    }
+
+    // Scala sempre, a prescindere
     pixmap = pixmap.scaled(180, 260, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        
 
     // Imposta il QPixmap all'interno del QLabel
     image->setPixmap(pixmap);
@@ -47,6 +55,7 @@ void VisitorWidget::visit(Biblioteca* biblio){
             .arg(QString::fromStdString(biblio->getTitolo()))
         );
     titolo->setStyleSheet("QLabel{"
+                          "color: black;"
                           "font-size: 20px;"
                           "}");
     layout->addWidget(titolo, 0, 1, 1, 2, Qt::AlignCenter); // Riga 0, colonna 1, si estende su 2 colonne
@@ -57,6 +66,10 @@ void VisitorWidget::visit(Biblioteca* biblio){
         QString("<div style='text-align: center;'><b>Genere</b><br>%1</div>")
             .arg(QString::fromStdString(biblio->getGenere()))
         );
+    genere->setStyleSheet("QLabel{"
+                          "color: black;"
+                          "font-size: 15px;"
+                          "}");
     layout->addWidget(genere, 1, 1, 1, 1, Qt::AlignCenter); // Riga 1, colonna 1
 
     // Anno
@@ -65,6 +78,10 @@ void VisitorWidget::visit(Biblioteca* biblio){
         QString("<div style='text-align: center;'><b>Anno</b><br>%1</div>")
             .arg(QString::number(biblio->getAnno()))
         );
+    anno->setStyleSheet("QLabel{"
+                          "color: black;"
+                          "font-size: 15px;"
+                          "}");
     layout->addWidget(anno, 1, 2, 1, 1, Qt::AlignCenter); // Riga 1, colonna 2
 
     // Prezzo
@@ -73,6 +90,10 @@ void VisitorWidget::visit(Biblioteca* biblio){
         QString("<div style='text-align: center;'><b>Costo</b><br>%1</div>")
             .arg(QString::number(biblio->getCosto()))
         );
+    costo->setStyleSheet("QLabel{"
+                          "color: black;"
+                          "font-size: 15px;"
+                          "}");    
     layout->addWidget(costo, 2, 1, 1, 1, Qt::AlignCenter); // Riga 2, colonna 1
 
     // Disponibilità
@@ -81,6 +102,10 @@ void VisitorWidget::visit(Biblioteca* biblio){
         QString("<div style='text-align: center;'><b>%1</b></div>")
             .arg(biblio->getDisponibilita()? "Disponibile" : "Non disponibile")
         );
+    disponibile->setStyleSheet("QLabel{"
+                          "color: black;"
+                          "font-size: 15px;"
+                          "}");
     layout->addWidget(disponibile, 2, 2, 1, 1, Qt::AlignCenter); // Riga 2, colonna 2
 }
 
@@ -94,6 +119,10 @@ void VisitorWidget::visit(Cartaceo* carta){
         QString("<div style='text-align: center;'><b>Autore</b><br>%1</div>")
             .arg(QString::fromStdString(carta->getAutore()))
         );
+    autore->setStyleSheet("QLabel{"
+                          "color: black;"
+                          "font-size: 15px;"
+                          "}");
     layout->addWidget(autore, 3, 1, 1, 1, Qt::AlignCenter);
     //editore
     QLabel *editore = new QLabel(widget);
@@ -101,10 +130,18 @@ void VisitorWidget::visit(Cartaceo* carta){
         QString("<div style='text-align: center;'><b>Editore</b><br>%1</div>")
             .arg(QString::fromStdString(carta->getEditore()))
         );
+    editore->setStyleSheet("QLabel{"
+                          "color: black;"
+                          "font-size: 15px;"
+                          "}");
     layout->addWidget(editore, 3, 2, 1, 1, Qt::AlignCenter);
     QLabel *letto = new QLabel(widget);
     letto->setText(
         carta->getLetto()? "L'oggetto è stato letto" : "L'oggetto non è stato letto");
+    letto->setStyleSheet("QLabel{"
+                          "color: black;"
+                          "font-size: 15px;"
+                          "}");
     layout->addWidget(letto, 4, 0, 1, 1, Qt::AlignCenter);
 }
 
@@ -116,12 +153,20 @@ void VisitorWidget::visit(Multimedia* multi){
         QString("<div style='text-align: center;'><b>Durata</b><br>%1</div>")
             .arg(QString::number(multi->getDurata()))
         );
+    durata->setStyleSheet("QLabel{"
+                          "color: black;"
+                          "font-size: 15px;"
+                          "}");
     layout->addWidget(durata, 3, 1, 1, 1, Qt::AlignCenter);
     QLabel *studio = new QLabel(widget);
     studio->setText(
         QString("<div style='text-align: center;'><b>Studio</b><br>%1</div>")
             .arg(QString::fromStdString(multi->getStudio()))
         );
+    studio->setStyleSheet("QLabel{"
+                          "color: black;"
+                          "font-size: 15px;"
+                          "}");
     layout->addWidget(studio, 3, 2, 1, 1, Qt::AlignCenter);
 }
 
@@ -133,12 +178,20 @@ void VisitorWidget::visit(Libri* libro) {
         QString("<div style='text-align: center;'><b>Lingua originale</b><br>%1</div>")
             .arg(QString::fromStdString(libro->getLanguage()))
         );
+    language->setStyleSheet("QLabel{"
+                          "color: black;"
+                          "font-size: 15px;"
+                          "}"); 
     layout->addWidget(language, 4, 1, 1, 1, Qt::AlignCenter);
     QLabel* nvolumi = new QLabel(widget);
     nvolumi->setText(
         QString("<div style='text-align: center;'><b>Numero volumi</b><br>%1</div>")
             .arg(QString::number(libro->getNvolumi()))
         );
+    nvolumi->setStyleSheet("QLabel{"
+                          "color: black;"
+                          "font-size: 15px;"
+                          "}");
     layout->addWidget(nvolumi, 4, 2, 1, 1, Qt::AlignCenter);
 }
 
@@ -149,6 +202,10 @@ void VisitorWidget::visit(Manga* manga){
     concluso->setText(
         QString(manga->getConcluso()? "Il manga è conluso" : "Il manga non è concluso")
         );
+    concluso->setStyleSheet("QLabel{"
+                          "color: black;"
+                          "font-size: 15px;"
+                          "}");
     layout->addWidget(concluso, 5, 0, 1, 3, Qt::AlignCenter);
 }
 
@@ -160,6 +217,10 @@ void VisitorWidget::visit(Riviste* rivista){
         QString("<div style='text-align: center;'><b>Diffusione della rivista</b><br>%1</div>")
             .arg(QString::fromStdString(rivista->diffusionToString()))
         );
+    diffusione->setStyleSheet("QLabel{"
+                          "color: black;"
+                          "font-size: 15px;"
+                          "}");
     layout->addWidget(diffusione, 4, 1, 1, 2, Qt::AlignCenter);
 }
 
@@ -171,17 +232,29 @@ void VisitorWidget::visit(Film* film){
         QString("<div style='text-align: center;'><b>Regista</b><br>%1</div>")
             .arg(QString::fromStdString(film->getRegista()))
         );
+    regista->setStyleSheet("QLabel{"
+                          "color: black;"
+                          "font-size: 15px;"
+                          "}");
     layout->addWidget(regista, 4, 1, 1, 1, Qt::AlignCenter);
     QLabel* attore = new QLabel(widget);
     attore->setText(
         QString("<div style='text-align: center;'><b>Attore protagonista</b><br>%1</div>")
             .arg(QString::fromStdString(film->getAttore()))
         );
+    attore->setStyleSheet("QLabel{"
+                          "color: black;"
+                          "font-size: 15px;"
+                          "}");
     layout->addWidget(attore, 4, 2, 1, 1, Qt::AlignCenter);
     QLabel* visto = new QLabel(widget);
     visto->setText(
         QString(film->getVisto()? "Il film è già stato guardato" : "Il film non è stato guardato")
         );
+    visto->setStyleSheet("QLabel{"
+                          "color: black;"
+                          "font-size: 15px;"
+                          "}");
     layout->addWidget(visto, 4, 0, 2, 1, Qt::AlignCenter);
 }
 
@@ -193,16 +266,28 @@ void VisitorWidget::visit(Cd* cd) {
         QString("<div style='text-align: center;'><b>Artista del disco</b><br>%1</div>")
             .arg(QString::fromStdString(cd->getArtista()))
         );
+    artista->setStyleSheet("QLabel{"
+                          "color: black;"
+                          "font-size: 15px;"
+                          "}");
     layout->addWidget(artista, 4, 1, 1, 1, Qt::AlignCenter);
     QLabel* ntracce = new QLabel(widget);
     ntracce->setText(
         QString("<div style='text-align: center;'><b>Numero di tracce</b><br>%1</div>")
             .arg(QString::number(cd->getTracce()))
         );
+    ntracce->setStyleSheet("QLabel{"
+                          "color: black;"
+                          "font-size: 15px;"
+                          "}");
     layout->addWidget(ntracce, 4, 2, 1, 1, Qt::AlignCenter);
     QLabel* ascoltato = new QLabel(widget);
     ascoltato->setText(
         QString(cd->getAscoltato()? "Il cd è stato ascoltato" : "Il cd non è stato ascoltato")
         );
+    ascoltato->setStyleSheet("QLabel{"
+                          "color: black;"
+                          "font-size: 1Spx;"
+                          "}");
     layout->addWidget(ascoltato, 4, 0, 2, 1, Qt::AlignCenter);
 }

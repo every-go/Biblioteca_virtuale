@@ -26,6 +26,10 @@ void DbUpdate::notifyObservers(QList<Biblioteca *> &newBiblioteca){
     }
 }
 
+void DbUpdate::onBibliotecaUpdated(const QList<Biblioteca*>& newBiblioteca){
+    biblioteca = newBiblioteca;
+}
+
 void DbUpdate::updateObject(int id, Biblioteca* biblio){
     QSqlQuery query;
     query.prepare("SELECT classe FROM BIBLIOTECA WHERE ID = :id");
@@ -53,44 +57,26 @@ void DbUpdate::updateObject(int id, Biblioteca* biblio){
     notifyObservers(biblioteca);
 }
 
-void DbUpdate::updateRiviste(Riviste* rivista){
-    if (!rivista) return;
+void DbUpdate::updateBiblioteca(Biblioteca* biblio){
+    if (!biblio) return;
 
-    int id = rivista->getId();
-    string titolo = rivista->getTitolo();
-    string genere = rivista->getGenere();
-    int anno = rivista->getAnno();
-    double costo = rivista->getCosto();
-    string immagine = rivista->getImmagine();
-    int nprestiti = rivista->getNprestiti();
-    string autore = rivista->getAutore();
-    string editore = rivista->getEditore();
-    string diffusion = rivista->diffusionToString();
+    int id = biblio->getId();
 
     for (int i = 0; i < biblioteca.size(); ++i) {
         if (biblioteca[i]->getId() == id) {
             Biblioteca* obj = biblioteca[i];
-            qDebug() << "ok rivista dbupdate";
+            qDebug() << "ok biblioteca dbupdate";
 
-            obj->setTitolo(titolo);
-            obj->setGenere(genere);
-            obj->setAnno(anno);
-            obj->setCosto(costo);
-            obj->setImmagine(immagine);
-            obj->setNprestiti(nprestiti);
+            obj->setTitolo(biblio->getTitolo());
+            obj->setGenere(biblio->getGenere());
+            obj->setAnno(biblio->getAnno());
+            obj->setCosto(biblio->getCosto());
+            obj->setImmagine(biblio->getImmagine());
+            obj->setNprestiti(biblio->getNprestiti());
 
-            if (auto cart = dynamic_cast<Cartaceo*>(obj)) {
-                cart->setAutore(autore);
-                cart->setEditore(editore);
-            }
-
-            if (auto riv = dynamic_cast<Riviste*>(obj)) {
-                riv->setDiffusione(rivista->getDiffusione());
-            }
-
-            // 1) Aggiorna BIBLIOTECA
-            QSqlQuery query1;
-            query1.prepare("UPDATE BIBLIOTECA SET "
+            // Aggiorna BIBLIOTECA
+            QSqlQuery query;
+            query.prepare("UPDATE BIBLIOTECA SET "
                         "titolo = :titolo, "
                         "genere = :genere, "
                         "anno = :anno, "
@@ -98,34 +84,98 @@ void DbUpdate::updateRiviste(Riviste* rivista){
                         "immagine = :immagine, "
                         "nprestiti = :nprestiti "
                         "WHERE ID = :id");
-            query1.bindValue(":titolo", QString::fromStdString(titolo));
-            query1.bindValue(":genere", QString::fromStdString(genere));
-            query1.bindValue(":anno", anno);
-            query1.bindValue(":costo", costo);
-            query1.bindValue(":immagine", QString::fromStdString(immagine));
-            query1.bindValue(":nprestiti", nprestiti);
-            query1.bindValue(":id", id);
-            query1.exec();
+            query.bindValue(":titolo", QString::fromStdString(biblio->getTitolo()));
+            query.bindValue(":genere", QString::fromStdString(biblio->getGenere()));
+            query.bindValue(":anno", biblio->getAnno());
+            query.bindValue(":costo", biblio->getCosto());
+            query.bindValue(":immagine", QString::fromStdString(biblio->getImmagine()));
+            query.bindValue(":nprestiti", biblio->getNprestiti());
+            query.bindValue(":id", id);
+            query.exec();
+        }
+    }
+}
 
-            // 2) Aggiorna CARTACEO
-            QSqlQuery query2;
-            query2.prepare("UPDATE CARTACEO SET "
+void DbUpdate::updateCartaceo(Cartaceo* carta){
+    if(!carta) return;
+
+    int id = carta->getId();
+
+    for(int i = 0; i < biblioteca.size(); ++i){
+        if(biblioteca[i]->getId() == id){
+            Biblioteca* obj = biblioteca[i];
+            qDebug() << "ok cartaceo dbupdate";
+
+            auto cart = dynamic_cast<Cartaceo*>(obj);
+            cart->setAutore(carta->getAutore());
+            cart->setEditore(carta->getEditore());
+
+            // Aggiorna CARTACEO
+            QSqlQuery query;
+            query.prepare("UPDATE CARTACEO SET "
                         "autore = :autore, "
                         "editore = :editore "
                         "WHERE ID = :id");
-            query2.bindValue(":autore", QString::fromStdString(autore));
-            query2.bindValue(":editore", QString::fromStdString(editore));
-            query2.bindValue(":id", id);
-            query2.exec();
+            query.bindValue(":autore", QString::fromStdString(carta->getAutore()));
+            query.bindValue(":editore", QString::fromStdString(carta->getEditore()));
+            query.bindValue(":id", id);
+            query.exec();
+        }
+    }
+}
 
-            // 3) Aggiorna RIVISTE
-            QSqlQuery query3;
-            query3.prepare("UPDATE RIVISTE SET "
+void DbUpdate::updateMultimedia(Multimedia* multi){
+    if(!multi) return;
+
+    int id = multi->getId();
+
+    for(int i = 0; i < biblioteca.size(); ++i){
+        if(biblioteca[i]->getId() == id){
+            Biblioteca* obj = biblioteca[i];
+            qDebug() << "ok multimedia dbupdate";
+
+            auto mult = dynamic_cast<Multimedia*>(obj);
+            mult->setDurata(multi->getDurata());
+            mult->setStudio(multi->getStudio());
+
+            // Aggiorna MULTIMEDIA
+            QSqlQuery query;
+            query.prepare("UPDATE MULTIMEDIA SET "
+                        "durata = :durata, "
+                        "studio = :studio "
+                        "WHERE ID = :id");
+            query.bindValue(":durata", multi->getDurata());
+            query.bindValue(":studio", QString::fromStdString(multi->getStudio()));
+            query.bindValue(":id", id);
+            query.exec();
+        }
+    }
+}
+
+void DbUpdate::updateRiviste(Riviste* rivista){
+    if (!rivista) return;
+
+    int id = rivista->getId();
+
+    for (int i = 0; i < biblioteca.size(); ++i) {
+        if (biblioteca[i]->getId() == id) {
+            Biblioteca* obj = biblioteca[i];
+            qDebug() << "ok rivista dbupdate";
+            
+            updateBiblioteca(rivista);
+            updateCartaceo(rivista);
+
+            auto riv = dynamic_cast<Riviste*>(obj);
+            riv->setDiffusione(rivista->getDiffusione());
+            
+            // Aggiorna RIVISTE
+            QSqlQuery query;
+            query.prepare("UPDATE RIVISTE SET "
                         "diffusion = :diffusion "
                         "WHERE ID = :id");
-            query3.bindValue(":diffusion", QString::fromStdString(diffusion));
-            query3.bindValue(":id", id);
-            query3.exec();
+            query.bindValue(":diffusion", QString::fromStdString(rivista->diffusionToString()));
+            query.bindValue(":id", id);
+            query.exec();
 
         }
     }
@@ -136,327 +186,120 @@ void DbUpdate::updateLibri(Libri* libro){
     if (!libro) return;
 
     int id = libro->getId();
-    string titolo = libro->getTitolo();
-    string genere = libro->getGenere();
-    int anno = libro->getAnno();
-    double costo = libro->getCosto();
-    string immagine = libro->getImmagine();
-    int nprestiti = libro->getNprestiti();
-    string autore = libro->getAutore();
-    string editore = libro->getEditore();
-    string linguaoriginale = libro->getLanguage();
-    int nvolumi = libro->getNvolumi();
 
     for (int i = 0; i < biblioteca.size(); ++i) {
         if (biblioteca[i]->getId() == id) {
             Biblioteca* obj = biblioteca[i];
             qDebug() << "ok libro dbupdate";
 
-            obj->setTitolo(titolo);
-            obj->setGenere(genere);
-            obj->setAnno(anno);
-            obj->setCosto(costo);
-            obj->setImmagine(immagine);
-            obj->setNprestiti(nprestiti);
+            updateBiblioteca(libro);
+            updateCartaceo(libro);
+            
+            auto lib = dynamic_cast<Libri*>(obj);
+            lib->setLanguage(libro->getLanguage());
+            lib->setNvolumi(libro->getNvolumi());
 
-            if (auto cart = dynamic_cast<Cartaceo*>(obj)) {
-                cart->setAutore(autore);
-                cart->setEditore(editore);
-            }
-
-            if (auto lib = dynamic_cast<Libri*>(obj)) {
-                lib->setLanguage(linguaoriginale);
-                lib->setNvolumi(nvolumi);
-            }
-
-            // 1) Aggiorna BIBLIOTECA
-            QSqlQuery query1;
-            query1.prepare("UPDATE BIBLIOTECA SET "
-                        "titolo = :titolo, "
-                        "genere = :genere, "
-                        "anno = :anno, "
-                        "costo = :costo, "
-                        "immagine = :immagine, "
-                        "nprestiti = :nprestiti "
-                        "WHERE ID = :id");
-            query1.bindValue(":titolo", QString::fromStdString(titolo));
-            query1.bindValue(":genere", QString::fromStdString(genere));
-            query1.bindValue(":anno", anno);
-            query1.bindValue(":costo", costo);
-            query1.bindValue(":immagine", QString::fromStdString(immagine));
-            query1.bindValue(":nprestiti", nprestiti);
-            query1.bindValue(":id", id);
-            query1.exec();
-
-            // 2) Aggiorna CARTACEO
-            QSqlQuery query2;
-            query2.prepare("UPDATE CARTACEO SET "
-                        "autore = :autore, "
-                        "editore = :editore "
-                        "WHERE ID = :id");
-            query2.bindValue(":autore", QString::fromStdString(autore));
-            query2.bindValue(":editore", QString::fromStdString(editore));
-            query2.bindValue(":id", id);
-            query2.exec();
-
-            // 3) Aggiorna LIBRI
-            QSqlQuery query3;
-            query3.prepare("UPDATE LIBRI SET "
+            // Aggiorna LIBRI
+            QSqlQuery query;
+            query.prepare("UPDATE LIBRI SET "
                         "linguaoriginale = :linguaoriginale, "
                         "nvolumi = :nvolumi "
                         "WHERE ID = :id");
-            query3.bindValue(":linguaoriginale", QString::fromStdString(linguaoriginale));
-            query3.bindValue(":nvolumi", nvolumi);
-            query3.bindValue(":id", id);
-            query3.exec();
+            query.bindValue(":linguaoriginale", QString::fromStdString(libro->getLanguage()));
+            query.bindValue(":nvolumi", libro->getNvolumi());
+            query.bindValue(":id", id);
+            query.exec();
         }
     }
 }
 
 void DbUpdate::updateManga(Manga* manga){
+    if(!manga) return;
+
     int id = manga->getId();
-    string titolo = manga->getTitolo();
-    string genere = manga->getGenere();
-    int anno = manga->getAnno();
-    double costo = manga->getCosto();
-    string immagine = manga->getImmagine();
-    int nprestiti = manga->getNprestiti();
-    string autore = manga->getAutore();
-    string editore = manga->getEditore();
-    string linguaoriginale = manga->getLanguage();
-    int nvolumi = manga->getNvolumi();
-    bool concluso = manga ->getConcluso();
+    
     for (int i = 0; i < biblioteca.size(); ++i) {
-        if(biblioteca[i]->getId() == manga->getId()){
+        if(biblioteca[i]->getId() == id){
             qDebug() << "ok manga dbupdate";
             Biblioteca* obj = biblioteca[i];
 
-            obj->setTitolo(titolo);
-            obj->setGenere(genere);
-            obj->setAnno(anno);
-            obj->setCosto(costo);
-            obj->setImmagine(immagine);
-            obj->setNprestiti(nprestiti);
+            updateBiblioteca(manga);
+            updateCartaceo(manga);
+            updateLibri(manga);
 
-            if (auto cart = dynamic_cast<Cartaceo*>(obj)) {
-                cart->setAutore(autore);
-                cart->setEditore(editore);
-            }
+            auto mang = dynamic_cast<Manga*>(obj);
+            mang->setConcluso(manga->getConcluso());
 
-            if (auto lib = dynamic_cast<Libri*>(obj)) {
-                lib->setLanguage(linguaoriginale);
-                lib->setNvolumi(nvolumi);
-            }
-
-            if(auto mang = dynamic_cast<Manga*>(obj)){
-                mang->setConcluso(concluso);
-            }
-
-            // 1) Aggiorna BIBLIOTECA
-            QSqlQuery query1;
-            query1.prepare("UPDATE BIBLIOTECA SET "
-                        "titolo = :titolo, "
-                        "genere = :genere, "
-                        "anno = :anno, "
-                        "costo = :costo, "
-                        "immagine = :immagine, "
-                        "nprestiti = :nprestiti "
-                        "WHERE ID = :id");
-            query1.bindValue(":titolo", QString::fromStdString(titolo));
-            query1.bindValue(":genere", QString::fromStdString(genere));
-            query1.bindValue(":anno", anno);
-            query1.bindValue(":costo", costo);
-            query1.bindValue(":immagine", QString::fromStdString(immagine));
-            query1.bindValue(":nprestiti", nprestiti);
-            query1.bindValue(":id", id);
-            query1.exec();
-
-            // 2) Aggiorna CARTACEO
-            QSqlQuery query2;
-            query2.prepare("UPDATE CARTACEO SET "
-                        "autore = :autore, "
-                        "editore = :editore "
-                        "WHERE ID = :id");
-            query2.bindValue(":autore", QString::fromStdString(autore));
-            query2.bindValue(":editore", QString::fromStdString(editore));
-            query2.bindValue(":id", id);
-            query2.exec();
-
-            // 3) Aggiorna LIBRI
-            QSqlQuery query3;
-            query3.prepare("UPDATE LIBRI SET "
-                        "linguaoriginale = :linguaoriginale, "
-                        "nvolumi = :nvolumi "
-                        "WHERE ID = :id");
-            query3.bindValue(":linguaoriginale", QString::fromStdString(linguaoriginale));
-            query3.bindValue(":nvolumi", nvolumi);
-            query3.bindValue(":id", id);
-            query3.exec();
-
-            // 4) Aggiorna MANGA
-            QSqlQuery query4;
-            query4.prepare("UPDATE MANGA SET "
+            QSqlQuery query;
+            query.prepare("UPDATE MANGA SET "
                         "concluso = :concluso "
                         "WHERE ID = :id");
-            query4.bindValue(":concluso", concluso);
-            query4.bindValue(":id", id);
-            query4.exec();
+            query.bindValue(":concluso", manga->getConcluso());
+            query.bindValue(":id", id);
+            query.exec();
         }
     }
 }
 
 void DbUpdate::updateFilm(Film* film){
-    int id = film->getId();
-    string titolo = film->getTitolo();
-    string genere = film->getGenere();
-    int anno = film->getAnno();
-    double costo = film->getCosto();
-    string immagine = film->getImmagine();
-    int nprestiti = film->getNprestiti();
-    int durata = film->getDurata();
-    string studio = film->getStudio();
-    string regista = film->getRegista();
-    string attoreprotagonista = film->getAttore();
+    if (!film) return;
+
+    int id =  film->getId();
+
     for (int i = 0; i < biblioteca.size(); ++i) {
-        if(biblioteca[i]->getId() == film->getId()){
+        if(biblioteca[i]->getId() == id){
             qDebug() << "ok film dbupdate";
             Biblioteca* obj = biblioteca[i];
 
-            obj->setTitolo(titolo);
-            obj->setGenere(genere);
-            obj->setAnno(anno);
-            obj->setCosto(costo);
-            obj->setImmagine(immagine);
-            obj->setNprestiti(nprestiti);
+            updateBiblioteca(film);
+            updateMultimedia(film);
 
-            if(auto multi = dynamic_cast<Multimedia*>(obj)){
-                multi->setDurata(durata);
-                multi->setStudio(studio);
-            }
+            auto fil = dynamic_cast<Film*>(obj);
+            fil->setRegista(film->getRegista());
+            fil->setAttore(film->getAttore());
+            fil->segnaVisto();
 
-            if (auto fil = dynamic_cast<Film*>(obj)){
-                fil->setAttore(attoreprotagonista);
-                fil->setRegista(regista);
-            }
-
-            // 1) Aggiorna BIBLIOTECA
-            QSqlQuery query1;
-            query1.prepare("UPDATE BIBLIOTECA SET "
-                        "titolo = :titolo, "
-                        "genere = :genere, "
-                        "anno = :anno, "
-                        "costo = :costo, "
-                        "immagine = :immagine, "
-                        "nprestiti = :nprestiti "
+            // Aggiorna FILM
+            QSqlQuery query;
+            query.prepare("UPDATE FILM SET "
+                        "regista = :regista, "
+                        "attoreprotagonista = :attoreprotagonista "
                         "WHERE ID = :id");
-            query1.bindValue(":titolo", QString::fromStdString(titolo));
-            query1.bindValue(":genere", QString::fromStdString(genere));
-            query1.bindValue(":anno", anno);
-            query1.bindValue(":costo", costo);
-            query1.bindValue(":immagine", QString::fromStdString(immagine));
-            query1.bindValue(":nprestiti", nprestiti);
-            query1.bindValue(":id", id);
-            query1.exec();
-
-            // 2) Aggiorna MULTIMEDIA
-            QSqlQuery query2;
-            query2.prepare("UPDATE MULTIMEDIA SET "
-                        "durata = :durata, "
-                        "studio = :studio "
-                        "WHERE ID = :id");
-            query2.bindValue(":durata", durata);
-            query2.bindValue(":studio", QString::fromStdString(studio));
-            query2.bindValue(":id", id);
-            query2.exec();
-
-            // 3) Aggiorna FILM
-            QSqlQuery query3;
-            query3.prepare("UPDATE FILM SET "
-                        "attoreprotagonista = :attoreprotagonista, "
-                        "regista = :regista "
-                        "WHERE ID = :id");
-            query3.bindValue(":attoreprotagonista", QString::fromStdString(attoreprotagonista));
-            query3.bindValue(":regista", QString::fromStdString(regista));
-            query3.bindValue(":id", id);
-            query3.exec();
+            query.bindValue(":regista", QString::fromStdString(film->getRegista()));
+            query.bindValue(":attoreprotagonista", QString::fromStdString(film->getAttore()));
+            query.bindValue(":id", id);
+            query.exec();
         }
     }
 }
 
 void DbUpdate::updateCd(Cd* cd){
+    if(!cd) return;
+    
     int id = cd->getId();
-    string titolo = cd->getTitolo();
-    string genere = cd->getGenere();
-    int anno = cd->getAnno();
-    double costo = cd->getCosto();
-    string immagine = cd->getImmagine();
-    int nprestiti = cd->getNprestiti();
-    int durata = cd->getDurata();
-    string studio = cd->getStudio();
-    int ntracce = cd->getTracce();
-    string artista = cd->getArtista();
-    for (int i = 0; i < biblioteca.size(); ++i) {
-        if(biblioteca[i]->getId() == cd->getId()){
+
+    for(int i = 0; i < biblioteca.size(); ++i){
+        if(biblioteca[i]->getId() == id){
             qDebug() << "ok cd dbupdate";
             Biblioteca* obj = biblioteca[i];
 
-            obj->setTitolo(titolo);
-            obj->setGenere(genere);
-            obj->setAnno(anno);
-            obj->setCosto(costo);
-            obj->setImmagine(immagine);
-            obj->setNprestiti(nprestiti);
+            updateBiblioteca(cd);
+            updateMultimedia(cd);
 
-            if(auto multi = dynamic_cast<Multimedia*>(obj)){
-                multi->setDurata(durata);
-                multi->setStudio(studio);
-            }
+            auto c = dynamic_cast<Cd*>(obj);
+            c->setArtista(cd->getArtista());
+            c->setTracce(cd->getTracce());
 
-            if (auto cd = dynamic_cast<Cd*>(obj)){
-                cd->setTracce(ntracce);
-                cd->setArtista(artista);
-            }
-
-            // 1) Aggiorna BIBLIOTECA
-            QSqlQuery query1;
-            query1.prepare("UPDATE BIBLIOTECA SET "
-                        "titolo = :titolo, "
-                        "genere = :genere, "
-                        "anno = :anno, "
-                        "costo = :costo, "
-                        "immagine = :immagine, "
-                        "nprestiti = :nprestiti "
+            // Aggiorna CD
+            QSqlQuery query;
+            query.prepare("UPDATE CD SET "
+                        "artista = :artista, "
+                        "ntracce = :ntracce "
                         "WHERE ID = :id");
-            query1.bindValue(":titolo", QString::fromStdString(titolo));
-            query1.bindValue(":genere", QString::fromStdString(genere));
-            query1.bindValue(":anno", anno);
-            query1.bindValue(":costo", costo);
-            query1.bindValue(":immagine", QString::fromStdString(immagine));
-            query1.bindValue(":nprestiti", nprestiti);
-            query1.bindValue(":id", id);
-            query1.exec();
-
-            // 2) Aggiorna MULTIMEDIA
-            QSqlQuery query2;
-            query2.prepare("UPDATE MULTIMEDIA SET "
-                        "durata = :durata, "
-                        "studio = :studio "
-                        "WHERE ID = :id");
-            query2.bindValue(":durata", durata);
-            query2.bindValue(":studio", QString::fromStdString(studio));
-            query2.bindValue(":id", id);
-            query2.exec();
-
-            // 3) Aggiorna CD
-            QSqlQuery query3;
-            query3.prepare("UPDATE CD SET "
-                           "artista = :artista, "
-                           "ntracce = :ntracce "
-                           "WHERE ID = :id");
-            query3.bindValue(":artista", QString::fromStdString(artista));
-            query3.bindValue(":ntracce", ntracce);
-            query3.bindValue(":id", id);
-            query3.exec();
+            query.bindValue(":artista", QString::fromStdString(cd->getArtista()));
+            query.bindValue(":ntracce", cd->getTracce());
+            query.bindValue(":id", id);
+            query.exec();
         }
     }
 }

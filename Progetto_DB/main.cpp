@@ -46,10 +46,16 @@ int main(int argc, char *argv[])
     LibraryManager* library = new LibraryManager(&stackWidget);
     dbDelete->addObserver(userArea);
     dbDelete->addObserver(adminArea);
+    dbDelete->addObserver(dbCreate);
+    dbDelete->addObserver(dbUpdate);
     dbUpdate->addObserver(userArea);
     dbUpdate->addObserver(adminArea);
+    dbUpdate->addObserver(dbCreate);
+    dbUpdate->addObserver(dbDelete);
     dbCreate->addObserver(userArea);
     dbCreate->addObserver(adminArea);
+    dbCreate->addObserver(dbUpdate);
+    dbCreate->addObserver(dbDelete);
     stackWidget.addWidget(mainWindows);
     stackWidget.addWidget(userArea);
     stackWidget.addWidget(adminArea);

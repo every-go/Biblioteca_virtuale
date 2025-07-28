@@ -5,18 +5,23 @@
 #include "dbobserver.h"
 
 class Biblioteca;
+class Cartaceo;
+class Multimedia;
 class Libri;
 class Manga;
 class Riviste;
 class Cd;
 class Film;
 
-class DbUpdate : public QObject {
+class DbUpdate : public QObject, public DbObserver {
    Q_OBJECT
    private:
       QList<DbObserver*> observers;
       QList<Biblioteca*> biblioteca;
 
+      void updateBiblioteca(Biblioteca* biblio);
+      void updateCartaceo(Cartaceo* carta);
+      void updateMultimedia(Multimedia* multi);
       void updateRiviste(Riviste* rivista);
       void updateLibri(Libri* libro);
       void updateManga(Manga* manga);
@@ -28,6 +33,7 @@ class DbUpdate : public QObject {
       DbUpdate(QList<Biblioteca*>& newbiblioteca);
       void addObserver(DbObserver* observer);
       void notifyObservers(QList<Biblioteca*>& newBiblioteca);
+      virtual void onBibliotecaUpdated(const QList<Biblioteca*>& newBiblioteca) override;
 };
 
 #endif // DBUPDATE_H

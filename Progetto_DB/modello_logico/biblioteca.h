@@ -31,6 +31,7 @@ public:
     int getCopie() const;
     int getNprestiti() const;
     string getImmagine() const;
+    void setId(int newid);
     void setTitolo(const string& newtitle);
     void setGenere(const string& newgenre);
     void setAnno(const int& newanno);

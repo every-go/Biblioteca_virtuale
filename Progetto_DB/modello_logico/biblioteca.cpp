@@ -51,6 +51,10 @@ string Biblioteca::getImmagine() const{
     return immagine;
 }
 
+void Biblioteca::setId(int newid){
+    id = newid;
+}
+
 void Biblioteca::setTitolo(const string &newtitle){
     titolo = newtitle;
 }

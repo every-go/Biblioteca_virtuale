@@ -5,22 +5,22 @@
         <file>bleach.png</file>
         <file>cook_inc.png</file>
         <file>dark_side.png</file>
+        <file>divina.png</file>
         <file>e_finita_la_pace.png</file>
+        <file>error.jpg</file>
         <file>focus.png</file>
         <file>harry_potter.png</file>
         <file>isola_tesoro.png</file>
         <file>la_divina_commedia.png</file>
+        <file>la_divina_commedia2.png</file>
         <file>onepiece.png</file>
         <file>shrek.png</file>
         <file>skyscraper.png</file>
         <file>via_pal.png</file>
         <file>vinland_saga.png</file>
         <file>vinland_saga2.png</file>
-        <file>resources.qrc</file>
         <file>vanity_fair.png</file>
         <file>vanity_fair2.png</file>
         <file>via_pal2.png</file>
-        <file>la_divina_commedia2.png</file>
-        <file>divina.png</file>
     </qresource>
 </RCC>

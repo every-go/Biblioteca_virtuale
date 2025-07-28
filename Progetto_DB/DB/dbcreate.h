@@ -14,7 +14,7 @@ class Cd;
 class Film;
 class Riviste;
 
-class DbCreate : public QObject {
+class DbCreate : public QObject, public DbObserver {
    Q_OBJECT
    private:
       QList<DbObserver*> observers;
@@ -33,6 +33,7 @@ class DbCreate : public QObject {
       DbCreate(QList<Biblioteca*>& newbiblioteca);
       void addObserver(DbObserver* observer);
       void notifyObservers(QList<Biblioteca*>& newBiblioteca);
+      virtual void onBibliotecaUpdated(const QList<Biblioteca*>& newBiblioteca) override;
 };
 
 #endif // DBSAVE_H
